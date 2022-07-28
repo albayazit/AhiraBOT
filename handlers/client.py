@@ -1,0 +1,168 @@
+from aiogram import Dispatcher, types, Bot
+from create_bot import dp
+from keyboards import client_kb
+from parcer import parcer_exel, parcer_hidjra
+from handlers import other
+
+# макс. длина сообщения
+MESS_MAX_LENGTH = 4096
+# страница в инлайне Татарстана
+tat_page = 1
+# получение даты по хиджре
+hidjra_date = parcer_hidjra.main()
+# выбранный город, по умолчанию Казань
+current_city = 'Казань'
+
+# стартовые кнопки, реакция на /start
+async def start_command(message: types.Message):
+    await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
+
+
+# кнопка времени намаза
+async def favorite_command(message: types.Message):
+		await message.answer('<b>Избранные города:</b>', reply_markup=client_kb.inline_favorite)
+
+async def time_command(callback : types.CallbackQuery):
+    await callback.message.edit_text('Время намаза для других регионов сделана на основе расчетов Всемирной Исламской лиги, при наличии, ориентируйтесь на расчеты ДУМ Вашего региона.\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
+
+
+# кнопка трекер
+async def tracker_command(message: types.Message):
+    await message.answer('Это трекер')
+
+
+# кнопка обучения намазу
+async def tutor_command(message: types.Message):
+    await message.answer('Обучение на основе Ханафитского мазхаба.\nВыберите раздел: ', reply_markup=client_kb.markup_namaz_tutor)
+# кнопки обучений
+async def tutor_namaz_command(message: types.Message):
+    await message.answer(other.tut_namaz_message)
+
+async def tutor_time_command(message: types.Message):
+    await message.answer(other.tut_time_message)
+
+async def tutor_cond_command(message: types.Message):
+	for x in range(0, len(other.tut_cond_message), MESS_MAX_LENGTH - 1400):
+		mess_tut = other.tut_cond_message[x: x + MESS_MAX_LENGTH - 1400] 
+		await message.answer(mess_tut)
+
+async def tutor_gusl_command(message: types.Message):
+    await message.answer(other.tut_gusl_message)
+
+async def tutor_taharat_command(message: types.Message):
+    await message.answer(other.tut_taharat_message)
+
+async def tutor_forma_command(message: types.Message):
+	for x in range(0, len(other.tut_forma_message), MESS_MAX_LENGTH - 57):
+		mess_form = other.tut_forma_message[x: x + MESS_MAX_LENGTH - 57] 
+		await message.answer(mess_form)
+
+async def tutor_sura_command(message: types.Message):
+    await message.answer(other.tut_sura_message)
+
+async def tutor_women_command(message: types.Message):
+    await message.answer(other.tut_women_message)
+
+
+# кнопка аудио
+async def audio_command(message: types.Message):
+    await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_audio)
+
+
+# кнопка книг
+async def books_command(message: types.Message):
+    await message.answer('Книги')
+
+
+# кнопка календаря
+async def calendar_command(message: types.Message):
+    await message.answer(other.calendar_message)
+
+
+# кнопка информации
+async def info_command(message: types.Message):
+    await message.answer(other.info_message)
+
+
+# кнопка зикра
+async def zikr_command(message: types.Message):
+    await message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
+
+
+# реакция на неожиданные сообщения
+async def help_command(message: types.Message):
+	await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_main)
+
+
+# кнопка назад (переброс на стартовые кнопки)
+async def back_command(message: types.Message):
+    await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_main)
+
+
+# время намаза на сегодня
+async def namaz_day_command(callback : types.CallbackQuery):
+	global current_city
+	current_city = callback.data
+	await callback.message.edit_text(parcer_exel.get_day_time(current_city), reply_markup= client_kb.inline_city('today', current_city))
+	await callback.answer()
+
+
+# Время на след. день
+async def next_day_time_command(callback : types.CallbackQuery):
+	global current_city
+	await callback.message.edit_text(parcer_exel.get_nextday_time(current_city), reply_markup=client_kb.inline_city('tomorrow', current_city))
+	await callback.answer()
+
+# Время на месяц
+async def month_time_command(callback : types.CallbackQuery):
+	await callback.message.edit_text('<b>Выберите число:</b>', reply_markup=client_kb.inline_month())
+
+
+# населенные пункты Татарстана inline-button
+async def tatarstan_command(callback : types.CallbackQuery):
+	global tat_page
+	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=client_kb.inline_namaz_time_tat(tat_page))
+	await callback.answer()
+
+async def tatarstan_next(callback : types.CallbackQuery):
+	global tat_page
+	tat_page += 1
+	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=client_kb.inline_namaz_time_tat(tat_page))
+	await callback.answer()
+
+async def tatarstan_back(callback : types.CallbackQuery):
+	global tat_page
+	tat_page -= 1
+	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=client_kb.inline_namaz_time_tat(tat_page))
+	await callback.answer()
+
+# dispatcher
+def register_handlers_client(dp : Dispatcher):
+	dp.register_message_handler(start_command, commands=['start'])
+	dp.register_message_handler(favorite_command, lambda message: message.text == "🕦 Время намаза")
+	dp.register_message_handler(tracker_command, lambda message: message.text == "📈 Трекер")
+	dp.register_message_handler(tutor_command, lambda message: message.text == "🕌 Обучение")
+	dp.register_message_handler(tutor_namaz_command, lambda message: message.text == "❓\n Что такое намаз")
+	dp.register_message_handler(tutor_time_command, lambda message: message.text == "🕦\n Время намазов")
+	dp.register_message_handler(tutor_cond_command, lambda message: message.text == "❗\n Условия намаза")
+	dp.register_message_handler(tutor_gusl_command, lambda message: message.text == "🚿\n Гусль")
+	dp.register_message_handler(tutor_taharat_command, lambda message: message.text == "💧\n Тахарат")	
+	dp.register_message_handler(tutor_forma_command, lambda message: message.text == "🧎\n Форма совершения намаза")	
+	dp.register_message_handler(tutor_sura_command, lambda message: message.text == "📃\n Суры и дуа намаза")
+	dp.register_message_handler(tutor_women_command, lambda message: message.text == "🧕\n Женский намаз")					
+	dp.register_message_handler(audio_command, lambda message: message.text == "🎧 Аудио")
+	dp.register_message_handler(books_command, lambda message: message.text == "📚 Книги")
+	dp.register_message_handler(calendar_command, lambda message: message.text == "📅 Календарь")
+	dp.register_message_handler(info_command, lambda message: message.text == "❗ Помощь")
+	dp.register_message_handler(zikr_command, lambda message: message.text == "📿 Зикр")
+	dp.register_message_handler(help_command, commands=['help'])
+	dp.register_message_handler(back_command, lambda message: message.text == "⏪ Назад")
+	dp.register_callback_query_handler(time_command, text = 'add_city')
+	dp.register_callback_query_handler(namaz_day_command, text = parcer_exel.cities_exel)
+	dp.register_callback_query_handler(next_day_time_command, text = 'tomorrow_time')
+	dp.register_callback_query_handler(tatarstan_command, text = 'tatarstan')
+	dp.register_callback_query_handler(tatarstan_next, text = 'next_tat')
+	dp.register_callback_query_handler(tatarstan_back, text = 'back_tat')
+	dp.register_callback_query_handler(month_time_command, text = 'month_time')
+
+	
