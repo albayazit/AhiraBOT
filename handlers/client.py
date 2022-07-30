@@ -1,8 +1,17 @@
+from cgitb import text
 from aiogram import Dispatcher, types, Bot
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_exel, parcer_hidjra
+from parcer import parcer_exel, parcer_hidjra, parcer_main
 from handlers import other
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
+
+# FSM
+class FSMaddress(StatesGroup):
+	address = State()
+	method = State()
+	school = State()
 
 # макс. длина сообщения
 MESS_MAX_LENGTH = 4096
@@ -136,6 +145,35 @@ async def tatarstan_back(callback : types.CallbackQuery):
 	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=client_kb.inline_namaz_time_tat(tat_page))
 	await callback.answer()
 
+async def address_add(callback: types.CallbackQuery):
+	await FSMaddress.address.set()
+	await callback.message.edit_text('Напишите название города')
+	await callback.answer()
+
+async def address_get(message: types.message, state=FSMContext):
+	async with state.proxy() as data:
+		data['address'] = message.text
+	await FSMaddress.method.set()
+	await message.answer('<b>Выберите метод расчета:</b>', reply_markup=client_kb.markup_method)
+
+async def method_get(callback: types.CallbackQuery, state=FSMContext):
+	async with state.proxy() as data:
+		data['method'] = callback.data[7]
+	await FSMaddress.school.set()
+	await callback.answer()
+	await callback.message.edit_text('<b>Выберите мазхаб:</b>', reply_markup=client_kb.markup_school)
+
+async def school_get(callback: types.CallbackQuery, state=FSMContext):
+	async with state.proxy() as data:
+		data['school'] = callback.data[7]
+	await callback.answer()
+	async with state.proxy() as data:
+		address = data['address']
+		method = data['method']
+		school = data['school']
+	await callback.message.edit_text(parcer_main.get_day_time(address, school, data))
+	await state.finish()
+
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(start_command, commands=['start'])
@@ -164,5 +202,10 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tatarstan_next, text = 'next_tat')
 	dp.register_callback_query_handler(tatarstan_back, text = 'back_tat')
 	dp.register_callback_query_handler(month_time_command, text = 'month_time')
+	dp.register_callback_query_handler(address_add, text = 'other_region')
+	dp.register_message_handler(address_get, state=FSMaddress.address)
+	dp.register_callback_query_handler(method_get, text_startswith='method_',state=FSMaddress.method)
+	dp.register_callback_query_handler(school_get, text_startswith='school_',state=FSMaddress.school)
+
 
 	
