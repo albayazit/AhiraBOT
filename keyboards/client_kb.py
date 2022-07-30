@@ -1,4 +1,3 @@
-import re
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from parcer import parcer_exel
 from datetime import date, timedelta, datetime
@@ -51,6 +50,25 @@ zikr_14 = InlineKeyboardButton('Раббана атина фи-д-дунья', c
 zikr_15 = InlineKeyboardButton('Аллаһумма а`инни `аля зикрика', callback_data='zikr_15')
 zikr_16 = InlineKeyboardButton('Таравих тасбих', callback_data='zikr_16')
 zikr_17 = InlineKeyboardButton('Без категории', callback_data='zikr_17')
+
+methods = ['method_1', 'method_2', 'method_3', 'method_4', 'method_5', 'method_6', 'method_7', 'method_8', 'method_9', 'method_9', 'method_10', 'method_11', 'method_12', 'method_13', 'method_14']
+method_1 = InlineKeyboardButton('MWL Всемирная лига мусульман', callback_data='method_1')
+method_2 = InlineKeyboardButton('Islamic Society of North America', callback_data='method_2')
+method_3 = InlineKeyboardButton('Egyptian General Authority of Survey', callback_data='method_3')
+method_4 = InlineKeyboardButton('Umm Al-Qura University, Makkah', callback_data='method_4')
+method_5 = InlineKeyboardButton('University of Islamic Sciences, Karachi', callback_data='method_5')
+method_6 = InlineKeyboardButton('University of Tehran', callback_data='method_6')
+method_7 = InlineKeyboardButton('Shia Ithna-Ashari', callback_data='method_7')
+method_8 = InlineKeyboardButton('Gulf Region', callback_data='method_8')
+method_9 = InlineKeyboardButton('Kuwait', callback_data='method_9')
+method_10 = InlineKeyboardButton('Qatar', callback_data='method_10')
+method_11 = InlineKeyboardButton('Majlis Ugama Islam Singapura, Singapore', callback_data='method_11')
+method_12 = InlineKeyboardButton('Union Organization islamic de France', callback_data='method_12')
+method_13 = InlineKeyboardButton('Diyanet, Turkey', callback_data='method_13')
+method_14 = InlineKeyboardButton('ДУМ России', callback_data='method_14')
+
+school_1 = InlineKeyboardButton('Ханафитский', callback_data='school_1')
+school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Ханбалитский и др.', callback_data='school_0')
 
 # клавиатура главного экрана
 markup_main = ReplyKeyboardMarkup()
@@ -141,3 +159,11 @@ def inline_month():
 			markup.insert(InlineKeyboardButton(day[8:], callback_data='tatarstan'+day))
 		count += 1
 	return markup
+
+# methods markup
+markup_method = InlineKeyboardMarkup()
+markup_method.add(method_1, method_2, method_3, method_4, method_5, method_6, method_7, method_8, method_9, method_9, method_10, method_11, method_12, method_13, method_14)
+
+# schools markup
+markup_school = InlineKeyboardMarkup()
+markup_school.add(school_1).add(school_2)
