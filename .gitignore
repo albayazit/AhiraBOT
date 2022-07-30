@@ -1,5 +1,5 @@
 config.py
 bot_run.py
-ahira_users.db
+database.db
 venv
 __pycache__
