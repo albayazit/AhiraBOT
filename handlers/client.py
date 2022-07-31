@@ -112,14 +112,14 @@ async def back_command(message: types.Message):
 async def namaz_day_command(callback : types.CallbackQuery):
 	global current_city
 	current_city = callback.data
-	await callback.message.edit_text(parcer_exel.get_day_time(current_city), reply_markup= client_kb.inline_city('today', current_city))
+	await callback.message.edit_text(parcer_exel.get_day_time(current_city), reply_markup = client_kb.inline_city('today', current_city))
 	await callback.answer()
 
 
 # Время на след. день
 async def next_day_time_command(callback : types.CallbackQuery):
 	global current_city
-	await callback.message.edit_text(parcer_exel.get_nextday_time(current_city), reply_markup=client_kb.inline_city('tomorrow', current_city))
+	await callback.message.edit_text(parcer_exel.get_nextday_time(current_city), reply_markup = client_kb.inline_city('tomorrow', current_city))
 	await callback.answer()
 
 # Время на месяц
@@ -158,7 +158,7 @@ async def address_get(message: types.message, state=FSMContext):
 
 async def method_get(callback: types.CallbackQuery, state=FSMContext):
 	async with state.proxy() as data:
-		data['method'] = callback.data[7]
+		data['method'] = callback.data[7:]
 	await FSMaddress.school.set()
 	await callback.answer()
 	await callback.message.edit_text('<b>Выберите мазхаб:</b>', reply_markup=client_kb.markup_school)
@@ -167,12 +167,9 @@ async def school_get(callback: types.CallbackQuery, state=FSMContext):
 	async with state.proxy() as data:
 		data['school'] = callback.data[7]
 	await callback.answer()
-	async with state.proxy() as data:
-		address = data['address']
-		method = data['method']
-		school = data['school']
-	await callback.message.edit_text(parcer_main.get_day_time(address, school, data))
+	await callback.message.edit_text(await parcer_main.get_day_time(state))
 	await state.finish()
+
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
