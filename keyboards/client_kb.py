@@ -1,6 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from parcer import parcer_exel
 from datetime import date, timedelta, datetime
+from database import sqlite_bd
 
 
 # кнопки
@@ -89,11 +90,6 @@ markup_audio.add(
     button_audio_koran, button_audio_hutba
 ).add(button_back)
 
-
-# выбор региона
-inline_favorite = InlineKeyboardMarkup()
-inline_favorite.add(InlineKeyboardButton('Добавить город', callback_data='add_city'))
-
 inline_namaz_time = InlineKeyboardMarkup()
 inline_namaz_time.add(InlineKeyboardButton('Татарстан', callback_data='tatarstan')).add(InlineKeyboardButton('Другой регион', callback_data='other_region'))
 
@@ -167,3 +163,27 @@ markup_method.add(method_1, method_2, method_3, method_4, method_5, method_6, me
 # schools markup
 markup_school = InlineKeyboardMarkup()
 markup_school.add(school_1).add(school_2)
+
+
+
+def other_inline(user_id, address):
+	markup = InlineKeyboardMarkup()
+	zero_check = True
+	markup.insert(InlineKeyboardButton('На завтра', callback_data='other_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
+		if item[0].lower() == address.lower():
+			zero_check = False
+			markup.add(InlineKeyboardButton('Удалить из избранных', callback_data='other_delete'))
+			break
+	if zero_check == True:
+			markup.add(InlineKeyboardButton('Добавить в избранное', callback_data='other_add'))
+	return markup
+
+
+# favorite cities
+def favorite_cities(user_id):
+	markup = InlineKeyboardMarkup(row_width=2)
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
+		markup.insert(InlineKeyboardButton(item[0], callback_data='city_other_'+item[0]))
+	markup.add(InlineKeyboardButton('Добавить город', callback_data='add_city'))
+	return markup

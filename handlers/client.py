@@ -6,6 +6,7 @@ from parcer import parcer_exel, parcer_hidjra, parcer_main
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from database import sqlite_bd
 
 # FSM
 class FSMaddress(StatesGroup):
@@ -29,7 +30,8 @@ async def start_command(message: types.Message):
 
 # кнопка времени намаза
 async def favorite_command(message: types.Message):
-		await message.answer('<b>Избранные города:</b>', reply_markup=client_kb.inline_favorite)
+		user_id = message.from_user.id
+		await message.answer('<b>Избранные города:</b>', reply_markup=client_kb.favorite_cities(user_id))
 
 async def time_command(callback : types.CallbackQuery):
     await callback.message.edit_text('Время намаза для других регионов сделана на основе расчетов Всемирной Исламской лиги, при наличии, ориентируйтесь на расчеты ДУМ Вашего региона.\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
@@ -164,12 +166,30 @@ async def method_get(callback: types.CallbackQuery, state=FSMContext):
 	await callback.message.edit_text('<b>Выберите мазхаб:</b>', reply_markup=client_kb.markup_school)
 
 async def school_get(callback: types.CallbackQuery, state=FSMContext):
+	global address, method, school
+	user_id = callback.from_user.id
 	async with state.proxy() as data:
 		data['school'] = callback.data[7]
+		address = data['address']
+		method = data['method']
+		school = data['school']
 	await callback.answer()
-	await callback.message.edit_text(await parcer_main.get_day_time(state))
+	await callback.message.edit_text(await parcer_main.get_day_time(state), reply_markup=client_kb.other_inline(user_id, address))
 	await state.finish()
 
+async def favorite_add_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute('INSERT INTO favorite_other VALUES (?, ?, ?, ?)', (user_id, address, method, school))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.answer()
+
+async def favorite_delete_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute('DELETE FROM favorite_other WHERE user_id == ? AND address == ?', (user_id, address))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.answer()
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
@@ -203,6 +223,6 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(address_get, state=FSMaddress.address)
 	dp.register_callback_query_handler(method_get, text_startswith='method_',state=FSMaddress.method)
 	dp.register_callback_query_handler(school_get, text_startswith='school_',state=FSMaddress.school)
-
-
+	dp.register_callback_query_handler(favorite_add_other, text='other_add')
+	dp.register_callback_query_handler(favorite_delete_other, text='other_delete')
 	
