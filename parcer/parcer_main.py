@@ -38,8 +38,7 @@ async def get_day_time(state):
 
 		daytime_message = (
 					f'🌍 Город: <b>{result[0]}</b>\n\n'
-					f'📅 Дата: <b>{date["gregorian"]["date"].replace("-", ".")} | {date["hijri"]["date"].replace("-", ".")}</b>\n'
-					f'Месяц: {date["hijri"]["month"]["ar"]}\n\n'
+					f'📅 Дата: <b>{date["gregorian"]["date"].replace("-", ".")} | {date["hijri"]["date"].replace("-", ".")}</b>\n\n'
 					f'🔭 Метод расчета: <b>{methods[result[1]]} | {schools[result[2]]}</b>\n\n'
 
 					f'<b>Фаджр - {times["Fajr"]}</b>\n'
@@ -49,7 +48,6 @@ async def get_day_time(state):
 					f'<b>Иша - {times["Isha"]}</b>\n\n'
 					
 					f'Рассвет: <b>{times["Sunrise"]}</b>\n'
-					f'Первая 1/3 ночи: <b>{times["Firstthird"]}</b>\n'
 					f'Середина ночи: <b>{times["Midnight"]}</b>\n'
 					f'Последняя 1/3 ночи: <b>{times["Lastthird"]}</b>'
 			)
