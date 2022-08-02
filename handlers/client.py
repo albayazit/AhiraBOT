@@ -153,6 +153,11 @@ async def address_add(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def address_get(message: types.message, state=FSMContext):
+	try:
+		parcer_main.city_check(address)
+	except:
+		await state.finish()
+		return await message.answer('Такого города не нашлось, проверьте название!')
 	async with state.proxy() as data:
 		data['address'] = message.text
 	await FSMaddress.method.set()
