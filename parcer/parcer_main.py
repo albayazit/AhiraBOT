@@ -22,6 +22,15 @@ schools = {
 }
 
 # get for day
+async def city_check(address):
+	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
+	querystring = {"address":str(address)}
+	headers = {
+		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+	}
+	response = requests.request("GET", url, headers=headers, params=querystring).json()
+	
 async def get_day_time(state):
 	async with state.proxy() as data:
 		result = tuple(data.values())
@@ -54,7 +63,6 @@ async def get_day_time(state):
 		return daytime_message
 	except:
 		return "Ой, такого города не нашлось, проверьте название!"
-
 
 
 # get for month
