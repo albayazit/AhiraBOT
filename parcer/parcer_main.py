@@ -70,35 +70,31 @@ async def get_day_time_from_menu(user_id, address):
 	method = sqlite_bd.cur.execute('SELECT method FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()
 	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
-	# querystring = {"address":address,"method":method,"school":school}
-	querystring = {"address":address}	
+	querystring = {"address":address,"method":method[0],"school":school[0]}
 	headers = {
 		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
-	try:
-		response = requests.request("GET", url, headers=headers, params=querystring).json()
-		times = response['data']['timings']
-		date = response['data']['date']
+	response = requests.request("GET", url, headers=headers, params=querystring).json()
+	times = response['data']['timings']
+	date = response['data']['date']
 
-		daytime_message = (
-					f'🌍 Город: <b>{address}</b>\n\n'
-					f'📅 Дата: <b>{date["gregorian"]["date"].replace("-", ".")} | {date["hijri"]["date"].replace("-", ".")}</b>\n\n'
-					f'🔭 Метод расчета: <b>{methods[method]} | {schools[school]}</b>\n\n'
+	daytime_message = (
+				f'🌍 Город: <b>{address}</b>\n\n'
+				f'📅 Дата: <b>{date["gregorian"]["date"].replace("-", ".")} | {date["hijri"]["date"].replace("-", ".")}</b>\n\n'
+				f'🔭 Метод расчета: <b>{methods[method[0]]} | {schools[school[0]]}</b>\n\n'
 
-					f'<b>Фаджр - {times["Fajr"]}</b>\n'
-					f'<b>Зухр - {times["Dhuhr"]}</b>\n'
-					f'<b>Аср - {times["Asr"]}</b>\n'
-					f'<b>Магриб - {times["Maghrib"]}</b>\n'
-					f'<b>Иша - {times["Isha"]}</b>\n\n'
-					
-					f'Рассвет: <b>{times["Sunrise"]}</b>\n'
-					f'Середина ночи: <b>{times["Midnight"]}</b>\n'
-					f'Последняя 1/3 ночи: <b>{times["Lastthird"]}</b>'
-			)
-		return daytime_message
-	except:
-		return "Что-то пошло не так, попробуйте еще раз!"
+				f'<b>Фаджр - {times["Fajr"]}</b>\n'
+				f'<b>Зухр - {times["Dhuhr"]}</b>\n'
+				f'<b>Аср - {times["Asr"]}</b>\n'
+				f'<b>Магриб - {times["Maghrib"]}</b>\n'
+				f'<b>Иша - {times["Isha"]}</b>\n\n'
+				
+				f'Рассвет: <b>{times["Sunrise"]}</b>\n'
+				f'Середина ночи: <b>{times["Midnight"]}</b>\n'
+				f'Последняя 1/3 ночи: <b>{times["Lastthird"]}</b>'
+		)
+	return daytime_message
 
 
 

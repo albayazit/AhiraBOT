@@ -182,6 +182,15 @@ async def school_get(callback: types.CallbackQuery, state=FSMContext):
 	await callback.message.edit_text(await parcer_main.get_day_time(state), reply_markup=client_kb.other_inline(user_id, address))
 	await state.finish()
 
+async def time_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	address = str(callback.data[11:])
+	try:
+		await callback.message.edit_text(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])),reply_markup=client_kb.other_inline(user_id, str(callback.data[11:])))
+	except:
+		await callback.message.edit_text('Что-то пошло не так, повторите попытку!')
+	await callback.answer()
+
 async def favorite_add_other(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('INSERT INTO favorite_other VALUES (?, ?, ?, ?)', (user_id, address, method, school))
@@ -194,11 +203,6 @@ async def favorite_delete_other(callback: types.CallbackQuery):
 	sqlite_bd.cur.execute('DELETE FROM favorite_other WHERE user_id == ? AND address == ?', (user_id, address))
 	sqlite_bd.base.commit()
 	await callback.message.edit_text('Удалено из избранных ✅')
-	await callback.answer()
-
-async def time_other(callback: types.CallbackQuery):
-	user_id = callback.from_user.id
-	await callback.message.answer(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])))
 	await callback.answer()
 
 # dispatcher
