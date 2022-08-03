@@ -154,7 +154,7 @@ async def address_add(callback: types.CallbackQuery):
 
 async def address_get(message: types.message, state=FSMContext):
 	try:
-		parcer_main.city_check(address)
+		await parcer_main.city_check(message.text)
 	except:
 		await state.finish()
 		return await message.answer('Такого города не нашлось, проверьте название!')
@@ -196,6 +196,11 @@ async def favorite_delete_other(callback: types.CallbackQuery):
 	await callback.message.edit_text('Удалено из избранных ✅')
 	await callback.answer()
 
+async def time_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	await callback.message.answer(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])))
+	await callback.answer()
+
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(start_command, commands=['start'])
@@ -230,4 +235,5 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(school_get, text_startswith='school_',state=FSMaddress.school)
 	dp.register_callback_query_handler(favorite_add_other, text='other_add')
 	dp.register_callback_query_handler(favorite_delete_other, text='other_delete')
+	dp.register_callback_query_handler(time_other, text_startswith='city_other_')
 	
