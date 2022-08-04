@@ -184,6 +184,7 @@ async def school_get(callback: types.CallbackQuery, state=FSMContext):
 
 async def time_other(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
+	global address
 	address = str(callback.data[11:])
 	try:
 		await callback.message.edit_text(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])),reply_markup=client_kb.other_inline(user_id, str(callback.data[11:])))
