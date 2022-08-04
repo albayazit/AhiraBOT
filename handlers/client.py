@@ -23,6 +23,21 @@ hidjra_date = parcer_hidjra.main()
 # выбранный город, по умолчанию Казань
 current_city = 'Казань'
 
+months = {
+	'1':'Январь',
+	'2':'Февраль',
+	'3':'Март',
+	'4':'Апрель',
+	'5':'Май',
+	'6':'Июнь',
+	'7':'Июль',
+	'8':'Август',
+	'9':'Сентябрь',
+	'10':'Октябрь',
+	'11':'Ноябрь',
+	'12':'Декабрь'
+}
+
 # стартовые кнопки, реакция на /start
 async def start_command(message: types.Message):
     await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
@@ -206,6 +221,10 @@ async def favorite_delete_other(callback: types.CallbackQuery):
 	await callback.message.edit_text('Удалено из избранных ✅')
 	await callback.answer()
 
+async def month_time_other(callback: types.CallbackQuery):
+	await callback.message.edit_text(f'Город: <b>{address}</b>\nМесяц: <b>{months[await client_kb.current_month()]}</b>\n<b>Выберите день:</b>',reply_markup=await client_kb.inline_month_other())
+	await callback.answer()
+
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(start_command, commands=['start'])
@@ -241,4 +260,5 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(favorite_add_other, text='other_add')
 	dp.register_callback_query_handler(favorite_delete_other, text='other_delete')
 	dp.register_callback_query_handler(time_other, text_startswith='city_other_')
+	dp.register_callback_query_handler(month_time_other, text='other_month')
 	

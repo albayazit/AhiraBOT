@@ -133,6 +133,10 @@ inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr
 inline_zikr_1 = InlineKeyboardMarkup().add(InlineKeyboardButton('+', callback_data='+_1'))
 
 
+async def current_month():
+	m = datetime.now().month
+	return str(m)
+
 # Все дни месяца
 def month_days():
 	m = datetime.now().month
@@ -186,4 +190,16 @@ def favorite_cities(user_id):
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data='city_other_'+item[0]))
 	markup.add(InlineKeyboardButton('Добавить город', callback_data='add_city'))
+	return markup
+
+async def inline_month_other():
+	count = 0
+	markup = InlineKeyboardMarkup(row_width=3)
+	days = month_days()
+	for day in days:
+		if count < 9:
+			markup.insert(InlineKeyboardButton(day[9:], callback_data='other_'+day))
+		else:
+			markup.insert(InlineKeyboardButton(day[8:], callback_data='other_'+day))
+		count += 1
 	return markup
