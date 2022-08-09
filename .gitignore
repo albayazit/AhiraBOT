@@ -3,3 +3,5 @@ bot_run.py
 database.db
 venv
 __pycache__
+.vscode
+test.py
