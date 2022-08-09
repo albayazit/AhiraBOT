@@ -3,10 +3,11 @@ from parcer import parcer_exel
 from datetime import date, timedelta, datetime
 from database import sqlite_bd
 
+#--------------------Buttons--------------------#
 
-# кнопки
+# time
 button_time = KeyboardButton('🕦 Время намаза')
-
+# tutor
 button_tutor = KeyboardButton('🕌 Обучение')
 button_tutor_what = KeyboardButton('❓\n Что такое намаз')
 button_tutor_time = KeyboardButton('🕦\n Время намазов')
@@ -16,24 +17,32 @@ button_tutor_taharat = KeyboardButton('💧\n Тахарат')
 button_tutor_forma = KeyboardButton('🧎\n Форма совершения намаза')
 button_tutor_sura = KeyboardButton('📃\n Суры и дуа намаза')
 button_tutor_women = KeyboardButton('🧕\n Женский намаз')
- 
+# audio
 button_audio = KeyboardButton('🎧 Аудио')
 button_audio_koran = KeyboardButton('📕\n Коран')
 button_audio_hutba = KeyboardButton('📢\n Проповедь')
-
+# books
 button_books = KeyboardButton('📚 Книги')
+# hadis
 button_hadis = KeyboardButton('📖 Хадисы')
+# dua
 button_dua = KeyboardButton('🤲 Дуа')
+# zikr
 button_zikr = KeyboardButton('📿 Зикр')
+# tracker
 button_tracker = KeyboardButton('📈 Трекер')
+# help
 button_info = KeyboardButton('❗ Помощь')
+# calendar
 button_calendar = KeyboardButton('📅 Календарь')
+# back
 button_back = KeyboardButton('⏪ Назад')
 
-
+# tatarstan inline
 back_tat = InlineKeyboardButton('⏪ Назад', callback_data='back_tat')
 next_tat = InlineKeyboardButton('Далее ⏩', callback_data='next_tat')
 
+# Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
 zikr_2 = InlineKeyboardButton('Дуа за родителей', callback_data= 'zikr_2')
 zikr_3 = InlineKeyboardButton('Калима Тавхид', callback_data='zikr_3')
@@ -52,6 +61,7 @@ zikr_15 = InlineKeyboardButton('Аллаһумма а`инни `аля зикр�
 zikr_16 = InlineKeyboardButton('Таравих тасбих', callback_data='zikr_16')
 zikr_17 = InlineKeyboardButton('Без категории', callback_data='zikr_17')
 
+# calculate methods
 methods = ['method_1', 'method_2', 'method_3', 'method_4', 'method_5', 'method_6', 'method_7', 'method_8', 'method_9', 'method_9', 'method_10', 'method_11', 'method_12', 'method_13', 'method_14']
 method_1 = InlineKeyboardButton('MWL Всемирная лига мусульман', callback_data='method_1')
 method_2 = InlineKeyboardButton('Islamic Society of North America', callback_data='method_2')
@@ -68,40 +78,55 @@ method_12 = InlineKeyboardButton('Union Organization islamic de France', callbac
 method_13 = InlineKeyboardButton('Diyanet, Turkey', callback_data='method_13')
 method_14 = InlineKeyboardButton('ДУМ России', callback_data='method_14')
 
+# calculate schools
 school_1 = InlineKeyboardButton('Ханафитский', callback_data='school_1')
 school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Ханбалитский и др.', callback_data='school_0')
 
-# клавиатура главного экрана
+#--------------------Markups--------------------#
+
+# main
 markup_main = ReplyKeyboardMarkup()
 markup_main.add(button_time).add(
     button_tracker, button_audio, button_books, button_hadis, button_dua, button_zikr, button_tutor, button_info, button_calendar
 )
 
+# city_add
+inline_namaz_time = InlineKeyboardMarkup()
+inline_namaz_time.add(InlineKeyboardButton('Татарстан', callback_data='tatarstan')).add(InlineKeyboardButton('Другой регион', callback_data='other_region'))
 
-# клавиатура обучения
+# learn
 markup_namaz_tutor = ReplyKeyboardMarkup()
 markup_namaz_tutor.add(
     button_tutor_what, button_tutor_time, button_tutor_cond, button_tutor_gusl, button_tutor_taharat, button_tutor_forma, button_tutor_sura, button_tutor_women, button_back
 )
 
-# клавиатура аудио
+# audio
 markup_audio = ReplyKeyboardMarkup()
 markup_audio.add(
     button_audio_koran, button_audio_hutba
 ).add(button_back)
 
-inline_namaz_time = InlineKeyboardMarkup()
-inline_namaz_time.add(InlineKeyboardButton('Татарстан', callback_data='tatarstan')).add(InlineKeyboardButton('Другой регион', callback_data='other_region'))
+# zikr 
+inline_zikr_all = InlineKeyboardMarkup()
+inline_zikr_all.row_width = 2
+inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16, zikr_17)
 
+# methods for other region
+markup_method = InlineKeyboardMarkup()
+markup_method.add(method_1, method_2, method_3, method_4, method_5, method_6, method_7, method_8, method_9, method_9, method_10, method_11, method_12, method_13, method_14)
 
-#--- При выборе Татарстана ---#
-def inline_namaz_time_tat(page):
+# schools for other region
+markup_school = InlineKeyboardMarkup()
+markup_school.add(school_1).add(school_2)
+
+# tatarstan cities
+async def inline_namaz_time_tat(page):
 	last_page = False
 	markup = InlineKeyboardMarkup(row_width=2)
 	keys = page*10
 	for i in range(keys-10, keys):
 		try:
-			markup.insert(InlineKeyboardButton(parcer_exel.cities_exel[i], callback_data=parcer_exel.cities_exel[i]))
+			markup.insert(InlineKeyboardButton(parcer_exel.all_cities[i], callback_data=parcer_exel.all_cities[i]))
 		except:
 			if page != 1:
 				last_page = True
@@ -114,10 +139,8 @@ def inline_namaz_time_tat(page):
 		markup.insert(next_tat)
 	return markup
 
-
-# инлайн города
-
-def inline_city(period, current_city):
+# lower in current city
+async def inline_city(period, current_city):
     inline_city = InlineKeyboardMarkup(row_width=3)
     if period == 'today':
         inline_city.insert(InlineKeyboardButton('На завтра', callback_data = 'tomorrow_time')).insert(InlineKeyboardButton('На месяц', callback_data='month_time'))
@@ -125,33 +148,18 @@ def inline_city(period, current_city):
         inline_city.insert(InlineKeyboardButton('На сегодня', callback_data=current_city)).insert(InlineKeyboardButton('На месяц', callback_data='month_time'))
     return inline_city
 
-# инлайн зикра
-inline_zikr_all = InlineKeyboardMarkup()
-inline_zikr_all.row_width = 2
-inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16, zikr_17)
-
-inline_zikr_1 = InlineKeyboardMarkup().add(InlineKeyboardButton('+', callback_data='+_1'))
-
-
-async def current_month():
-	m = datetime.now().month
-	return str(m)
-
-# Все дни месяца
-def month_days():
+# all days in month
+async def inline_month():
 	m = datetime.now().month
 	y = datetime.now().year
 	days = (date(y, m+1, 1) - date(y, m, 1)).days
 	d1 = date(y, m, 1)
 	d2 = date(y, m, days)
 	d3 = d2 - d1
-	return [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
+	days = [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
 
-
-def inline_month():
 	count = 0
 	markup = InlineKeyboardMarkup(row_width=3)
-	days = month_days()
 	for day in days:
 		if count < 9:
 			markup.insert(InlineKeyboardButton(day[9:], callback_data='tatarstan'+day))
@@ -160,17 +168,8 @@ def inline_month():
 		count += 1
 	return markup
 
-# methods markup
-markup_method = InlineKeyboardMarkup()
-markup_method.add(method_1, method_2, method_3, method_4, method_5, method_6, method_7, method_8, method_9, method_9, method_10, method_11, method_12, method_13, method_14)
-
-# schools markup
-markup_school = InlineKeyboardMarkup()
-markup_school.add(school_1).add(school_2)
-
-
-
-def other_inline(user_id, address):
+# lower for other region cities
+async def other_inline(user_id, address):
 	markup = InlineKeyboardMarkup()
 	zero_check = True
 	markup.insert(InlineKeyboardButton('На завтра', callback_data='other_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
@@ -185,17 +184,25 @@ def other_inline(user_id, address):
 
 
 # favorite cities
-def favorite_cities(user_id):
+async def favorite_cities(user_id):
 	markup = InlineKeyboardMarkup(row_width=2)
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data='city_other_'+item[0]))
 	markup.add(InlineKeyboardButton('Добавить город', callback_data='add_city'))
 	return markup
 
+# all days in months for other regions
 async def inline_month_other():
+	m = datetime.now().month
+	y = datetime.now().year
+	days = (date(y, m+1, 1) - date(y, m, 1)).days
+	d1 = date(y, m, 1)
+	d2 = date(y, m, days)
+	d3 = d2 - d1
+	days = [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
+
 	count = 0
 	markup = InlineKeyboardMarkup(row_width=3)
-	days = month_days()
 	for day in days:
 		if count < 9:
 			markup.insert(InlineKeyboardButton(day[9:], callback_data='other_'+day))

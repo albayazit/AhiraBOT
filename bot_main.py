@@ -3,6 +3,7 @@ from aiogram import executor
 from create_bot import dp
 from handlers import client, other
 from database import sqlite_bd
+from parcer import parcer_exel
 
 client.register_handlers_client(dp)
 # в самом низу во избежания нарушения логики

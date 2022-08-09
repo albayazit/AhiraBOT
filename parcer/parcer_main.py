@@ -1,6 +1,7 @@
 import requests
 from database import sqlite_bd
 
+# calculate methods
 methods = {
 	'1':'MWL Всемирная лига мусульман',
 	'2':'Islamic Society of North America',
@@ -17,12 +18,13 @@ methods = {
 	'13':'Diyanet, Turkey',
 	'14':'ДУМ России'
 }
+# calculate schools
 schools = {
 	'0':'Стандартный',
 	'1':'Ханафитский'
 }
 
-# get for day
+# check city in bd
 async def city_check(address):
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
 	querystring = {"address":str(address)}
@@ -32,7 +34,8 @@ async def city_check(address):
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	return response['data']['timings']
-	
+
+# get time for day
 async def get_day_time(state):
 	async with state.proxy() as data:
 		result = tuple(data.values())
@@ -64,8 +67,9 @@ async def get_day_time(state):
 			)
 		return daytime_message
 	except:
-		return "Ой, такого города не нашлось, проверьте название!"
+		return "Ой, что-то пошло не так, повторите попытку!"
 
+# get time for day in favorite_cities
 async def get_day_time_from_menu(user_id, address):
 	method = sqlite_bd.cur.execute('SELECT method FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()
 	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()
@@ -95,20 +99,3 @@ async def get_day_time_from_menu(user_id, address):
 				f'Последняя 1/3 ночи: <b>{times["Lastthird"]}</b>'
 		)
 	return daytime_message
-
-
-
-# get for month
-
-# url = "https://aladhan.p.rapidapi.com/calendarByAddress"
-
-# querystring = {"address":"Казань","method":"2","school":"1"}
-
-# headers = {
-# 	"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
-# 	"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
-# }
-
-# response = requests.request("GET", url, headers=headers, params=querystring).json()
-
-# print(response['data'][0]['timings']['Fajr'])
