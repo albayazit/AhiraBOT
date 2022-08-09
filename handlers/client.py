@@ -6,12 +6,11 @@ from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from database import sqlite_bd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # FSM
 class FSMaddress(StatesGroup):
 	address = State()
-	method = State()
 	school = State()
 
 # max message length
@@ -45,6 +44,7 @@ async def start_command(message: types.Message):
 
 # Favorite cities | 'Время намаза' (reply)
 async def favorite_command(message: types.Message):
+	global user_id
 	user_id = message.from_user.id
 	await message.answer('<b>Избранные города:</b>', reply_markup=await client_kb.favorite_cities(user_id))
 
@@ -156,6 +156,8 @@ async def month_time_command(callback : types.CallbackQuery):
 #--------------------Get new other city--------------------#
 # first message
 async def address_add(callback: types.CallbackQuery):
+	global user_id
+	user_id = callback.from_user.id
 	await FSMaddress.address.set()
 	await callback.message.edit_text('Напишите название города')
 	await callback.answer()
@@ -165,42 +167,41 @@ async def address_get(message: types.message, state=FSMContext):
 		await parcer_main.city_check(message.text)
 	except:
 		await state.finish()
-		return await message.answer('Такого города не нашлось, проверьте название!')
+		return await message.answer('Такого города не нашлось, проверьте название!', reply_markup = client_kb.markup_main)
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
+		if item[0].lower() == message.text.lower():
+			await state.finish()
+			return await message.answer('Город с таким названием уже есть в избранных!', reply_markup = client_kb.markup_main)
 	async with state.proxy() as data:
 		data['address'] = message.text
-	await FSMaddress.method.set()
-	await message.answer('<b>Выберите метод расчета:</b>', reply_markup=client_kb.markup_method)
-# method
-async def method_get(callback: types.CallbackQuery, state=FSMContext):
-	async with state.proxy() as data:
-		data['method'] = callback.data[7:]
 	await FSMaddress.school.set()
-	await callback.answer()
-	await callback.message.edit_text('<b>Выберите мазхаб:</b>', reply_markup=client_kb.markup_school)
+	await message.answer('<b>Выберите мазхаб:</b>', reply_markup=client_kb.markup_school)
 # school
 async def school_get(callback: types.CallbackQuery, state=FSMContext):
-	global address, method, school
+	global address, school
 	user_id = callback.from_user.id
 	async with state.proxy() as data:
 		data['school'] = callback.data[7]
 		address = data['address']
+		school = data['school']
 	await callback.answer()
-	await callback.message.edit_text(await parcer_main.get_day_time(state), reply_markup=await client_kb.other_inline(user_id, address))
+	await callback.message.edit_text(await parcer_main.get_day_time(state), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
 	await state.finish()
 # time from menu for other regions
+
 async def time_other(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global address
 	address = str(callback.data[11:])
 	try:
-		await callback.message.edit_text(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])),reply_markup=client_kb.other_inline(user_id, str(callback.data[11:])))
+		await callback.message.edit_text(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])),reply_markup=await client_kb.other_inline(user_id, str(callback.data[11:]), 'today'))
 	except:
 		await callback.message.edit_text('Что-то пошло не так, повторите попытку!')
 	await callback.answer()
 
 async def favorite_add_other(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
-	sqlite_bd.cur.execute('INSERT INTO favorite_other VALUES (?, ?, ?, ?)', (user_id, address, method, school))
+	sqlite_bd.cur.execute('INSERT INTO favorite_other VALUES (?, ?, ?)', (user_id, address, school))
 	sqlite_bd.base.commit()
 	await callback.message.edit_text('Добавлено в избранные ✅')
 	await callback.answer()
@@ -214,6 +215,24 @@ async def favorite_delete_other(callback: types.CallbackQuery):
 
 async def month_time_other(callback: types.CallbackQuery):
 	await callback.message.edit_text(f'Город: <b>{address}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>',reply_markup=await client_kb.inline_month_other())
+	await callback.answer()
+
+async def tomorrow_time_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	try:
+		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
+	except:
+		on_db = False
+	await callback.message.edit_text(await parcer_main.get_calendar_time(address, '32', school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
+	await callback.answer()
+
+async def today_time_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	try:
+		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
+	except:
+		on_db = False
+	await callback.message.edit_text(await parcer_main.get_calendar_time(address, '31', school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
 	await callback.answer()
 
 # dispatcher
@@ -246,10 +265,10 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(month_time_command, text = 'month_time')
 	dp.register_callback_query_handler(address_add, text = 'other_region')
 	dp.register_message_handler(address_get, state=FSMaddress.address)
-	dp.register_callback_query_handler(method_get, text_startswith='method_',state=FSMaddress.method)
 	dp.register_callback_query_handler(school_get, text_startswith='school_',state=FSMaddress.school)
 	dp.register_callback_query_handler(favorite_add_other, text='other_add')
 	dp.register_callback_query_handler(favorite_delete_other, text='other_delete')
 	dp.register_callback_query_handler(time_other, text_startswith='city_other_')
 	dp.register_callback_query_handler(month_time_other, text='other_month')
-	
+	dp.register_callback_query_handler(tomorrow_time_other, text='other_tomorrow')
+	dp.register_callback_query_handler(today_time_other, text='other_today')

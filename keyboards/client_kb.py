@@ -61,23 +61,6 @@ zikr_15 = InlineKeyboardButton('Аллаһумма а`инни `аля зикр�
 zikr_16 = InlineKeyboardButton('Таравих тасбих', callback_data='zikr_16')
 zikr_17 = InlineKeyboardButton('Без категории', callback_data='zikr_17')
 
-# calculate methods
-methods = ['method_1', 'method_2', 'method_3', 'method_4', 'method_5', 'method_6', 'method_7', 'method_8', 'method_9', 'method_9', 'method_10', 'method_11', 'method_12', 'method_13', 'method_14']
-method_1 = InlineKeyboardButton('MWL Всемирная лига мусульман', callback_data='method_1')
-method_2 = InlineKeyboardButton('Islamic Society of North America', callback_data='method_2')
-method_3 = InlineKeyboardButton('Egyptian General Authority of Survey', callback_data='method_3')
-method_4 = InlineKeyboardButton('Umm Al-Qura University, Makkah', callback_data='method_4')
-method_5 = InlineKeyboardButton('University of Islamic Sciences, Karachi', callback_data='method_5')
-method_6 = InlineKeyboardButton('University of Tehran', callback_data='method_6')
-method_7 = InlineKeyboardButton('Shia Ithna-Ashari', callback_data='method_7')
-method_8 = InlineKeyboardButton('Gulf Region', callback_data='method_8')
-method_9 = InlineKeyboardButton('Kuwait', callback_data='method_9')
-method_10 = InlineKeyboardButton('Qatar', callback_data='method_10')
-method_11 = InlineKeyboardButton('Majlis Ugama Islam Singapura, Singapore', callback_data='method_11')
-method_12 = InlineKeyboardButton('Union Organization islamic de France', callback_data='method_12')
-method_13 = InlineKeyboardButton('Diyanet, Turkey', callback_data='method_13')
-method_14 = InlineKeyboardButton('ДУМ России', callback_data='method_14')
-
 # calculate schools
 school_1 = InlineKeyboardButton('Ханафитский', callback_data='school_1')
 school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Ханбалитский и др.', callback_data='school_0')
@@ -110,10 +93,6 @@ markup_audio.add(
 inline_zikr_all = InlineKeyboardMarkup()
 inline_zikr_all.row_width = 2
 inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16, zikr_17)
-
-# methods for other region
-markup_method = InlineKeyboardMarkup()
-markup_method.add(method_1, method_2, method_3, method_4, method_5, method_6, method_7, method_8, method_9, method_9, method_10, method_11, method_12, method_13, method_14)
 
 # schools for other region
 markup_school = InlineKeyboardMarkup()
@@ -169,10 +148,13 @@ async def inline_month():
 	return markup
 
 # lower for other region cities
-async def other_inline(user_id, address):
+async def other_inline(user_id, address, time):
 	markup = InlineKeyboardMarkup()
 	zero_check = True
-	markup.insert(InlineKeyboardButton('На завтра', callback_data='other_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
+	if time == 'today':
+		markup.insert(InlineKeyboardButton('На завтра', callback_data='other_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
+	elif time == 'tomorrow':
+		markup.insert(InlineKeyboardButton('На сегодня', callback_data='other_today')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		if item[0].lower() == address.lower():
 			zero_check = False
@@ -181,6 +163,8 @@ async def other_inline(user_id, address):
 	if zero_check == True:
 			markup.add(InlineKeyboardButton('Добавить в избранное', callback_data='other_add'))
 	return markup
+
+	
 
 
 # favorite cities
