@@ -223,7 +223,7 @@ async def tomorrow_time_other(callback: types.CallbackQuery):
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
 		on_db = False
-	await callback.message.edit_text(await parcer_main.get_calendar_time(address, '32', school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
+	await callback.message.edit_text(await parcer_main.get_calendar_time(address, datetime.now().day + 1, school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
 	await callback.answer()
 
 async def today_time_other(callback: types.CallbackQuery):
@@ -232,7 +232,7 @@ async def today_time_other(callback: types.CallbackQuery):
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
 		on_db = False
-	await callback.message.edit_text(await parcer_main.get_calendar_time(address, '31', school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	await callback.message.edit_text(await parcer_main.get_calendar_time(address, datetime.now().day, school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
 	await callback.answer()
 
 # dispatcher
