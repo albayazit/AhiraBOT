@@ -45,6 +45,9 @@ next_tat = InlineKeyboardButton('Далее ⏩', callback_data='next_tat')
 back_kaz = InlineKeyboardButton('⏪ Назад', callback_data='back_kaz')
 next_kaz = InlineKeyboardButton('Далее ⏩', callback_data='next_kaz')
 
+back_dag = InlineKeyboardButton('⏪ Назад', callback_data='back_dag')
+next_dag = InlineKeyboardButton('Далее ⏩', callback_data='next_dag')
+
 # Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
 zikr_2 = InlineKeyboardButton('Дуа за родителей', callback_data= 'zikr_2')
@@ -186,6 +189,8 @@ async def favorite_cities(user_id):
 	markup = InlineKeyboardMarkup(row_width=1)
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_tatarstan WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data=item[0]))
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_dagestan WHERE user_id == {user_id}').fetchall():
+		markup.insert(InlineKeyboardButton(item[0], callback_data='dag_city_'+item[0]))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_kazakhstan WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data='kaz_city_'+item[0]))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
@@ -264,5 +269,59 @@ async def kazakhstan_month():
 			markup.insert(InlineKeyboardButton(day[9:], callback_data='kaz_days_'+day[9:]))
 		else:
 			markup.insert(InlineKeyboardButton(day[8:], callback_data='kaz_days_'+day[8:]))
+		count += 1
+	return markup
+
+async def dagestan_markup(page):
+	last_page = False
+	markup = InlineKeyboardMarkup(row_width=2)
+	keys = page*10
+	for i in range(keys-10, keys):
+		try:
+			markup.insert(InlineKeyboardButton(parcer_dagestan.cities[i], callback_data='dag_city_'+parcer_dagestan.cities[i]))
+		except:
+			if page != 1:
+				last_page = True
+				markup.add(back_dag)
+				break
+	if page == 1 and last_page == False:
+		markup.add(next_dag)
+	elif last_page == False:
+		markup.insert(back_dag)
+		markup.insert(next_dag)
+	return markup
+
+async def dag_city(address, period, user_id):
+	markup = InlineKeyboardMarkup()
+	zero_check = True
+	if period == 'today':
+		markup.insert(InlineKeyboardButton('На завтра', callback_data='dag_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='dag_month'))
+	else:
+		markup.insert(InlineKeyboardButton('На сегодня', callback_data='dag_city_'+address)).insert(InlineKeyboardButton('На месяц', callback_data='dag_month'))
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_dagestan WHERE user_id == {user_id}').fetchall():
+		if item[0] == address:
+			zero_check = False
+			markup.add(InlineKeyboardButton('Удалить из избранных', callback_data='dag_delete'))
+			break
+	if zero_check == True:
+			markup.add(InlineKeyboardButton('Добавить в избранное', callback_data='dag_add'))
+	return markup
+
+async def dagestan_month():
+	m = datetime.now().month
+	y = datetime.now().year
+	days = (date(y, m+1, 1) - date(y, m, 1)).days
+	d1 = date(y, m, 1)
+	d2 = date(y, m, days)
+	d3 = d2 - d1
+	days = [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
+
+	count = 0
+	markup = InlineKeyboardMarkup(row_width=5)
+	for day in days:
+		if count < 9:
+			markup.insert(InlineKeyboardButton(day[9:], callback_data='dag_days_'+day[9:]))
+		else:
+			markup.insert(InlineKeyboardButton(day[8:], callback_data='dag_days_'+day[8:]))
 		count += 1
 	return markup

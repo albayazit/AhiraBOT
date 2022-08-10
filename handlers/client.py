@@ -2,7 +2,7 @@ from http import client
 from aiogram import Dispatcher, types, Bot
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_kazakhstan, parcer_other, parcer_tatarstan
+from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -49,7 +49,7 @@ async def favorite_command(message: types.Message):
 
 # Add new city | 'Добавить город' (inline)
 async def time_command(callback : types.CallbackQuery):
-    await callback.message.edit_text('Время намаза для других регионов сделана на основе расчетов Всемирной Исламской лиги, при наличии, ориентируйтесь на расчеты ДУМ Вашего региона.\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
+	await callback.message.answer('Время намаза для других регионов сделана на основе расчетов Всемирной Исламской лиги, при наличии, ориентируйтесь на расчеты ДУМ Вашего региона.\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
 
 # Tatarstan cities | 'Татарстан' (inline)
 async def tatarstan_command(callback : types.CallbackQuery):
@@ -268,7 +268,59 @@ async def tatarstan_favorite_delete(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def dagestan_menu(callback: types.CallbackQuery):
-	await callback.message.answer('Даг')
+	global dag_page
+	dag_page = 1
+	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.dagestan_markup(dag_page))
+	await callback.answer()
+async def dagestan_menu_next(callback: types.CallbackQuery):
+	global dag_page
+	dag_page += 1
+	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.dagestan_markup(dag_page))
+	await callback.answer()
+async def dagestan_menu_back(callback: types.CallbackQuery):
+	global dag_page
+	dag_page -= 1
+	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.dagestan_markup(dag_page))
+	await callback.answer()
+
+async def dagestan_today_time(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global dag_city
+	dag_city = callback.data[9:]
+	await callback.message.edit_text(await parcer_dagestan.get_day_time(dag_city), reply_markup= await client_kb.dag_city(dag_city, 'today',user_id))
+	await callback.answer()
+
+async def dagestan_tomorrow_time(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global dag_city
+	await callback.message.edit_text(await parcer_dagestan.get_tomorrow_time(dag_city), reply_markup= await client_kb.dag_city(dag_city, 'tomorrow',user_id))
+	await callback.answer()
+
+async def dagestan_month(callback: types.CallbackQuery):
+	global dag_city
+	await callback.message.edit_text(f'Город: <b>{dag_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.dagestan_month())
+	await callback.answer()
+
+async def dagestan_month_time(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global dag_city
+	await callback.message.edit_text(await parcer_dagestan.get_month_time(dag_city, callback.data[9:]), reply_markup= await client_kb.dag_city(dag_city, 'month', user_id))
+	await callback.answer()
+
+async def dagestan_favorite_add(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global daz_city
+	sqlite_bd.cur.execute(f'INSERT INTO favorite_dagestan VALUES (?, ?)', (user_id, dag_city))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.answer()
+
+async def dagestan_favorite_delete(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global dag_city
+	sqlite_bd.cur.execute('DELETE FROM favorite_dagestan WHERE user_id == ? AND address == ?', (user_id, dag_city))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Удалено из избранных ✅')
 	await callback.answer()
 
 async def kazakhstan_menu(callback: types.CallbackQuery):
@@ -326,6 +378,7 @@ async def kazakhstan_favorite_delete(callback: types.CallbackQuery):
 	sqlite_bd.base.commit()
 	await callback.message.edit_text('Удалено из избранных ✅')
 	await callback.answer()
+	
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
@@ -378,3 +431,11 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(kazakhstan_month_time, text_startswith = 'kaz_days_')
 	dp.register_callback_query_handler(kazakhstan_favorite_add, text='kaz_add')
 	dp.register_callback_query_handler(kazakhstan_favorite_delete, text='kaz_delete')
+	dp.register_callback_query_handler(dagestan_menu_next, text = 'next_dag')
+	dp.register_callback_query_handler(dagestan_menu_back, text = 'back_dag')
+	dp.register_callback_query_handler(dagestan_today_time, text_startswith = 'dag_city_')
+	dp.register_callback_query_handler(dagestan_tomorrow_time, text = 'dag_tomorrow')
+	dp.register_callback_query_handler(dagestan_month, text = 'dag_month')
+	dp.register_callback_query_handler(dagestan_month_time, text_startswith='dag_days_')
+	dp.register_callback_query_handler(dagestan_favorite_add, text = 'dag_add')
+	dp.register_callback_query_handler(dagestan_favorite_delete, text = 'dag_delete')
