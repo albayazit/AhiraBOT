@@ -1,2 +1,2 @@
-from parcer import parcer_exel
-from parcer import parcer_main
+from parcer import parcer_tatarstan
+from parcer import parcer_other
