@@ -1,7 +1,8 @@
+from http import client
 from aiogram import Dispatcher, types, Bot
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_other, parcer_tatarstan
+from parcer import parcer_kazakhstan, parcer_other, parcer_tatarstan
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -15,8 +16,6 @@ class FSMaddress(StatesGroup):
 
 # max message length
 MESS_MAX_LENGTH = 4096
-# page in tatarstal cities
-tat_page = 1
 # по умолчанию
 current_city = 'Казань'
 # months
@@ -55,6 +54,7 @@ async def time_command(callback : types.CallbackQuery):
 # Tatarstan cities | 'Татарстан' (inline)
 async def tatarstan_command(callback : types.CallbackQuery):
 	global tat_page
+	tat_page = 1
 	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=await client_kb.inline_namaz_time_tat(tat_page))
 	await callback.answer()
 
@@ -251,18 +251,81 @@ async def tatarstan_month(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city,callback.data[15:]), reply_markup=await client_kb.inline_city('tomorrow', current_city, user_id))
 	await callback.answer()
+	await callback.answer()
 
 async def tatarstan_favorite_add(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute(f'INSERT INTO favorite_tatarstan VALUES (?, ?)', (user_id, current_city))
 	sqlite_bd.base.commit()
 	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.answer()
 
 async def tatarstan_favorite_delete(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('DELETE FROM favorite_tatarstan WHERE user_id == ? AND address == ?', (user_id, current_city))
 	sqlite_bd.base.commit()
 	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.answer()
+
+async def dagestan_menu(callback: types.CallbackQuery):
+	await callback.message.answer('Даг')
+	await callback.answer()
+
+async def kazakhstan_menu(callback: types.CallbackQuery):
+	global kaz_page
+	kaz_page = 1
+	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.kazakhstan_markup(kaz_page))
+	await callback.answer()
+async def kazakhstan_menu_next(callback: types.CallbackQuery):
+	global kaz_page
+	kaz_page += 1
+	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.kazakhstan_markup(kaz_page))
+	await callback.answer()
+async def kazakhstan_menu_back(callback: types.CallbackQuery):
+	global kaz_page
+	kaz_page -= 1
+	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.kazakhstan_markup(kaz_page))
+	await callback.answer()
+
+async def kazakhstan_today_time(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global kaz_city
+	kaz_city = callback.data[9:]
+	await callback.message.edit_text(await parcer_kazakhstan.get_day_time(kaz_city), reply_markup=await client_kb.kaz_city(kaz_city, 'today', user_id))
+	await callback.answer()
+
+async def kazakhstan_tomorrow_time(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global kaz_city
+	await callback.message.edit_text(await parcer_kazakhstan.get_tomorrow_time(kaz_city), reply_markup=await client_kb.kaz_city(kaz_city, 'tomorrow', user_id))
+	await callback.answer()
+
+async def kazakhstan_month(callback: types.CallbackQuery):
+	global kaz_city
+	await callback.message.edit_text(f'Город: <b>{kaz_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.kazakhstan_month())
+	await callback.answer()
+
+async def kazakhstan_month_time(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global kaz_city
+	await callback.message.edit_text(await parcer_kazakhstan.get_month_time(kaz_city, callback.data[9:]), reply_markup= await client_kb.kaz_city(kaz_city, 'month', user_id))
+	await callback.answer()
+
+async def kazakhstan_favorite_add(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	global kaz_city
+	sqlite_bd.cur.execute(f'INSERT INTO favorite_kazakhstan VALUES (?, ?)', (user_id, kaz_city))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.answer()
+
+async def kazakhstan_favorite_delete(callback: types.CallbackQuery):
+	global kaz_city
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute('DELETE FROM favorite_kazakhstan WHERE user_id == ? AND address == ?', (user_id, kaz_city))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.answer()
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
@@ -303,5 +366,15 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(today_time_other, text='other_today')
 	dp.register_callback_query_handler(month_time_other, text_startswith='other_days_')
 	dp.register_callback_query_handler(tatarstan_month, text_startswith='tatarstan_days_')
-	dp.register_callback_query_handler(tatarstan_favorite_add, text_startswith='tatarstan_favorite_add')
-	dp.register_callback_query_handler(tatarstan_favorite_delete, text_startswith='tatarstan_favorite_delete')
+	dp.register_callback_query_handler(tatarstan_favorite_add, text='tatarstan_favorite_add')
+	dp.register_callback_query_handler(tatarstan_favorite_delete, text='tatarstan_favorite_delete')
+	dp.register_callback_query_handler(dagestan_menu, text = 'dagestan')
+	dp.register_callback_query_handler(kazakhstan_menu, text = 'kazakhstan')
+	dp.register_callback_query_handler(kazakhstan_menu_next, text = 'next_kaz')
+	dp.register_callback_query_handler(kazakhstan_menu_back, text = 'back_kaz')
+	dp.register_callback_query_handler(kazakhstan_today_time, text_startswith = 'kaz_city_')
+	dp.register_callback_query_handler(kazakhstan_tomorrow_time, text = 'kaz_tomorrow')
+	dp.register_callback_query_handler(kazakhstan_month, text = 'kaz_month')
+	dp.register_callback_query_handler(kazakhstan_month_time, text_startswith = 'kaz_days_')
+	dp.register_callback_query_handler(kazakhstan_favorite_add, text='kaz_add')
+	dp.register_callback_query_handler(kazakhstan_favorite_delete, text='kaz_delete')

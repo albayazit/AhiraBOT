@@ -1,5 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from parcer import parcer_tatarstan
+from parcer import parcer_tatarstan, parcer_dagestan, parcer_kazakhstan
 from datetime import date, timedelta, datetime
 from database import sqlite_bd
 
@@ -42,6 +42,9 @@ button_back = KeyboardButton('⏪ Назад')
 back_tat = InlineKeyboardButton('⏪ Назад', callback_data='back_tat')
 next_tat = InlineKeyboardButton('Далее ⏩', callback_data='next_tat')
 
+back_kaz = InlineKeyboardButton('⏪ Назад', callback_data='back_kaz')
+next_kaz = InlineKeyboardButton('Далее ⏩', callback_data='next_kaz')
+
 # Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
 zikr_2 = InlineKeyboardButton('Дуа за родителей', callback_data= 'zikr_2')
@@ -75,7 +78,7 @@ markup_main.add(button_time).add(
 
 # city_add
 inline_namaz_time = InlineKeyboardMarkup()
-inline_namaz_time.add(InlineKeyboardButton('Татарстан', callback_data='tatarstan')).add(InlineKeyboardButton('Другой регион', callback_data='other_region'))
+inline_namaz_time.add(InlineKeyboardButton('Татарстан', callback_data='tatarstan')).add(InlineKeyboardButton('Дагестан', callback_data='dagestan')).add(InlineKeyboardButton('Казахстан', callback_data='kazakhstan')).add(InlineKeyboardButton('Другой регион', callback_data='other_region'))
 
 # learn
 markup_namaz_tutor = ReplyKeyboardMarkup()
@@ -183,6 +186,8 @@ async def favorite_cities(user_id):
 	markup = InlineKeyboardMarkup(row_width=1)
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_tatarstan WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data=item[0]))
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_kazakhstan WHERE user_id == {user_id}').fetchall():
+		markup.insert(InlineKeyboardButton(item[0], callback_data='kaz_city_'+item[0]))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data='city_other_'+item[0]))
 	markup.add(InlineKeyboardButton('Добавить город', callback_data='add_city'))
@@ -205,5 +210,59 @@ async def inline_month_other():
 			markup.insert(InlineKeyboardButton(day[9:], callback_data='other_days_'+day[9:]))
 		else:
 			markup.insert(InlineKeyboardButton(day[8:], callback_data='other_days_'+day[8:]))
+		count += 1
+	return markup
+
+async def kazakhstan_markup(page):
+	last_page = False
+	markup = InlineKeyboardMarkup(row_width=2)
+	keys = page*10
+	for i in range(keys-10, keys):
+		try:
+			markup.insert(InlineKeyboardButton(parcer_kazakhstan.cities[i], callback_data='kaz_city_'+parcer_kazakhstan.cities[i]))
+		except:
+			if page != 1:
+				last_page = True
+				markup.add(back_kaz)
+				break
+	if page == 1 and last_page == False:
+		markup.add(next_kaz)
+	elif last_page == False:
+		markup.insert(back_kaz)
+		markup.insert(next_kaz)
+	return markup
+
+async def kaz_city(address, period, user_id):
+	markup = InlineKeyboardMarkup()
+	zero_check = True
+	if period == 'today':
+		markup.insert(InlineKeyboardButton('На завтра', callback_data='kaz_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='kaz_month'))
+	else:
+		markup.insert(InlineKeyboardButton('На сегодня', callback_data='kaz_city_'+address)).insert(InlineKeyboardButton('На месяц', callback_data='kaz_month'))
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_kazakhstan WHERE user_id == {user_id}').fetchall():
+		if item[0] == address:
+			zero_check = False
+			markup.add(InlineKeyboardButton('Удалить из избранных', callback_data='kaz_delete'))
+			break
+	if zero_check == True:
+			markup.add(InlineKeyboardButton('Добавить в избранное', callback_data='kaz_add'))
+	return markup
+
+async def kazakhstan_month():
+	m = datetime.now().month
+	y = datetime.now().year
+	days = (date(y, m+1, 1) - date(y, m, 1)).days
+	d1 = date(y, m, 1)
+	d2 = date(y, m, days)
+	d3 = d2 - d1
+	days = [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
+
+	count = 0
+	markup = InlineKeyboardMarkup(row_width=5)
+	for day in days:
+		if count < 9:
+			markup.insert(InlineKeyboardButton(day[9:], callback_data='kaz_days_'+day[9:]))
+		else:
+			markup.insert(InlineKeyboardButton(day[8:], callback_data='kaz_days_'+day[8:]))
 		count += 1
 	return markup
