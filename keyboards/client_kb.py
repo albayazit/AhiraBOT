@@ -155,6 +155,8 @@ async def other_inline(user_id, address, time):
 		markup.insert(InlineKeyboardButton('На завтра', callback_data='other_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
 	elif time == 'tomorrow':
 		markup.insert(InlineKeyboardButton('На сегодня', callback_data='other_today')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
+	elif time == 'month':
+		markup.insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		if item[0].lower() == address.lower():
 			zero_check = False
@@ -189,8 +191,8 @@ async def inline_month_other():
 	markup = InlineKeyboardMarkup(row_width=3)
 	for day in days:
 		if count < 9:
-			markup.insert(InlineKeyboardButton(day[9:], callback_data='other_'+day))
+			markup.insert(InlineKeyboardButton(day[9:], callback_data='other_days_'+day[9:]))
 		else:
-			markup.insert(InlineKeyboardButton(day[8:], callback_data='other_'+day))
+			markup.insert(InlineKeyboardButton(day[8:], callback_data='other_days_'+day[8:]))
 		count += 1
 	return markup

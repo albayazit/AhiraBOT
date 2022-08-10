@@ -213,7 +213,7 @@ async def favorite_delete_other(callback: types.CallbackQuery):
 	await callback.message.edit_text('Удалено из избранных ✅')
 	await callback.answer()
 
-async def month_time_other(callback: types.CallbackQuery):
+async def month_days_other(callback: types.CallbackQuery):
 	await callback.message.edit_text(f'Город: <b>{address}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>',reply_markup=await client_kb.inline_month_other())
 	await callback.answer()
 
@@ -233,6 +233,16 @@ async def today_time_other(callback: types.CallbackQuery):
 	except:
 		on_db = False
 	await callback.message.edit_text(await parcer_main.get_calendar_time(address, datetime.now().day, school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	await callback.answer()
+
+async def month_time_other(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	try:
+		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
+	except:
+		on_db = False
+	day = callback.data[11:]
+	await callback.message.edit_text(await parcer_main.get_calendar_time(address, day, school), reply_markup=await client_kb.other_inline(user_id, address, 'month'))
 	await callback.answer()
 
 # dispatcher
@@ -269,6 +279,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(favorite_add_other, text='other_add')
 	dp.register_callback_query_handler(favorite_delete_other, text='other_delete')
 	dp.register_callback_query_handler(time_other, text_startswith='city_other_')
-	dp.register_callback_query_handler(month_time_other, text='other_month')
+	dp.register_callback_query_handler(month_days_other, text='other_month')
 	dp.register_callback_query_handler(tomorrow_time_other, text='other_tomorrow')
 	dp.register_callback_query_handler(today_time_other, text='other_today')
+	dp.register_callback_query_handler(month_time_other, text_startswith='other_days_')
