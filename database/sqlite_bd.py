@@ -12,3 +12,5 @@ def sql_start():
 	base.commit()
 	base.execute('CREATE TABLE IF NOT EXISTS favorite_kazakhstan(user_id TEXT, address TEXT)')
 	base.commit()
+	base.execute('CREATE TABLE IF NOT EXISTS favorite_dagestan(user_id TEXT, address TEXT)')
+	base.commit()
