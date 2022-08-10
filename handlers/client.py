@@ -1,7 +1,7 @@
 from aiogram import Dispatcher, types, Bot
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_exel, parcer_main
+from parcer import parcer_other, parcer_tatarstan
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -46,7 +46,7 @@ async def start_command(message: types.Message):
 async def favorite_command(message: types.Message):
 	global user_id
 	user_id = message.from_user.id
-	await message.answer('<b>Избранные города:</b>', reply_markup=await client_kb.favorite_cities(user_id))
+	await message.answer('<b>Избранные города:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.favorite_cities(user_id))
 
 # Add new city | 'Добавить город' (inline)
 async def time_command(callback : types.CallbackQuery):
@@ -137,22 +137,24 @@ async def back_command(message: types.Message):
 
 # today time for tatarstan
 async def namaz_day_command(callback : types.CallbackQuery):
+	user_id = callback.from_user.id
 	global current_city
 	current_city = callback.data
-	await callback.message.edit_text(await parcer_exel.get_time(current_city, 'today'), reply_markup = await client_kb.inline_city('today', current_city))
+	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city, 'today'), reply_markup = await client_kb.inline_city('today', current_city, user_id))
 	await callback.answer()
 
 
 # tomorrow time for tatarstan
 async def next_day_time_command(callback : types.CallbackQuery):
+	user_id = callback.from_user.id
 	global current_city
-	await callback.message.edit_text(await parcer_exel.get_time(current_city, 'tomorrow'), reply_markup = await client_kb.inline_city('tomorrow', current_city))
+	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city, 'tomorrow'), reply_markup = await client_kb.inline_city('tomorrow', current_city, user_id))
 	await callback.answer()
 
 # all days in month for tatarstan
 async def month_time_command(callback : types.CallbackQuery):
-	await callback.message.edit_text('<b>Выберите число:</b>', reply_markup=client_kb.inline_month())
-
+	await callback.message.edit_text(f'Город: <b>{current_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.inline_month())
+	await callback.answer()
 #--------------------Get new other city--------------------#
 # first message
 async def address_add(callback: types.CallbackQuery):
@@ -164,7 +166,7 @@ async def address_add(callback: types.CallbackQuery):
 # check address
 async def address_get(message: types.message, state=FSMContext):
 	try:
-		await parcer_main.city_check(message.text)
+		await parcer_other.city_check(message.text)
 	except:
 		await state.finish()
 		return await message.answer('Такого города не нашлось, проверьте название!', reply_markup = client_kb.markup_main)
@@ -185,7 +187,7 @@ async def school_get(callback: types.CallbackQuery, state=FSMContext):
 		address = data['address']
 		school = data['school']
 	await callback.answer()
-	await callback.message.edit_text(await parcer_main.get_day_time(state), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	await callback.message.edit_text(await parcer_other.get_day_time(state), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
 	await state.finish()
 # time from menu for other regions
 
@@ -194,7 +196,7 @@ async def time_other(callback: types.CallbackQuery):
 	global address
 	address = str(callback.data[11:])
 	try:
-		await callback.message.edit_text(await parcer_main.get_day_time_from_menu(user_id, str(callback.data[11:])),reply_markup=await client_kb.other_inline(user_id, str(callback.data[11:]), 'today'))
+		await callback.message.edit_text(await parcer_other.get_day_time_from_menu(user_id, str(callback.data[11:])),reply_markup=await client_kb.other_inline(user_id, str(callback.data[11:]), 'today'))
 	except:
 		await callback.message.edit_text('Что-то пошло не так, повторите попытку!')
 	await callback.answer()
@@ -214,7 +216,7 @@ async def favorite_delete_other(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def month_days_other(callback: types.CallbackQuery):
-	await callback.message.edit_text(f'Город: <b>{address}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>',reply_markup=await client_kb.inline_month_other())
+	await callback.message.edit_text(f'Город: <b>{address}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b> ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.inline_month_other())
 	await callback.answer()
 
 async def tomorrow_time_other(callback: types.CallbackQuery):
@@ -223,7 +225,7 @@ async def tomorrow_time_other(callback: types.CallbackQuery):
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
 		on_db = False
-	await callback.message.edit_text(await parcer_main.get_calendar_time(address, datetime.now().day + 1, school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
+	await callback.message.edit_text(await parcer_other.get_calendar_time(address, datetime.now().day + 1, school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
 	await callback.answer()
 
 async def today_time_other(callback: types.CallbackQuery):
@@ -232,7 +234,7 @@ async def today_time_other(callback: types.CallbackQuery):
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
 		on_db = False
-	await callback.message.edit_text(await parcer_main.get_calendar_time(address, datetime.now().day, school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	await callback.message.edit_text(await parcer_other.get_calendar_time(address, datetime.now().day, school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
 	await callback.answer()
 
 async def month_time_other(callback: types.CallbackQuery):
@@ -242,8 +244,25 @@ async def month_time_other(callback: types.CallbackQuery):
 	except:
 		on_db = False
 	day = callback.data[11:]
-	await callback.message.edit_text(await parcer_main.get_calendar_time(address, day, school), reply_markup=await client_kb.other_inline(user_id, address, 'month'))
+	await callback.message.edit_text(await parcer_other.get_calendar_time(address, day, school), reply_markup=await client_kb.other_inline(user_id, address, 'month'))
 	await callback.answer()
+
+async def tatarstan_month(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city,callback.data[15:]), reply_markup=await client_kb.inline_city('tomorrow', current_city, user_id))
+	await callback.answer()
+
+async def tatarstan_favorite_add(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute(f'INSERT INTO favorite_tatarstan VALUES (?, ?)', (user_id, current_city))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Добавлено в избранные ✅')
+
+async def tatarstan_favorite_delete(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute('DELETE FROM favorite_tatarstan WHERE user_id == ? AND address == ?', (user_id, current_city))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Удалено из избранных ✅')
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
@@ -267,7 +286,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(help_command, commands=['help'])
 	dp.register_message_handler(back_command, lambda message: message.text == "⏪ Назад")
 	dp.register_callback_query_handler(time_command, text = 'add_city')
-	dp.register_callback_query_handler(namaz_day_command, text = parcer_exel.all_cities)
+	dp.register_callback_query_handler(namaz_day_command, text = parcer_tatarstan.all_cities)
 	dp.register_callback_query_handler(next_day_time_command, text = 'tomorrow_time')
 	dp.register_callback_query_handler(tatarstan_command, text = 'tatarstan')
 	dp.register_callback_query_handler(tatarstan_next, text = 'next_tat')
@@ -283,3 +302,6 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tomorrow_time_other, text='other_tomorrow')
 	dp.register_callback_query_handler(today_time_other, text='other_today')
 	dp.register_callback_query_handler(month_time_other, text_startswith='other_days_')
+	dp.register_callback_query_handler(tatarstan_month, text_startswith='tatarstan_days_')
+	dp.register_callback_query_handler(tatarstan_favorite_add, text_startswith='tatarstan_favorite_add')
+	dp.register_callback_query_handler(tatarstan_favorite_delete, text_startswith='tatarstan_favorite_delete')

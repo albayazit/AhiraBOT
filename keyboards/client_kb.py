@@ -1,5 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from parcer import parcer_exel
+from parcer import parcer_tatarstan
 from datetime import date, timedelta, datetime
 from database import sqlite_bd
 
@@ -105,7 +105,7 @@ async def inline_namaz_time_tat(page):
 	keys = page*10
 	for i in range(keys-10, keys):
 		try:
-			markup.insert(InlineKeyboardButton(parcer_exel.all_cities[i], callback_data=parcer_exel.all_cities[i]))
+			markup.insert(InlineKeyboardButton(parcer_tatarstan.all_cities[i], callback_data=parcer_tatarstan.all_cities[i]))
 		except:
 			if page != 1:
 				last_page = True
@@ -118,15 +118,24 @@ async def inline_namaz_time_tat(page):
 		markup.insert(next_tat)
 	return markup
 
-# lower in current city
-async def inline_city(period, current_city):
-    inline_city = InlineKeyboardMarkup(row_width=3)
-    if period == 'today':
-        inline_city.insert(InlineKeyboardButton('На завтра', callback_data = 'tomorrow_time')).insert(InlineKeyboardButton('На месяц', callback_data='month_time'))
-    elif period == 'tomorrow':
-        inline_city.insert(InlineKeyboardButton('На сегодня', callback_data=current_city)).insert(InlineKeyboardButton('На месяц', callback_data='month_time'))
-    return inline_city
+# lower in current city tatarstan
+async def inline_city(period, current_city, user_id):
+	inline_city = InlineKeyboardMarkup(row_width=3)
+	zero_check = True
+	if period == 'today':
+		inline_city.insert(InlineKeyboardButton('На завтра', callback_data = 'tomorrow_time')).insert(InlineKeyboardButton('На месяц', callback_data='month_time'))
+	elif period == 'tomorrow':
+		inline_city.insert(InlineKeyboardButton('На сегодня', callback_data=current_city)).insert(InlineKeyboardButton('На месяц', callback_data='month_time'))
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_tatarstan WHERE user_id == {user_id}').fetchall():
+		if item[0] == current_city:
+			zero_check = False
+			inline_city.add(InlineKeyboardButton('Удалить из избранных', callback_data='tatarstan_favorite_delete'))
+			break
+	if zero_check == True:
+		inline_city.add(InlineKeyboardButton('Добавить в избранные', callback_data='tatarstan_favorite_add'))
+	return inline_city
 
+	
 # all days in month
 async def inline_month():
 	m = datetime.now().month
@@ -138,12 +147,12 @@ async def inline_month():
 	days = [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
 
 	count = 0
-	markup = InlineKeyboardMarkup(row_width=3)
+	markup = InlineKeyboardMarkup(row_width=5)
 	for day in days:
 		if count < 9:
-			markup.insert(InlineKeyboardButton(day[9:], callback_data='tatarstan'+day))
+			markup.insert(InlineKeyboardButton(day[9:], callback_data='tatarstan_days_'+day))
 		else:
-			markup.insert(InlineKeyboardButton(day[8:], callback_data='tatarstan'+day))
+			markup.insert(InlineKeyboardButton(day[8:], callback_data='tatarstan_days_'+day))
 		count += 1
 	return markup
 
@@ -171,7 +180,9 @@ async def other_inline(user_id, address, time):
 
 # favorite cities
 async def favorite_cities(user_id):
-	markup = InlineKeyboardMarkup(row_width=2)
+	markup = InlineKeyboardMarkup(row_width=1)
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_tatarstan WHERE user_id == {user_id}').fetchall():
+		markup.insert(InlineKeyboardButton(item[0], callback_data=item[0]))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		markup.insert(InlineKeyboardButton(item[0], callback_data='city_other_'+item[0]))
 	markup.add(InlineKeyboardButton('Добавить город', callback_data='add_city'))
@@ -188,7 +199,7 @@ async def inline_month_other():
 	days = [(d1 + timedelta(days=i)).strftime('%Y.%m.%d') for i in range(d3.days + 1)]
 
 	count = 0
-	markup = InlineKeyboardMarkup(row_width=3)
+	markup = InlineKeyboardMarkup(row_width=5)
 	for day in days:
 		if count < 9:
 			markup.insert(InlineKeyboardButton(day[9:], callback_data='other_days_'+day[9:]))
