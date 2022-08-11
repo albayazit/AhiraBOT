@@ -58,7 +58,7 @@ async def get_day_time(state):
 		daytime_message = (
 					f'🌍 Город: <b>{result[0]}</b>\n\n'
 					f'📅 Дата: <b>{date["gregorian"]["date"].replace("-", ".")} | {date["hijri"]["date"].replace("-", ".")}</b>\n\n'
-					f'🔭 Метод расчета: <b> {methods[str(meta)]}| {schools[result[1]]}</b>\n\n'
+					f'🔭 Метод расчета: <b> {methods[str(meta)]} | {schools[result[1]]}</b>\n\n'
 
 					f'<b>Фаджр - {times["Fajr"]}</b>\n'
 					f'<b>Зухр - {times["Dhuhr"]}</b>\n'
