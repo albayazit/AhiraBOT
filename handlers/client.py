@@ -1,5 +1,5 @@
-from http import client
-from aiogram import Dispatcher, types, Bot
+from ast import Delete
+from aiogram import Dispatcher, types, bot
 from create_bot import dp
 from keyboards import client_kb
 from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan
@@ -7,7 +7,8 @@ from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from database import sqlite_bd
-from datetime import datetime, timedelta
+from datetime import datetime
+import asyncio
 
 # FSM
 class FSMaddress(StatesGroup):
@@ -162,7 +163,8 @@ async def address_add(callback: types.CallbackQuery):
 	global user_id
 	user_id = callback.from_user.id
 	await FSMaddress.address.set()
-	await callback.message.edit_text('Напишите название города')
+	await callback.message.delete()
+	await callback.message.answer('Напишите название города', reply_markup=types.ReplyKeyboardRemove())
 	await callback.answer()
 
 async def cancel_handler(message: types.Message, state: FSMContext):
@@ -170,12 +172,13 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 	if current_state is None:
 		return
 	await state.finish()
-	await message.answer('Действие отменено ❌')
+	await message.answer('Действие отменено ❌', reply_markup=client_kb.markup_main())
 
 # check address
 async def address_get(message: types.message, state=FSMContext):
 	try:
 		await parcer_other.city_check(message.text)
+		await message.answer('Город найден! ✅', reply_markup=client_kb.markup_main)
 	except:
 		await state.finish()
 		return await message.answer('Такого города не нашлось, проверьте название!', reply_markup = client_kb.markup_main)
@@ -195,8 +198,11 @@ async def school_get(callback: types.CallbackQuery, state=FSMContext):
 		data['school'] = callback.data[7]
 		address = data['address']
 		school = data['school']
+	time = await parcer_other.get_day_time(state)
 	await callback.answer()
-	await callback.message.edit_text(await parcer_other.get_day_time(state), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	msg = await callback.message.edit_text('Секундочку...')
+	await asyncio.sleep(1)
+	await msg.edit_text(time, reply_markup=await client_kb.other_inline(user_id, address, 'today'))
 	await state.finish()
 # time from menu for other regions
 
