@@ -176,16 +176,16 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 
 # check address
 async def address_get(message: types.message, state=FSMContext):
+	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
+		if item[0].lower() == message.text.lower():
+			await state.finish()
+			return await message.answer('Город с таким названием уже есть в избранных!', reply_markup = client_kb.markup_main)
 	try:
 		await parcer_other.city_check(message.text)
 		await message.answer('Город найден! ✅', reply_markup=client_kb.markup_main)
 	except:
 		await state.finish()
 		return await message.answer('Такого города не нашлось, проверьте название!', reply_markup = client_kb.markup_main)
-	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
-		if item[0].lower() == message.text.lower():
-			await state.finish()
-			return await message.answer('Город с таким названием уже есть в избранных!', reply_markup = client_kb.markup_main)
 	async with state.proxy() as data:
 		data['address'] = message.text
 	await FSMaddress.school.set()
@@ -220,14 +220,14 @@ async def favorite_add_other(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('INSERT INTO favorite_other VALUES (?, ?, ?)', (user_id, address, school))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.message.edit_text('Добавлено в избранные ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def favorite_delete_other(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('DELETE FROM favorite_other WHERE user_id == ? AND address == ?', (user_id, address))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.message.edit_text('Удалено из избранных ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def month_days_other(callback: types.CallbackQuery):
@@ -272,14 +272,14 @@ async def tatarstan_favorite_add(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute(f'INSERT INTO favorite_tatarstan VALUES (?, ?)', (user_id, current_city))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.message.edit_text('Добавлено в избранные ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def tatarstan_favorite_delete(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('DELETE FROM favorite_tatarstan WHERE user_id == ? AND address == ?', (user_id, current_city))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.message.edit_text('Удалено из избранных ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def dagestan_menu(callback: types.CallbackQuery):
@@ -327,7 +327,7 @@ async def dagestan_favorite_add(callback: types.CallbackQuery):
 	global daz_city
 	sqlite_bd.cur.execute(f'INSERT INTO favorite_dagestan VALUES (?, ?)', (user_id, dag_city))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.message.edit_text('Добавлено в избранные ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def dagestan_favorite_delete(callback: types.CallbackQuery):
@@ -335,7 +335,7 @@ async def dagestan_favorite_delete(callback: types.CallbackQuery):
 	global dag_city
 	sqlite_bd.cur.execute('DELETE FROM favorite_dagestan WHERE user_id == ? AND address == ?', (user_id, dag_city))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.message.edit_text('Удалено из избранных ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def kazakhstan_menu(callback: types.CallbackQuery):
@@ -383,7 +383,7 @@ async def kazakhstan_favorite_add(callback: types.CallbackQuery):
 	global kaz_city
 	sqlite_bd.cur.execute(f'INSERT INTO favorite_kazakhstan VALUES (?, ?)', (user_id, kaz_city))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Добавлено в избранные ✅')
+	await callback.message.edit_text('Добавлено в избранные ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 
 async def kazakhstan_favorite_delete(callback: types.CallbackQuery):
@@ -391,9 +391,13 @@ async def kazakhstan_favorite_delete(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('DELETE FROM favorite_kazakhstan WHERE user_id == ? AND address == ?', (user_id, kaz_city))
 	sqlite_bd.base.commit()
-	await callback.message.edit_text('Удалено из избранных ✅')
+	await callback.message.edit_text('Удалено из избранных ✅', reply_markup = client_kb.markup_favorite)
 	await callback.answer()
 	
+async def favorite_cities(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	await callback.message.edit_text('<b>Избранные города:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.favorite_cities(user_id))
+	await callback.answer()
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
@@ -455,3 +459,4 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(dagestan_month_time, text_startswith='dag_days_')
 	dp.register_callback_query_handler(dagestan_favorite_add, text = 'dag_add')
 	dp.register_callback_query_handler(dagestan_favorite_delete, text = 'dag_delete')
+	dp.register_callback_query_handler(favorite_cities, text = 'favorite_cities')

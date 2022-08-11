@@ -104,6 +104,9 @@ inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr
 markup_school = InlineKeyboardMarkup()
 markup_school.add(school_1).add(school_2)
 
+markup_favorite = InlineKeyboardMarkup()
+markup_favorite.add(InlineKeyboardButton('Избранные города', callback_data='favorite_cities'))
+
 # tatarstan cities
 async def inline_namaz_time_tat(page):
 	last_page = False
@@ -168,10 +171,8 @@ async def other_inline(user_id, address, time):
 	zero_check = True
 	if time == 'today':
 		markup.insert(InlineKeyboardButton('На завтра', callback_data='other_tomorrow')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
-	elif time == 'tomorrow':
+	else:
 		markup.insert(InlineKeyboardButton('На сегодня', callback_data='other_today')).insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
-	elif time == 'month':
-		markup.insert(InlineKeyboardButton('На месяц', callback_data='other_month'))
 	for item in sqlite_bd.cur.execute(f'SELECT address FROM favorite_other WHERE user_id == {user_id}').fetchall():
 		if item[0].lower() == address.lower():
 			zero_check = False
