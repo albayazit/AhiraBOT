@@ -49,7 +49,8 @@ async def favorite_command(message: types.Message):
 
 # Add new city | 'Добавить город' (inline)
 async def time_command(callback : types.CallbackQuery):
-	await callback.message.answer('Время намаза для других регионов сделана на основе расчетов Всемирной Исламской лиги, при наличии, ориентируйтесь на расчеты ДУМ Вашего региона.\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
+	await callback.message.edit_text('Время намаза для других регионов сделана на основе наиболее предпочтительного метода вычитывания времени для данного города. Такие расчеты не всегда могут быть точными, убедительная просьба самостоятельно проверять наступление намаза по признакам при выборе "Другой регион".\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
+	await callback.answer()
 
 # Tatarstan cities | 'Татарстан' (inline)
 async def tatarstan_command(callback : types.CallbackQuery):
@@ -163,6 +164,14 @@ async def address_add(callback: types.CallbackQuery):
 	await FSMaddress.address.set()
 	await callback.message.edit_text('Напишите название города')
 	await callback.answer()
+
+async def cancel_handler(message: types.Message, state: FSMContext):
+	current_state = await state.get_state()
+	if current_state is None:
+		return
+	await state.finish()
+	await message.answer('Действие отменено ❌')
+
 # check address
 async def address_get(message: types.message, state=FSMContext):
 	try:
@@ -409,6 +418,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tatarstan_back, text = 'back_tat')
 	dp.register_callback_query_handler(month_time_command, text = 'month_time')
 	dp.register_callback_query_handler(address_add, text = 'other_region')
+	dp.register_message_handler(cancel_handler, commands='cancel', state='*')
 	dp.register_message_handler(address_get, state=FSMaddress.address)
 	dp.register_callback_query_handler(school_get, text_startswith='school_',state=FSMaddress.school)
 	dp.register_callback_query_handler(favorite_add_other, text='other_add')
