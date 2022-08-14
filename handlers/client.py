@@ -1,4 +1,6 @@
-from ast import Delete
+from asyncio.windows_events import NULL
+from http import client
+from types import NoneType
 from aiogram import Dispatcher, types, bot
 from create_bot import dp
 from keyboards import client_kb
@@ -14,6 +16,16 @@ import asyncio
 class FSMaddress(StatesGroup):
 	address = State()
 	school = State()
+
+class FSMtracker(StatesGroup):
+	fajr = State()
+	zuhr = State()
+	asr = State()
+	magrib = State()
+	isha = State()
+	vitr = State()
+	first_date = State()
+	second_date = State()
 
 # max message length
 MESS_MAX_LENGTH = 4096
@@ -74,7 +86,84 @@ async def tatarstan_back(callback : types.CallbackQuery):
 
 # Tracker | 'Трекер'  (Reply)
 async def tracker_command(message: types.Message):
-  await message.answer('Это трекер')
+	user_id = message.from_user.id
+	info = sqlite_bd.cur.execute(f'SELECT EXISTS(SELECT * FROM tracker WHERE user_id == ?)', (user_id, ))
+	if info.fetchone() is None:
+		await message.answer('<b>Выберите способ:</b>', reply_markup=client_kb.markup_tracker_menu)
+	else:
+		await message.answer('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+
+async def tracker_myself(callback: types.CallbackQuery):
+	await FSMtracker.fajr.set()
+	await callback.message.edit_text('Напишите количество <b>фаджр</b> намазов:')
+	await callback.answer()
+
+async def tracker_fajr_get(message: types.Message, state = FSMContext):
+	async with state.proxy() as data:
+		try:
+			int(message.text)
+			data['fajr_need'] = message.text
+		except:
+			await state.finish()
+			return await message.answer('Некорректный формат. Напишите число от 1 до 99999', reply_markup = client_kb.markup_tracker_menu)
+	await FSMtracker.zuhr.set()
+	await message.answer('Напишите количество <b>зухр</b> намазов: ')
+
+async def tracker_zuhr_get(message: types.Message, state = FSMContext):
+	async with state.proxy() as data:
+		data['zuhr_need'] = message.text
+	await FSMtracker.asr.set()
+	await message.answer('Напишите количество <b>аср</b> намазов: ')
+
+async def tracker_asr_get(message: types.Message, state = FSMContext):
+	async with state.proxy() as data:
+		data['asr_need'] = message.text
+	await FSMtracker.magrib.set()
+	await message.answer('Напишите количество <b>магриб</b> намазов: ')
+
+async def tracker_magrib_get(message: types.Message, state = FSMContext):
+	async with state.proxy() as data:
+		data['magrib_need'] = message.text
+	await FSMtracker.isha.set()
+	await message.answer('Напишите количество <b>иша</b> намазов: ')
+
+async def tracker_isha_get(message: types.Message, state = FSMContext):
+	async with state.proxy() as data:
+		data['isha_need'] = message.text
+	await FSMtracker.vitr.set()
+	await message.answer('Напишите количество <b>витр</b> намазов (при желании, можно написать 0): ')
+
+async def tracker_vitr_get(message: types.Message, state = FSMContext):
+	user_id = message.from_user.id
+	async with state.proxy() as data:
+		data['vitr_need'] = message.text
+		data['fajr'] = NULL
+		data['zuhr'] = NULL
+		data['asr'] = NULL
+		data['magrib'] = NULL
+		data['isha'] = NULL
+		data['vitr'] = NULL
+		data['first_date'] = NULL
+		data['second_date'] = NULL 
+	async with state.proxy() as data:
+		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, data['fajr'], data['fajr_need'], data['zuhr'], data['zuhr_need'], data['asr'], data['asr_need'], data['magrib'], data['magrib_need'], data['isha'], data['isha_need'], data['vitr'],data['vitr_need'], data['first_date'], data['second_date']))
+		sqlite_bd.base.commit()
+	await state.finish()
+	await message.answer('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+
+async def tracker_reset(message: types.Message):
+	await message.answer('Вы уверены, что хотите сбросить значения трекера?', reply_markup=client_kb.markup_tracker_reset)
+
+async def tracker_reset_cancel(callback: types.CallbackQuery):
+	await callback.message.edit_text('Операция отменена!')
+	await callback.answer()
+
+async def tracker_reset_yes(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute(f'DELETE FROM tracker WHERE user_id == {user_id}')
+	sqlite_bd.base.commit()
+	await callback.message.edit_text('Трекер сброшен успешно!')
+	await callback.answer()
 
 # learn | 'Обучение намазу' (Reply)
 async def tutor_command(message: types.Message):
@@ -404,6 +493,9 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(start_command, commands=['start'])
 	dp.register_message_handler(favorite_command, lambda message: message.text == "🕦 Время намаза")
 	dp.register_message_handler(tracker_command, lambda message: message.text == "📈 Трекер")
+	dp.register_message_handler(tracker_reset, commands=['reset'])
+	dp.register_callback_query_handler(tracker_reset_cancel, text = 'tracker_cancel')
+	dp.register_callback_query_handler(tracker_reset_yes, text = 'tracker_reset')
 	dp.register_message_handler(tutor_command, lambda message: message.text == "🕌 Обучение")
 	dp.register_message_handler(tutor_namaz_command, lambda message: message.text == "❓\n Что такое намаз")
 	dp.register_message_handler(tutor_time_command, lambda message: message.text == "🕦\n Время намазов")
@@ -460,3 +552,10 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(dagestan_favorite_add, text = 'dag_add')
 	dp.register_callback_query_handler(dagestan_favorite_delete, text = 'dag_delete')
 	dp.register_callback_query_handler(favorite_cities, text = 'favorite_cities')
+	dp.register_callback_query_handler(tracker_myself, text = 'tracker_myself')
+	dp.register_message_handler(tracker_fajr_get, state = FSMtracker.fajr)
+	dp.register_message_handler(tracker_zuhr_get, state = FSMtracker.zuhr)
+	dp.register_message_handler(tracker_asr_get, state = FSMtracker.asr)
+	dp.register_message_handler(tracker_magrib_get, state = FSMtracker.magrib)
+	dp.register_message_handler(tracker_isha_get, state = FSMtracker.isha)
+	dp.register_message_handler(tracker_vitr_get, state = FSMtracker.vitr)
