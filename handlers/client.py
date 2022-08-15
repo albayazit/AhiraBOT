@@ -88,7 +88,7 @@ async def tatarstan_back(callback : types.CallbackQuery):
 async def tracker_command(message: types.Message):
 	user_id = message.from_user.id
 	info = sqlite_bd.cur.execute(f'SELECT EXISTS(SELECT * FROM tracker WHERE user_id == ?)', (user_id, ))
-	if info.fetchone() is None:
+	if info.fetchone()[0] == 0:
 		await message.answer('<b>Выберите способ:</b>', reply_markup=client_kb.markup_tracker_menu)
 	else:
 		await message.answer('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
