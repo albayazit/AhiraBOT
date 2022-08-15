@@ -216,6 +216,57 @@ async def tracker_reset_yes(callback: types.CallbackQuery):
 	await callback.message.edit_text('Трекер сброшен успешно!')
 	await callback.answer()
 
+async def tracker_plus(callback: types.CallbackQuery):
+	salat = callback.data[5:]
+	user_id = callback.from_user.id
+	if salat == 'fajr':
+		sqlite_bd.cur.execute('UPDATE tracker SET fajr == (fajr + ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'zuhr':
+		sqlite_bd.cur.execute('UPDATE tracker SET zuhr == (zuhr + ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'asr':
+		sqlite_bd.cur.execute('UPDATE tracker SET asr == (asr + ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'magrib':
+		sqlite_bd.cur.execute('UPDATE tracker SET magrib == (magrib + ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'isha':
+		sqlite_bd.cur.execute('UPDATE tracker SET isha == (isha + ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	else: 
+		sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr + ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+	await callback.answer()
+	
+async def tracker_minus(callback: types.CallbackQuery):
+	salat = callback.data[6:]
+	user_id = callback.from_user.id
+	if salat == 'fajr':
+		if sqlite_bd.cur.execute('SELECT fajr FROM tracker WHERE user_id == ?', (user_id, )).fetchone()[0] == '0':
+			await callback.answer()
+			return await callback.message.answer('Значение не может быть ниже 0!')
+		sqlite_bd.cur.execute('UPDATE tracker SET fajr == (fajr - ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'zuhr':
+		sqlite_bd.cur.execute('UPDATE tracker SET zuhr == (zuhr - ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'asr':
+		sqlite_bd.cur.execute('UPDATE tracker SET asr == (asr - ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'magrib':
+		sqlite_bd.cur.execute('UPDATE tracker SET magrib == (magrib - ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	elif salat == 'isha':
+		sqlite_bd.cur.execute('UPDATE tracker SET isha == (isha - ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	else: 
+		sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr - ?) WHERE user_id == ?', (1, user_id))
+		sqlite_bd.base.commit()
+	await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+	await callback.answer()
+
 # learn | 'Обучение намазу' (Reply)
 async def tutor_command(message: types.Message):
   await message.answer('Обучение на основе Ханафитского мазхаба.\nВыберите раздел: ', reply_markup=client_kb.markup_namaz_tutor)
@@ -610,3 +661,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_magrib_get, state = FSMtracker.magrib)
 	dp.register_message_handler(tracker_isha_get, state = FSMtracker.isha)
 	dp.register_message_handler(tracker_vitr_get, state = FSMtracker.vitr)
+	dp.register_callback_query_handler(tracker_plus, text_startswith = 'plus_')
+	dp.register_callback_query_handler(tracker_minus, text_startswith = 'minus_')
+
+
