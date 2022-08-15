@@ -250,22 +250,47 @@ async def tracker_minus(callback: types.CallbackQuery):
 		sqlite_bd.cur.execute('UPDATE tracker SET fajr == (fajr - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
 	elif salat == 'zuhr':
+		if sqlite_bd.cur.execute('SELECT zuhr FROM tracker WHERE user_id == ?', (user_id, )).fetchone()[0] == '0':
+			await callback.answer()
+			return await callback.message.answer('Значение не может быть ниже 0!')
 		sqlite_bd.cur.execute('UPDATE tracker SET zuhr == (zuhr - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
 	elif salat == 'asr':
+		if sqlite_bd.cur.execute('SELECT asr FROM tracker WHERE user_id == ?', (user_id, )).fetchone()[0] == '0':
+			await callback.answer()
+			return await callback.message.answer('Значение не может быть ниже 0!')
 		sqlite_bd.cur.execute('UPDATE tracker SET asr == (asr - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
 	elif salat == 'magrib':
+		if sqlite_bd.cur.execute('SELECT magrib FROM tracker WHERE user_id == ?', (user_id, )).fetchone()[0] == '0':
+			await callback.answer()
+			return await callback.message.answer('Значение не может быть ниже 0!')
 		sqlite_bd.cur.execute('UPDATE tracker SET magrib == (magrib - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
 	elif salat == 'isha':
+		if sqlite_bd.cur.execute('SELECT isha FROM tracker WHERE user_id == ?', (user_id, )).fetchone()[0] == '0':
+			await callback.answer()
+			return await callback.message.answer('Значение не может быть ниже 0!')
 		sqlite_bd.cur.execute('UPDATE tracker SET isha == (isha - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
-	else: 
+	else:
+		if sqlite_bd.cur.execute('SELECT vitr FROM tracker WHERE user_id == ?', (user_id, )).fetchone()[0] == '0':
+			await callback.answer()
+			return await callback.message.answer('Значение не может быть ниже 0!')
 		sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
 	await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
 	await callback.answer()
+
+async def other_btn_tracker(callback: types.CallbackQuery):
+	data = callback.data[8:]
+	await callback.answer()
+	if data == 'salat':
+		return await callback.message.answer('Название намаза')
+	elif data == 'current':
+		return await callback.message.answer('Число восстановленных намазов')
+	else:
+		return await callback.message.answer('Число необходимых намазов')
 
 # learn | 'Обучение намазу' (Reply)
 async def tutor_command(message: types.Message):
@@ -663,5 +688,6 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_vitr_get, state = FSMtracker.vitr)
 	dp.register_callback_query_handler(tracker_plus, text_startswith = 'plus_')
 	dp.register_callback_query_handler(tracker_minus, text_startswith = 'minus_')
+	dp.register_callback_query_handler(other_btn_tracker, text_startswith = 'tracker_')
 
 
