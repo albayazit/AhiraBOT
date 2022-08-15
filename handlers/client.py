@@ -95,61 +95,112 @@ async def tracker_command(message: types.Message):
 
 async def tracker_myself(callback: types.CallbackQuery):
 	await FSMtracker.fajr.set()
-	await callback.message.edit_text('Напишите количество <b>фаджр</b> намазов:')
+	await callback.message.delete()
+	await callback.message.answer('Напишите количество <b>фаджр</b> намазов:', reply_markup = types.ReplyKeyboardRemove())
 	await callback.answer()
 
 async def tracker_fajr_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
 		try:
-			int(message.text)
+			num = int(message.text)
+			if num < 1:
+				await state.finish()
+				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+			else:
+				pass
 			data['fajr_need'] = message.text
 		except:
 			await state.finish()
-			return await message.answer('Некорректный формат. Напишите число от 1 до 99999', reply_markup = client_kb.markup_tracker_menu)
+			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.zuhr.set()
 	await message.answer('Напишите количество <b>зухр</b> намазов: ')
 
 async def tracker_zuhr_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
-		data['zuhr_need'] = message.text
+		try:
+			num = int(message.text)
+			if num < 1:
+				await state.finish()
+				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+			else:
+				pass
+			data['zuhr_need'] = message.text
+		except:
+			await state.finish()
+			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.asr.set()
 	await message.answer('Напишите количество <b>аср</b> намазов: ')
 
 async def tracker_asr_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
-		data['asr_need'] = message.text
+		try:
+			num = int(message.text)
+			if num < 1:
+				await state.finish()
+				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+			else:
+				pass
+			data['asr_need'] = message.text
+		except:
+			await state.finish()
+			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.magrib.set()
 	await message.answer('Напишите количество <b>магриб</b> намазов: ')
 
 async def tracker_magrib_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
-		data['magrib_need'] = message.text
+		try:
+			num = int(message.text)
+			if num < 1:
+				await state.finish()
+				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+			else:
+				pass
+			data['magrib_need'] = message.text
+		except:
+			await state.finish()
+			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.isha.set()
 	await message.answer('Напишите количество <b>иша</b> намазов: ')
 
 async def tracker_isha_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
-		data['isha_need'] = message.text
+		try:
+			num = int(message.text)
+			if num < 1:
+				await state.finish()
+				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+			else:
+				pass
+			data['isha_need'] = message.text
+		except:
+			await state.finish()
+			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.vitr.set()
 	await message.answer('Напишите количество <b>витр</b> намазов (при желании, можно написать 0): ')
 
 async def tracker_vitr_get(message: types.Message, state = FSMContext):
 	user_id = message.from_user.id
 	async with state.proxy() as data:
-		data['vitr_need'] = message.text
-		data['fajr'] = NULL
-		data['zuhr'] = NULL
-		data['asr'] = NULL
-		data['magrib'] = NULL
-		data['isha'] = NULL
-		data['vitr'] = NULL
-		data['first_date'] = NULL
-		data['second_date'] = NULL 
+		try:
+			num = int(message.text)
+			if num < 1:
+				await state.finish()
+				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+			else:
+				pass
+			data['vitr_need'] = message.text
+		except:
+			await state.finish()
+			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	async with state.proxy() as data:
-		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, data['fajr'], data['fajr_need'], data['zuhr'], data['zuhr_need'], data['asr'], data['asr_need'], data['magrib'], data['magrib_need'], data['isha'], data['isha_need'], data['vitr'],data['vitr_need'], data['first_date'], data['second_date']))
+		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, data['fajr_need'], NULL, data['zuhr_need'], NULL, data['asr_need'], NULL, data['magrib_need'], NULL, data['isha_need'], NULL,data['vitr_need'], NULL, NULL))
 		sqlite_bd.base.commit()
 	await state.finish()
-	await message.answer('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+	await message.answer('Секундочку...', reply_markup = client_kb.markup_main)
+	reply = await client_kb.markup_tracker(user_id)
+	await asyncio.sleep(1)
+	await message.answer('Восстановление намазов:', reply_markup = reply)
 
 async def tracker_reset(message: types.Message):
 	await message.answer('Вы уверены, что хотите сбросить значения трекера?', reply_markup=client_kb.markup_tracker_reset)
@@ -261,7 +312,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 	if current_state is None:
 		return
 	await state.finish()
-	await message.answer('Действие отменено ❌', reply_markup=client_kb.markup_main())
+	await message.answer('Действие отменено ❌', reply_markup=client_kb.markup_main)
 
 # check address
 async def address_get(message: types.message, state=FSMContext):
