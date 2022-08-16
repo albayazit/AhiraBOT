@@ -202,6 +202,10 @@ async def tracker_vitr_get(message: types.Message, state = FSMContext):
 	await asyncio.sleep(1)
 	await message.answer('Восстановление намазов:', reply_markup = reply)
 
+async def tracker_calculate(callback: types.CallbackQuery):
+	await callback.message.edit_text('Вы выбрали метод')
+		
+
 async def tracker_reset(message: types.Message):
 	await message.answer('Вы уверены, что хотите сбросить значения трекера?', reply_markup=client_kb.markup_tracker_reset)
 
@@ -283,7 +287,7 @@ async def tracker_minus(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def other_btn_tracker(callback: types.CallbackQuery):
-	data = callback.data[8:]
+	data = callback.data[6:]
 	await callback.answer()
 	if data == 'salat':
 		return await callback.message.answer('Название намаза')
@@ -688,6 +692,5 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_vitr_get, state = FSMtracker.vitr)
 	dp.register_callback_query_handler(tracker_plus, text_startswith = 'plus_')
 	dp.register_callback_query_handler(tracker_minus, text_startswith = 'minus_')
-	dp.register_callback_query_handler(other_btn_tracker, text_startswith = 'tracker_')
-
-
+	dp.register_callback_query_handler(other_btn_tracker, text_startswith = 'troth_')
+	dp.register_callback_query_handler(tracker_calculate, text = 'tracker_calculate')
