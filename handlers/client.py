@@ -203,8 +203,56 @@ async def tracker_vitr_get(message: types.Message, state = FSMContext):
 	await message.answer('Восстановление намазов:', reply_markup = reply)
 
 async def tracker_calculate(callback: types.CallbackQuery):
-	await callback.message.edit_text('Вы выбрали метод')
-		
+	await FSMtracker.first_date.set()
+	await callback.message.delete()
+	await callback.message.answer('Введите период, в течении которого нужно восстановить намазы.\nПервая дата: (формат: день.месяц.год)', reply_markup=types.ReplyKeyboardRemove())
+	await callback.answer()
+
+async def tracker_get_first(message: types.Message, state = FSMContext):
+	try:
+		async with state.proxy() as data:
+			data['first_date'] = datetime.strptime(message.text, "%d.%m.%Y")
+	except:
+		await state.finish()
+		return await message.answer('Неправильный формат!', reply_markup=client_kb.markup_main)
+	await FSMtracker.second_date.set()
+	await message.answer('Введите вторую дату:') 
+
+async def tracker_get_second(message: types.Message, state = FSMContext):
+	user_id = message.from_user.id
+	try:
+		async with state.proxy() as data:
+			data['second_date'] = datetime.strptime(message.text, "%d.%m.%Y")
+			first_date = data['first_date']
+			second_date = data['second_date']
+			result = (first_date - second_date).days
+			if result < 0:
+				result = result * -1 
+			if first_date == second_date:
+				await state.finish()
+				return await message.answer('Даты не должны совпадать!', reply_markup=client_kb.markup_main)
+			sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, result, NULL, result, NULL, result, NULL, result, NULL, result, NULL, result, second_date, first_date))
+			sqlite_bd.base.commit()
+	except:
+		await state.finish()
+		return await message.answer('Неправильный формат!', reply_markup=client_kb.markup_main)
+	await state.finish()
+	await message.answer('Добавить витр-намаз?', reply_markup=client_kb.markup_tracker_vitr)
+
+async def tracker_vitr_get(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	if callback.data[5:] == 'no':
+		sqlite_bd.cur.execute('UPDATE tracker SET vitr_need == ? WHERE user_id == ?', (0, user_id))
+		sqlite_bd.base.commit()
+	else:
+		pass
+	await callback.answer()
+	await callback.message.delete()
+	await callback.message.answer('Рассчитываю...', reply_markup = client_kb.markup_main)
+	reply = await client_kb.markup_tracker(user_id)
+	await asyncio.sleep(1)
+	await callback.message.answer('Восстановление намазов:', reply_markup = reply)
+	
 
 async def tracker_reset(message: types.Message):
 	await message.answer('Вы уверены, что хотите сбросить значения трекера?', reply_markup=client_kb.markup_tracker_reset)
@@ -215,9 +263,14 @@ async def tracker_reset_cancel(callback: types.CallbackQuery):
 
 async def tracker_reset_yes(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
-	sqlite_bd.cur.execute(f'DELETE FROM tracker WHERE user_id == {user_id}')
-	sqlite_bd.base.commit()
-	await callback.message.edit_text('Трекер сброшен успешно!')
+	try:
+		sqlite_bd.cur.execute(f'DELETE FROM tracker WHERE user_id == {user_id}')
+		sqlite_bd.base.commit()
+		await callback.message.delete()
+		await callback.message.answer('Трекер сброшен успешно!', reply_markup=client_kb.markup_main)
+	except:
+		await callback.message.delete()
+		await callback.message.answer('Трекер уже сброшен!', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def tracker_plus(callback: types.CallbackQuery):
@@ -694,3 +747,6 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tracker_minus, text_startswith = 'minus_')
 	dp.register_callback_query_handler(other_btn_tracker, text_startswith = 'troth_')
 	dp.register_callback_query_handler(tracker_calculate, text = 'tracker_calculate')
+	dp.register_message_handler(tracker_get_first, state = FSMtracker.first_date)
+	dp.register_message_handler(tracker_get_second, state = FSMtracker.second_date)	
+	dp.register_callback_query_handler(tracker_vitr_get, text_startswith = 'vitr_')

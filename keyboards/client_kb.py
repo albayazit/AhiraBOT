@@ -347,3 +347,6 @@ async def markup_tracker(user_id):
 
 markup_tracker_reset = InlineKeyboardMarkup()
 markup_tracker_reset.add(InlineKeyboardButton('Отмена', callback_data='tracker_cancel')).insert(InlineKeyboardButton('Сбросить', callback_data = 'tracker_reset'))
+
+markup_tracker_vitr = InlineKeyboardMarkup()
+markup_tracker_vitr.add(InlineKeyboardButton('Нет', callback_data='vitr_no')).insert(InlineKeyboardButton('Да', callback_data='vitr_yes'))
