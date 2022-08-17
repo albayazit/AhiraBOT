@@ -379,6 +379,12 @@ async def tutor_women_command(message: types.Message):
 async def audio_command(message: types.Message):
     await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_audio)
 
+async def audio_koran_menu(callback: types.CallbackQuery):
+	await callback.message.edit_text('Выберите чтеца:')
+
+async def audio_propoved_menu(callback: types.CallbackQuery):
+	await callback.message.edit_text('Выберите проповедника:')
+
 
 # Books | 'Книги' (Reply)
 async def books_command(message: types.Message):
@@ -387,7 +393,8 @@ async def books_command(message: types.Message):
 
 # Calendar | 'Календарь' (Reply)
 async def calendar_command(message: types.Message):
-    await message.answer(other.calendar_message)
+	user_id = message.from_user.id
+	await message.answer(await other.calendar_message(user_id))
 
 
 # Info | 'Помощь' (Reply)

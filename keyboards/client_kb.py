@@ -19,8 +19,6 @@ button_tutor_sura = KeyboardButton('📃\n Суры и дуа намаза')
 button_tutor_women = KeyboardButton('🧕\n Женский намаз')
 # audio
 button_audio = KeyboardButton('🎧 Аудио')
-button_audio_koran = KeyboardButton('📕\n Коран')
-button_audio_hutba = KeyboardButton('📢\n Проповедь')
 # books
 button_books = KeyboardButton('📚 Книги')
 # hadis
@@ -90,10 +88,8 @@ markup_namaz_tutor.add(
 )
 
 # audio
-markup_audio = ReplyKeyboardMarkup()
-markup_audio.add(
-    button_audio_koran, button_audio_hutba
-).add(button_back)
+markup_audio = InlineKeyboardMarkup()
+markup_audio.add(InlineKeyboardButton('Коран', callback_data='audio_koran')).insert(InlineKeyboardButton('Проповедь', callback_data='audio_propoved'))
 
 # zikr 
 inline_zikr_all = InlineKeyboardMarkup()
