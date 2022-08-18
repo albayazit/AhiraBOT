@@ -406,6 +406,44 @@ async def info_command(message: types.Message):
 async def zikr_command(message: types.Message):
     await message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
 
+async def zikr_get(callback: types.CallbackQuery):
+	text = callback.data[5:]
+	callback.answer()
+	if text == '1':
+		await callback.message.edit_text('Счетчик: {}\nВсего: {}', reply_markup= client_kb.markup_zikr_lower)
+	elif text == '2':
+		await callback.message.edit_text('2')
+	elif text == '3':
+		await callback.message.edit_text('3')
+	elif text == '4':
+		await callback.message.edit_text('4')
+	elif text == '5':
+		await callback.message.edit_text('5')
+	elif text == '6':
+		await callback.message.answer('Салават')
+	elif text == '7':
+		await callback.message.answer('Салават')
+	elif text == '8':
+		await callback.message.answer('Салават')
+	elif text == '9':
+		await callback.message.answer('Салават')
+	elif text == '10':
+		await callback.message.answer('Салават')
+	elif text == '11':
+		await callback.message.answer('Салават')
+	elif text == '12':
+		await callback.message.answer('Салават')
+	elif text == '13':
+		await callback.message.answer('Салават')
+	elif text == '14':
+		await callback.message.answer('Салават')
+	elif text == '15':
+		await callback.message.answer('Салават')
+	elif text == '16':
+		await callback.message.answer('Салават')
+	else:
+		await callback.message.edit_text('17')
+
 
 # Unknown messages
 async def help_command(message: types.Message):
@@ -757,3 +795,4 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_get_first, state = FSMtracker.first_date)
 	dp.register_message_handler(tracker_get_second, state = FSMtracker.second_date)	
 	dp.register_callback_query_handler(tracker_vitr_get, text_startswith = 'vitr_')
+	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')

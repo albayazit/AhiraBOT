@@ -2,9 +2,10 @@ from aiogram import Dispatcher, types
 from create_bot import dp
 import requests
 from datetime import datetime
+from keyboards import client_kb
 
 async def unknown_command(message: types.Message):
-    await message.answer('Я тебя не понимаю :( Напиши /help')
+	await message.answer('Я вас не понимаю. Выберите раздел:', reply_markup=client_kb.markup_main)
 
 def register_handlers_other(dp : Dispatcher):
 	dp.register_message_handler(unknown_command)
