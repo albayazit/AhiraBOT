@@ -1,5 +1,6 @@
 from asyncio.windows_events import NULL
 from http import client
+from tkinter import INSERT
 from types import NoneType
 from aiogram import Dispatcher, types, bot
 from create_bot import dp
@@ -51,7 +52,7 @@ months = {
 
 # Main keyboard | /start
 async def start_command(message: types.Message):
-  await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
+	await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
 
 
 # Favorite cities | 'Время намаза' (reply)
@@ -404,13 +405,20 @@ async def info_command(message: types.Message):
 
 # Zikr | 'Зикр' (Reply)
 async def zikr_command(message: types.Message):
-    await message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
+	user_id = message.from_user.id
+	try: 
+		sqlite_bd.cur.execute('SELECT user_id FROM zikr WHERE user_id == ?', (user_id, )).fetchone()[0] == user_id
+	except:
+		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL))
+		sqlite_bd.base.commit()
+	await message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
 
 async def zikr_get(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
 	text = callback.data[5:]
 	callback.answer()
 	if text == '1':
-		await callback.message.edit_text('Счетчик: {}\nВсего: {}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_1_today FROM zikr WHERE user_id == ?", (user_id, ))} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_1_all FROM zikr WHERE user_id == ?", (user_id, ))}', reply_markup= client_kb.markup_zikr_lower)
 	elif text == '2':
 		await callback.message.edit_text('2')
 	elif text == '3':
