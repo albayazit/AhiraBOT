@@ -99,6 +99,9 @@ inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr
 markup_zikr_lower = InlineKeyboardMarkup()
 markup_zikr_lower.add(InlineKeyboardButton('+', callback_data='zikr_plus')).add(InlineKeyboardButton('Сбросить', callback_data='zikr_reset')).insert(InlineKeyboardButton('Зикры', callback_data='zikr_all'))
 
+markup_zikr_reset = InlineKeyboardMarkup()
+markup_zikr_reset.add(InlineKeyboardButton('Отмена', callback_data='zikr_reset_cancel')).insert(InlineKeyboardButton('Сбросить', callback_data='zikr_reset_yes'))
+
 # schools for other region
 markup_school = InlineKeyboardMarkup()
 markup_school.add(school_1).add(school_2)

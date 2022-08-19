@@ -416,9 +416,11 @@ async def zikr_command(message: types.Message):
 async def zikr_get(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	text = callback.data[5:]
-	callback.answer()
+	await callback.answer()
+	global zikr
 	if text == '1':
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_1_today FROM zikr WHERE user_id == ?", (user_id, ))} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_1_all FROM zikr WHERE user_id == ?", (user_id, ))}', reply_markup= client_kb.markup_zikr_lower)
+		zikr = 1
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_1_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_1_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
 	elif text == '2':
 		await callback.message.edit_text('2')
 	elif text == '3':
@@ -452,6 +454,24 @@ async def zikr_get(callback: types.CallbackQuery):
 	else:
 		await callback.message.edit_text('17')
 
+async def zikr_reset(callback: types.CallbackQuery):
+	await callback.message.answer('Вы уверены, что хотите сбросить этот зикр?', reply_markup=client_kb.markup_zikr_reset)
+	await callback.answer()
+
+async def zikr_reset_cancel(callback: types.CallbackQuery):
+	await callback.message.edit_text('Операция отменена!')
+	await callback.answer()
+
+async def zikr_reset_yes(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
+	try:
+		sqlite_bd.cur.execute(f'UPDATE zikr SET zikr_{zikr}_all == "0", zikr_{zikr}_today == "0" WHERE user_id == ?', (user_id, ))
+		sqlite_bd.base.commit()
+		await callback.answer()
+		await callback.message.edit_text('Зикр успешно сброшен!')
+	except:
+		await callback.answer()
+		await callback.message.edit_text('Что-то пошло не так!')
 
 # Unknown messages
 async def help_command(message: types.Message):
@@ -803,4 +823,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_get_first, state = FSMtracker.first_date)
 	dp.register_message_handler(tracker_get_second, state = FSMtracker.second_date)	
 	dp.register_callback_query_handler(tracker_vitr_get, text_startswith = 'vitr_')
+	dp.register_callback_query_handler(zikr_reset, text = 'zikr_reset')
+	dp.register_callback_query_handler(zikr_reset_cancel, text = 'zikr_reset_cancel')
+	dp.register_callback_query_handler(zikr_reset_yes, text = 'zikr_reset_yes')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
