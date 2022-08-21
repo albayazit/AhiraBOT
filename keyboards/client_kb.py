@@ -96,8 +96,12 @@ inline_zikr_all = InlineKeyboardMarkup()
 inline_zikr_all.row_width = 2
 inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16, zikr_17)
 
-markup_zikr_lower = InlineKeyboardMarkup()
-markup_zikr_lower.add(InlineKeyboardButton('+', callback_data='zikr_plus')).add(InlineKeyboardButton('Сбросить', callback_data='zikr_reset')).insert(InlineKeyboardButton('Зикры', callback_data='zikr_all'))
+
+async def markup_zikr_lower(zikr):
+	markup = InlineKeyboardMarkup()
+	markup.add(InlineKeyboardButton('+', callback_data='zikr_plus_'+str(zikr))).add(InlineKeyboardButton('Сбросить', callback_data='zikr_reset_'+str(zikr))).insert(InlineKeyboardButton('Зикры', callback_data='zikr_all'))
+	return markup
+
 
 markup_zikr_reset = InlineKeyboardMarkup()
 markup_zikr_reset.add(InlineKeyboardButton('Отмена', callback_data='zikr_reset_cancel')).insert(InlineKeyboardButton('Сбросить', callback_data='zikr_reset_yes'))
