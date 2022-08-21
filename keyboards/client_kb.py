@@ -104,7 +104,7 @@ async def markup_zikr_lower(zikr):
 
 async def markup_zikr_reset(zikr):
 	markup = InlineKeyboardMarkup()
-	markup.add(InlineKeyboardButton('Отмена', callback_data='zikr_reset_cancel')).insert(InlineKeyboardButton('Сбросить', callback_data='zikr_reset_yes_'+str(zikr)))
+	markup.add(InlineKeyboardButton('Отмена', callback_data='zikr_reset_cancel_'+str(zikr))).insert(InlineKeyboardButton('Сбросить', callback_data='zikr_reset_yes_'+str(zikr)))
 	return markup
 
 # schools for other region

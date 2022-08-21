@@ -510,7 +510,9 @@ async def zikr_reset(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def zikr_reset_cancel(callback: types.CallbackQuery):
-	await callback.message.edit_text('Операция отменена!')
+	user_id = callback.from_user.id
+	data = callback.data[18:]
+	await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(data))
 	await callback.answer()
 
 async def zikr_reset_yes(callback: types.CallbackQuery):
@@ -520,10 +522,12 @@ async def zikr_reset_yes(callback: types.CallbackQuery):
 		sqlite_bd.cur.execute(f'UPDATE zikr SET zikr_{data}_all == "0", zikr_{data}_today == "0" WHERE user_id == ?', (user_id, ))
 		sqlite_bd.base.commit()
 		await callback.answer()
-		await callback.message.edit_text('Зикр успешно сброшен!')
+		await callback.message.delete()
+		await callback.message.answer('Зикр успешно сброшен!')
 	except:
 		await callback.answer()
-		await callback.message.edit_text('Что-то пошло не так!')
+		await callback.message.delete()
+		await callback.message.answer('Произошла ошибка!')
 
 # Unknown messages
 async def help_command(message: types.Message):
@@ -875,7 +879,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_get_first, state = FSMtracker.first_date)
 	dp.register_message_handler(tracker_get_second, state = FSMtracker.second_date)	
 	dp.register_callback_query_handler(tracker_vitr_get, text_startswith = 'vitr_')
-	dp.register_callback_query_handler(zikr_reset_cancel, text = 'zikr_reset_cancel')
+	dp.register_callback_query_handler(zikr_reset_cancel, text_startswith = 'zikr_reset_cancel_')
 	dp.register_callback_query_handler(zikr_reset_yes, text_startswith = 'zikr_reset_yes_')
 	dp.register_callback_query_handler(zikr_reset, text_startswith = 'zikr_reset_')
 	dp.register_callback_query_handler(zikr_plus, text_startswith = 'zikr_plus_')
