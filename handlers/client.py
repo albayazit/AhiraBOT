@@ -1,8 +1,6 @@
 from asyncio.windows_events import NULL
-from http import client
 from tkinter import INSERT
-from types import NoneType
-from aiogram import Dispatcher, types, bot
+from aiogram import Dispatcher, types
 from create_bot import dp
 from keyboards import client_kb
 from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan
@@ -12,6 +10,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from database import sqlite_bd
 from datetime import datetime
 import asyncio
+from create_bot import scheduler
 
 # FSM
 class FSMaddress(StatesGroup):
@@ -432,6 +431,13 @@ async def zikr_command(message: types.Message):
 		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL))
 		sqlite_bd.base.commit()
 	await message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
+
+async def send_message(dp: Dispatcher):
+	sqlite_bd.cur.execute('UPDATE zikr SET zikr_1_today == "0", zikr_2_today == "0", zikr_3_today == "0", zikr_4_today == "0", zikr_5_today == "0", zikr_6_today == "0", zikr_7_today == "0", zikr_8_today == "0", zikr_9_today == "0", zikr_10_today == "0", zikr_11_today == "0", zikr_12_today == "0", zikr_13_today == "0", zikr_14_today == "0", zikr_15_today == "0", zikr_16_today == "0", zikr_17_today == "0"')
+	sqlite_bd.base.commit()
+
+def schedule_jobs():
+	scheduler.add_job(send_message, "interval", days=1, args=(dp, ))
 
 async def zikr_get(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
