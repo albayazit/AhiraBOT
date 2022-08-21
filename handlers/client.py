@@ -48,6 +48,26 @@ months = {
 	'12':'Декабрь'
 }
 
+zikrs = {
+	'1':'Салават',
+	'2':'Дуа за родителей',
+	'3':'Калима Тавхид',
+	'4':'Субханаллаһи ва бихамдиһи',
+	'5':'Аллаһумма иннака `афуун...',
+	'6':'Астагфируллаһ аль Азыйм',
+	'7':'Аят "Аль-Курси"',
+	'8':'Ля хауля уа ляя куввата илляя билляһ',
+	'9':'Хасбуналлаһу ва ни`маль вакиль',
+	'10':'Субханаллаһ валь хамдулилляһ',
+	'11':'Ля иляһа илля анта субханака',
+	'12':'Ля иляха илляллаһу вахдаху ля шарика ляһ',
+	'13':'Дуа "Кунут"',
+	'14':'Раббана атина фи-д-дунья',
+	'15':'Аллаһумма а`инни `аля зикрика',
+	'16':'Таравих тасбих',
+	'17':'Без категории'
+}
+
 #--------------------Functions--------------------#
 
 # Main keyboard | /start
@@ -419,53 +439,56 @@ async def zikr_get(callback: types.CallbackQuery):
 	await callback.answer()
 	global zikr
 	if text == '1':
+		zikr = 1
 		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_1_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_1_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(1))
 	elif text == '2':
+		zikr = 2
 		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_2_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_2_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(2))
 	elif text == '3':
+		zikr = 3
 		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_3_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_3_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(3))
 	elif text == '4':
 		zikr = 4
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_4_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_4_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower('4'))
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_4_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_4_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(4))
 	elif text == '5':
 		zikr = 5
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_5_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_5_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower('5'))
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_5_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_5_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(5))
 	elif text == '6':
 		zikr = 6
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_6_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_6_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower('6'))
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_6_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_6_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(6))
 	elif text == '7':
 		zikr = 7
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_7_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_7_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_7_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_7_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(7))
 	elif text == '8':
 		zikr = 8
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_8_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_8_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_8_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_8_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(8))
 	elif text == '9':
 		zikr = 9
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_9_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_9_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_9_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_9_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(9))
 	elif text == '10':
 		zikr = 10
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_10_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_10_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_10_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_10_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(10))
 	elif text == '11':
 		zikr = 11
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_11_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_11_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_11_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_11_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(11))
 	elif text == '12':
 		zikr = 12
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_12_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_12_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_12_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_12_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(12))
 	elif text == '13':
 		zikr = 13
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_13_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_13_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_13_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_13_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(13))
 	elif text == '14':
 		zikr = 14
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_14_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_14_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_14_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_14_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(14))
 	elif text == '15':
 		zikr = 15
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_15_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_15_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_15_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_15_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(15))
 	elif text == '16':
 		zikr = 16
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_16_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_16_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_16_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_16_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(16))
 	else:
 		zikr = 17
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_17_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_17_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower)
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_17_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_17_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(17))
 
 async def zikr_plus(callback: types.CallbackQuery):
 	data = callback.data[10:]
@@ -476,7 +499,8 @@ async def zikr_plus(callback: types.CallbackQuery):
 	await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(data))
 
 async def zikr_reset(callback: types.CallbackQuery):
-	await callback.message.answer('Вы уверены, что хотите сбросить этот зикр?', reply_markup=client_kb.markup_zikr_reset)
+	data = callback.data[11:]
+	await callback.message.answer(f'Вы уверены, что хотите сбросить зикр "{zikrs[data]}"?', reply_markup=await client_kb.markup_zikr_reset(data))
 	await callback.answer()
 
 async def zikr_reset_cancel(callback: types.CallbackQuery):
@@ -484,9 +508,10 @@ async def zikr_reset_cancel(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def zikr_reset_yes(callback: types.CallbackQuery):
+	data = callback.data[15:]
 	user_id = callback.from_user.id
 	try:
-		sqlite_bd.cur.execute(f'UPDATE zikr SET zikr_{zikr}_all == "0", zikr_{zikr}_today == "0" WHERE user_id == ?', (user_id, ))
+		sqlite_bd.cur.execute(f'UPDATE zikr SET zikr_{data}_all == "0", zikr_{data}_today == "0" WHERE user_id == ?', (user_id, ))
 		sqlite_bd.base.commit()
 		await callback.answer()
 		await callback.message.edit_text('Зикр успешно сброшен!')
@@ -844,8 +869,8 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_get_first, state = FSMtracker.first_date)
 	dp.register_message_handler(tracker_get_second, state = FSMtracker.second_date)	
 	dp.register_callback_query_handler(tracker_vitr_get, text_startswith = 'vitr_')
-	dp.register_callback_query_handler(zikr_reset, text = 'zikr_reset')
-	dp.register_callback_query_handler(zikr_plus, text_startswith = 'zikr_plus_')
 	dp.register_callback_query_handler(zikr_reset_cancel, text = 'zikr_reset_cancel')
-	dp.register_callback_query_handler(zikr_reset_yes, text = 'zikr_reset_yes')
+	dp.register_callback_query_handler(zikr_reset_yes, text_startswith = 'zikr_reset_yes_')
+	dp.register_callback_query_handler(zikr_reset, text_startswith = 'zikr_reset_')
+	dp.register_callback_query_handler(zikr_plus, text_startswith = 'zikr_plus_')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
