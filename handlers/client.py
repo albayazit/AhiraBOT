@@ -66,6 +66,24 @@ zikrs = {
 	'16':'Без категории',
 }
 
+zikr_polzi = {
+	'1':'<b>Лишь малая часть из польз салавата:</b>\n\n1. «В Судный день из людей ближе всего будет ко мне тот, кто больше всех произносил мне салаваты и салямы» (Тирмизи, Витр, 21)\n\n2. «Совершайте салаваты и салямы мне. Ведь где бы вы ни были, ваши салаваты и салямы доносятся мне» (Абу Дауд, Манасик, 96-97/2042)\n\n3. «Кто совершит салават и салям мне один раз, тому Всевышний Аллах дарует десять милостей» (Муслим, Салят, 70)\n 4. Посланник Аллаха (мир ему и благословение Аллаха) сказал: «Будет скупым тот человек, кто не отправит мне приветствия, если мое имя упоминается в его присутствии» (Тирмизи)\n\n5. «Да будет отстранен от милости тот, кто не произнес салават и салям, услышав мое имя! Да будет отстранен от милости тот, кто прожил месяц Рамадан и не заслужил прощения! Да будет отстранен от милости тот, кто не заслужил довольства своих пожилых родителей и не удостоился рая!» (Тирмизи, Да’ват, 100/3545)',
+	'2':'<b>Польза "Дуа за родителей"</b>:\n\n1. (смысл): «И преклоняй пред ними [твоими родителями] крыло смирения из милосердия [будь смиренным и мягким к ним] и говори: "Господи! Помилуй их, подобно тому, как они растили меня ребёнком"». (сура «Аль-Исра»: 24)\n\n2. Сообщается, что Абу Абдуррахман Абдуллах бин Мас’уд (да будет доволен им Аллах) сказал: «Однажды я спросил Пророка (мир ему и благословение Аллаха): "Какое дело Аллах любит больше всего?" Он сказал: "Совершаемую своевременно молитву". Я спросил: "А после этого?" Он сказал: «Проявление почтительности к родителям». (Бухари, Муслим)\n\n3. Пророк (мир ему и благословение Аллаха) сказал: «Воистину, степень человека будет непрестанно возвышаться в Раю, и он скажет: "Откуда всё это?" Ему ответят: "Это по причине того, что твой сын просил за тебя прощения"». (Ибн-Маджа)\n\n4. Cообщается, что Абу Усайд Малик бин Раби’а ас-Са’иди (да будет доволен им Аллах) сказал: «Однажды, когда мы сидели с Посланником Аллаха (мир ему и благословение Аллаха), к нему пришёл какой-то человек из племени Бану Салама и спросил: "О посланник Аллаха, могу ли я каким-нибудь образом проявлять почтительность по отношению к моим родителям и после их смерти?" Он сказал: "Да, если будешь молиться за них (обращаться к Аллаху с мольбами за родителей), просить у Аллаха прощения для них, выполнять их обещания после их кончины, поддерживать родственные связи с людьми, с которыми ты связан только через (своих родителей), и оказывать уважение их друзьям"». (Абу Дауд)\n\n5. От Абдуллаха бин Амра бин аль-Аса (да будет доволен им Аллах) передаётся, что Пророк (мир ему и благословение Аллаха) сказал: «К числу тяжких грехов относятся многобожие, проявление непочтительности по отношению к родителям, убийство и ложная клятва». (Бухари)',
+	'3':'Слова тавхида – самое превосходное поминание Аллаха (зикр), как об этом сказал Пророк (мир ему и благословение). Эти слова – обычай аскетов, опора мюридов, направление идущих к довольству Аллаха, подарок предыдущих, ключ от рая, ключи знаний и познания Создателя.',
+	'4':'<b>Польза "Субханаллаһи ва бихамдиһи"</b>:\n\nПророк Мухаммад (мир ему и благословение) в известном хадисе сказал: «Есть два слова, которые любит Милостивый, и они легки для языка, а на Весах они будут тяжелы. (Это слова) “Слава Аллаху и хвала Ему, слава Аллаху Великому! Субхана-Ллахи ва бихамдихи, субханаЛлахиль Азым!”» (Сахих Бухари, Сахих Муслим)',
+	'5':'<b>Польза "Аллаһумма иннака `афуун..."</b>:\n\nОднажды Аиша (да будет доволен ею Аллах) спросила Пророка ﷺ: «О Посланник Аллаха, скажи, если я узнаю (о наступлении) ночи предопределения, что мне следует говорить?» Пророк ﷺ ответил: «Говори: "Аллаhумма иннака ‘афуввун каримун туẍиббу-ль-‘афва фа’фу ‘анни"» (Тирмизи)',
+	'6':'Согласно ханафитскому мазхабу, дуа «Кунут» читается в намазе витр (совершаемом после намаза иша), в третьем ракаате.',
+	'7':'<b>Лишь малая часть из польз аята "Аль-Курси"</b>:\n\n1. «Поистине, у всего есть вершина, и сура Аль-Бакара – вершина Корана, и в этой суре есть аят, который является господином всех аятов Корана – Аятуль-Курси» (Тирмизи, Хаким)\n\n2. «Тот, кто будет произносить этот аят по утрам, для того он станет защитой до самого вечера, а кто прочитает их вечером, то будет защищен до самого утра» (Тирмизи)\n\n3. «Тому, кто читал «Аятуль-Курси» после каждой обязательной молитвы, только смерть препятствует попасть в Рай» (Насаи)',
+	'8':'<b>Польза "Ля хауля уа ляя куввата илляя билляһ"</b>:\n\nПередают, что Абу Муса, да будет доволен им Аллах, сказал: «Однажды мы были вместе с Пророком, да благословит его Аллах и приветствует, в одной из поездок, и когда мы поднимались (на возвышенность), то возвеличивали Аллаха, и тогда Пророк, да благословит его Аллах и приветствует, сказал: “О люди! Умерьте свой пыл! Поистине, вы взываете не к глухому и не к отсутствующему, однако, вы взываете к Слышащему, Видящему”. Затем пришёл ‘Али, а я говорил себе: “Нет силы и мощи ни у кого, кроме Аллаха”, и тогда он сказал: “О ‘Абдуллах ибн Кайс, произноси: ‹Нет силы и мощи ни у кого, кроме Аллаха /Ля хауля ва ля куввата илля би-Ллях/›, ибо, поистине, эти слова являются одним из сокровищ Рая!” (Или он сказал: “Не указать ли мне тебе…”)». (Сахих аль-Бухари, №7386)',
+	'9':'Именно эта дуа, спасшее Пророка Ибрахима, выразившее его глубокую веру в Аллаха и довольство, читается во время трудностей и испытаний. Эта дуа была ниспослана пророку Мухаммаду (мир ему), когда враги Пророка ополчились против него. И Аллах ниспослал Ему данный аят. «Люди сказали им: «Народ собрался против вас. Побойтесь же их». Однако это лишь приумножило их веру, и они сказали: «Нам достаточно Аллаха, и как прекрасен этот Попечитель и Хранитель!» [3:173]»',
+	'10':'<b>Польза "Субханаллаһ валь хамдулилляһ"</b>:\n\n«Четыре вида речи являются наилучшими и тебе не повредит с какой бы ты не начал их чтение: субханаллахи, вальхамдулилляхи, ва ля иляха илля ллаху, валлаху акбар» (имамы Муслим, Ахмад, Ибн Маджах)',
+	'11':'<b>Польза "Ля иляха илляллаһу вахдаху ля шарика ляһ"</b>:\n\nТот, кто 100 раз в день скажет: «Ля иляха илля-ллаху вахдаху ля шарика лях, ляху-ль-мульку ва ляху-ль-хамду ва хува аля кули шей’ин кадир» получит такую же награду, какая полагается за освобождение десяти рабов, и запишется ему совершение ста добрых дел, и будут стёрты записи о ста его дурных делах, и послужат они ему защитой от шайтана на этот день до самого вечера, и никто не сможет сделать ничего лучше того, что сделал он, кроме такого человека, который сделает ещё больше".(Бухари, Муслим)',
+	'12':'<b>Польза "Ля иляһа илля анта субханака"</b>:\n\n«Мольбой Зу-н-Нуна (Пророка Юнуса), когда он находился в чреве кита, были следующие слова: “Ля иляха илля анта Субханака инни кунту мин аз-залимин”. И поистине, если какой-нибудь мусульманин попросит у Аллаха посредством этой мольбы, Аллах обязательно ответит ему». (Имам Ахмад, Тирмизи, Байхаки)',
+	'13':'<b>Польза от "Раббана атина фи-д-дунья"</b>:\n\nКак передается от Анас Ибн Малика (да будет доволен им Аллах!), больше всего пророк (да благословит его Аллах и приветствует!) читал следующее дуа: «Раббана атина фиддунья хасанатан ва филь ахирати хасанатан ва кына газабаннар. О, Аллах, Господь наш, одари нас добром в этом мире и добром в Последней жизни и защити нас от мучений в огне»',
+	'14':'<b>Польза от "Аллаһумма а`инни `аля зикрика"</b>:\n\nПередают со слов Му‘аза, да будет доволен им Аллах, что (однажды) Посланник Аллаха, да благословит его Аллах и приветствует, взял его за руку и сказал: «О Му‘аз, клянусь Аллахом, поистине, я люблю тебя и наказываю тебе, о Му‘аз, никогда не забывать говорить после каждой молитвы: «Аллахумма, а‘ин-ни ‘аля зикри-кя, ва шукри-кя ва хусни ‘ибадати-кя» (О Аллах, помоги мне поминать Тебя, благодарить Тебя и должным образом поклоняться Тебе)». (Абу Дауд, ан-Насаи)',
+	'15':'Тасбих читается во время таравих-намазов'
+}
+
 zikr_id = {
 	'1':'AgACAgIAAxkBAAIj-2MEqww_R8l4yTihKS9V95GzPv0kAAJ4wDEbbjwoSP9h0ZMpyD2bAQADAgADeQADKQQ',
 	'2':'AgACAgIAAxkBAAIj_WMEqxP4-QfrbN0aU5znSZFZlHKhAAJ5wDEbbjwoSNLXeYDXqzGXAQADAgADeQADKQQ',
@@ -461,70 +479,11 @@ async def zikr_get(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	text = callback.data[5:]
 	await callback.answer()
-	global zikr
-	if text == '1':
-		zikr = 1
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIj-2MEqww_R8l4yTihKS9V95GzPv0kAAJ4wDEbbjwoSP9h0ZMpyD2bAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_1_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_1_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(1))
-	elif text == '2':
-		zikr = 2
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIj_WMEqxP4-QfrbN0aU5znSZFZlHKhAAJ5wDEbbjwoSNLXeYDXqzGXAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_2_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_2_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(2))
-	elif text == '3':
-		zikr = 3
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIj_2MEqx1v7YWepWaOdjq8b_x5eKGqAAJ6wDEbbjwoSDeCXPTR4APQAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_3_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_3_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(3))
-	elif text == '4':
-		zikr = 4
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkAWMEqye9RmwmP_x4G5i_XR0hbc3LAAJ7wDEbbjwoSNbM0lZv1qe8AQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_4_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_4_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(4))
-	elif text == '5':
-		zikr = 5
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkA2MEqyyFWVYrigrzR9GkjaJNOtIZAAJ8wDEbbjwoSHuWKaAJkTYdAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_5_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_5_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(5))
-	elif text == '6':
-		zikr = 6
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkBWMEqzS2JRpSdiaIO7Yn98RUznbQAAJ9wDEbbjwoSPgwgN7uLjQWAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_6_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_6_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(6))
-	elif text == '7':
-		zikr = 7
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkB2MEqzofTHX2EvshZ2sk8-Ehf1rvAAJ-wDEbbjwoSJDb9PGGvUs3AQADAgADeAADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_7_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_7_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(7))
-	elif text == '8':
-		zikr = 8
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkCWMEqz_eLurs9GC9Pxszd_BGwxxIAAJ_wDEbbjwoSF1sp6Wn4OMCAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_8_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_8_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(8))
-	elif text == '9':
-		zikr = 9
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkC2MEq0QZMppnDWP48U72P86n-t51AAKAwDEbbjwoSCHikcX1VGvrAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_9_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_9_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(9))
-	elif text == '10':
-		zikr = 10
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkDWMEq0mG7dzy9WkON0gX5nhfZNifAAKBwDEbbjwoSKDKheWQBGIeAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_10_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_10_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(10))
-	elif text == '11':
-		zikr = 11
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkD2MEq03iR7j_TmYbUiM7DraRblRYAAKCwDEbbjwoSArz1Oa4zOW6AQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_11_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_11_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(11))
-	elif text == '12':
-		zikr = 12
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkEWMEq1FqrpMYczi_f4a1ClBR4OcsAAKDwDEbbjwoSFNW39f-yMXaAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_12_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_12_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(12))
-	elif text == '13':
-		zikr = 13
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkE2MEq3DkQ1k3gFWEAAG1on9nE78CAgAChMAxG248KEhWOZN02HeNTAEAAwIAA3kAAykE', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_13_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_13_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(13))
-	elif text == '14':
-		zikr = 14
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkFWMEq3irb4oF_CH0CgJ98mzaI6ojAAKFwDEbbjwoSCVKzJIjoxsTAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_14_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_14_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(14))
-	elif text == '15':
-		zikr = 15
-		await callback.message.delete()
-		await bot.send_photo(callback.from_user.id, 'AgACAgIAAxkBAAIkF2MEq4ONMSge7gwMoyTfLj8PBTp5AAKGwDEbbjwoSMACx-2DW3wpAQADAgADeQADKQQ', caption=f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_15_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_15_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(15))
+	await callback.message.delete()
+	if text == '16':
+		await callback.message.answer(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_16_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_16_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(16))
 	else:
-		zikr = 16
-		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute("SELECT zikr_16_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute("SELECT zikr_16_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= client_kb.markup_zikr_lower(16))
+		await bot.send_photo(callback.from_user.id, zikr_id[text], caption=f'Сегодня: {sqlite_bd.cur.execute(f"SELECT zikr_{text}_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute(f"SELECT zikr_{text}_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup=await client_kb.markup_zikr_lower(text))
 
 async def zikr_plus(callback: types.CallbackQuery):
 	data = callback.data[10:]
@@ -532,7 +491,10 @@ async def zikr_plus(callback: types.CallbackQuery):
 	sqlite_bd.cur.execute(f'UPDATE zikr SET zikr_{data}_today == zikr_{data}_today + 1, zikr_{data}_all == zikr_{data}_all + 1 WHERE user_id == ?', (user_id, ))
 	sqlite_bd.base.commit()
 	await callback.answer()
-	await callback.message.edit_caption(f'Сегодня: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(data))
+	if data == '16':
+		await callback.message.edit_text(f'Сегодня: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(data))
+	else:
+		await callback.message.edit_caption(f'Сегодня: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_today FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]} ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ \nЗа все время: {sqlite_bd.cur.execute(f"SELECT zikr_{data}_all FROM zikr WHERE user_id == ?", (user_id, )).fetchone()[0]}', reply_markup= await client_kb.markup_zikr_lower(data))
 
 async def zikr_reset(callback: types.CallbackQuery):
 	data = callback.data[11:]
@@ -566,6 +528,14 @@ async def zikr_all(callback: types.CallbackQuery):
 	await callback.answer()
 	await callback.message.delete()
 	await callback.message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
+
+async def zikr_polza(callback: types.CallbackQuery):
+	data = callback.data[11:]
+	if data == '16':
+		pass
+	else:
+		await callback.message.answer(zikr_polzi[data])
+	await callback.answer()
 
 # Unknown messages
 async def help_command(message: types.Message):
@@ -924,6 +894,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(zikr_reset, text_startswith = 'zikr_reset_')
 	dp.register_callback_query_handler(zikr_plus, text_startswith = 'zikr_plus_')
 	dp.register_callback_query_handler(zikr_all, text = 'zikr_all')
+	dp.register_callback_query_handler(zikr_polza, text_startswith = 'zikr_polza_')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
 
 	dp.register_message_handler(photo_id, content_types=["photo"])

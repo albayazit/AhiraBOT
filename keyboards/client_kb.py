@@ -99,6 +99,10 @@ inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr
 async def markup_zikr_lower(zikr):
 	markup = InlineKeyboardMarkup()
 	markup.add(InlineKeyboardButton('+', callback_data='zikr_plus_'+str(zikr))).add(InlineKeyboardButton('Сбросить', callback_data='zikr_reset_'+str(zikr))).insert(InlineKeyboardButton('Зикры', callback_data='zikr_all'))
+	if zikr == 16:
+		pass
+	else:
+		markup.insert(InlineKeyboardButton('Польза', callback_data='zikr_polza_'+str(zikr)))
 	return markup
 
 async def markup_zikr_reset(zikr):
