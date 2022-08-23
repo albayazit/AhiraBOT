@@ -103,6 +103,17 @@ zikr_id = {
 	'16':'Без категории',
 }
 
+dua = {
+	'1':'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',
+	'2':'',
+	'3':'',
+	'4':'',
+	'5':'',
+	'6':'',
+	'7':'',
+	'8':''
+}
+
 #--------------------Functions--------------------#
 
 # Main keyboard | /start
@@ -809,8 +820,13 @@ async def favorite_cities(callback: types.CallbackQuery):
 	await callback.message.edit_text('<b>Избранные города:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.favorite_cities(user_id))
 	await callback.answer()
 
-async def photo_id(message: types.Message):
-	await message.answer(f"Id: {message.photo[2].file_id}")
+async def dua_command(message: types.Message):
+	await message.answer('<b>Дуа какого Пророка (мир Им) прислать?:</b>', reply_markup=client_kb.markup_dua)
+
+async def dua_get(callback: types.CallbackQuery):
+	data = callback.data[4:]
+	await callback.message.edit_text()
+
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(start_command, commands=['start'])
@@ -820,6 +836,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tracker_reset_cancel, text = 'tracker_cancel')
 	dp.register_callback_query_handler(tracker_reset_yes, text = 'tracker_reset')
 	dp.register_message_handler(tutor_command, lambda message: message.text == "🕌 Обучение")
+	dp.register_message_handler(dua_command, lambda message: message.text == "🤲 Дуа")
 	dp.register_message_handler(tutor_namaz_command, lambda message: message.text == "❓\n Что такое намаз")
 	dp.register_message_handler(tutor_time_command, lambda message: message.text == "🕦\n Время намазов")
 	dp.register_message_handler(tutor_cond_command, lambda message: message.text == "❗\n Условия намаза")
@@ -896,5 +913,4 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(zikr_all, text = 'zikr_all')
 	dp.register_callback_query_handler(zikr_polza, text_startswith = 'zikr_polza_')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
-
-	dp.register_message_handler(photo_id, content_types=["photo"])
+	dp.register_callback_query_handler(dua_get, text_startswith = 'dua_')

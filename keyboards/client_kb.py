@@ -360,3 +360,6 @@ markup_tracker_reset.add(InlineKeyboardButton('Отмена', callback_data='tra
 
 markup_tracker_vitr = InlineKeyboardMarkup()
 markup_tracker_vitr.add(InlineKeyboardButton('Нет', callback_data='vitr_no')).insert(InlineKeyboardButton('Да', callback_data='vitr_yes'))
+
+markup_dua = InlineKeyboardMarkup()
+markup_dua.add(InlineKeyboardButton('Пророка Адама (мир Ему)', callback_data='dua_1')).add(InlineKeyboardButton('Пророка Айюба (мир Ему)', callback_data='dua_2')).add(InlineKeyboardButton('Пророка Ибрахима (мир Ему)', callback_data='dua_3')).add(InlineKeyboardButton('Пророка Мусы (мир Ему)', callback_data='dua_4')).add(InlineKeyboardButton('Пророка Шуайба (мир Ему)', callback_data='dua_5')).add(InlineKeyboardButton('Пророка Йусуфа (мир Ему)', callback_data='dua_6')).add(InlineKeyboardButton('Пророка Йунуса (мир Ему)', callback_data='dua_7')).add(InlineKeyboardButton('Пророка Лута (мир Ему)', callback_data='dua_8'))
