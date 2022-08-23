@@ -52,18 +52,17 @@ zikr_2 = InlineKeyboardButton('Дуа за родителей', callback_data= '
 zikr_3 = InlineKeyboardButton('Калима Тавхид', callback_data='zikr_3')
 zikr_4 = InlineKeyboardButton('Субханаллаһи ва бихамдиһи',callback_data='zikr_4')
 zikr_5 = InlineKeyboardButton('Аллаһумма иннака `афуун...', callback_data='zikr_5')
-zikr_6 = InlineKeyboardButton('Астагфируллаһ аль Азыйм', callback_data='zikr_6')
+zikr_6 = InlineKeyboardButton('Дуа "Кунут"', callback_data='zikr_6')
 zikr_7 = InlineKeyboardButton('Аят "Аль-Курси"', callback_data='zikr_7')
 zikr_8 = InlineKeyboardButton('Ля хауля уа ляя куввата илляя билляһ', callback_data='zikr_8')
 zikr_9 = InlineKeyboardButton('Хасбуналлаһу ва ни`маль вакиль', callback_data='zikr_9')
 zikr_10 = InlineKeyboardButton('Субханаллаһ валь хамдулилляһ', callback_data='zikr_10')
-zikr_11 = InlineKeyboardButton('Ля иляһа илля анта субханака', callback_data='zikr_11')
-zikr_12 = InlineKeyboardButton('Ля иляха илляллаһу вахдаху ля шарика ляһ', callback_data='zikr_12')
-zikr_13 = InlineKeyboardButton('Дуа "Кунут"', callback_data='zikr_13')
-zikr_14 = InlineKeyboardButton('Раббана атина фи-д-дунья', callback_data='zikr_14')
-zikr_15 = InlineKeyboardButton('Аллаһумма а`инни `аля зикрика', callback_data='zikr_15')
-zikr_16 = InlineKeyboardButton('Таравих тасбих', callback_data='zikr_16')
-zikr_17 = InlineKeyboardButton('Без категории', callback_data='zikr_17')
+zikr_11 = InlineKeyboardButton('Ля иляха илляллаһу вахдаху ля шарика ляһ', callback_data='zikr_11')
+zikr_12 = InlineKeyboardButton('Ля иляһа илля анта субханака', callback_data='zikr_12')
+zikr_13 = InlineKeyboardButton('Раббана атина фи-д-дунья', callback_data='zikr_13')
+zikr_14 = InlineKeyboardButton('Аллаһумма а`инни `аля зикрика', callback_data='zikr_14')
+zikr_15 = InlineKeyboardButton('Таравих тасбих', callback_data='zikr_15')
+zikr_16 = InlineKeyboardButton('Без категории', callback_data='zikr_16')
 
 # calculate schools
 school_1 = InlineKeyboardButton('Ханафитский', callback_data='school_1')
@@ -94,7 +93,7 @@ markup_audio.add(InlineKeyboardButton('Коран', callback_data='audio_koran')
 # zikr 
 inline_zikr_all = InlineKeyboardMarkup()
 inline_zikr_all.row_width = 2
-inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16, zikr_17)
+inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16)
 
 
 async def markup_zikr_lower(zikr):
