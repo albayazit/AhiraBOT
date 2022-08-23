@@ -104,14 +104,19 @@ zikr_id = {
 }
 
 dua = {
-	'1':'رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ',
-	'2':'',
-	'3':'',
-	'4':'',
-	'5':'',
-	'6':'',
-	'7':'',
-	'8':''
+	'1':'AgACAgIAAxkBAAIlHGMFTClsgFgTDVxSzxU-HJHrFWgfAAIyvTEbbjwwSGfz_S4tznN-AQADAgADeQADKQQ',
+	'2':'AgACAgIAAxkBAAIlHmMFTDDaXuS-OXFWDLCEeJ8dUpNqAAIzvTEbbjwwSHc_Uj00YEc6AQADAgADeQADKQQ',
+	'3':'AgACAgIAAxkBAAIlIGMFTDSJFphZROk_EdgmFXxDPUPwAAI0vTEbbjwwSIzrQyGDakW8AQADAgADeQADKQQ',
+	'4':'AgACAgIAAxkBAAIlImMFTDgBrgwvcbG2Cx__jZuJ0AmUAAI1vTEbbjwwSJwxlYwb4AMLAQADAgADeQADKQQ',
+	'5':'AgACAgIAAxkBAAIlJGMFTDyyvbageKijElCpaAABlAJZ_gACNr0xG248MEieTZcBA2SFbwEAAwIAA3kAAykE',
+	'6':'AgACAgIAAxkBAAIlJmMFTEFbO0mD3GrIhmF8GcpI7nfzAAI3vTEbbjwwSHIS4BFHZGd8AQADAgADeQADKQQ',
+	'7':'AgACAgIAAxkBAAIlKGMFTEXbXZk_VBb6z_5SBfn5xF83AAI4vTEbbjwwSA0mnGYmiDi9AQADAgADeQADKQQ',
+	'8':'AgACAgIAAxkBAAIlKmMFTEkX9dwZq2Jj81lFD24wu-LVAAI5vTEbbjwwSAABQ8DammkfgwEAAwIAA3kAAykE',
+	'9':'AgACAgIAAxkBAAIlLGMFTE1phlBBNtctKkx6S2Mi6PITAAI6vTEbbjwwSHkuUieLk-MFAQADAgADeQADKQQ',
+	'10':'AgACAgIAAxkBAAIlLmMFTFOur1XoL2QEpdKarEUaxfx_AAI7vTEbbjwwSOof4vANzG7KAQADAgADeQADKQQ',
+	'11':'AgACAgIAAxkBAAIlMGMFTFtYuorVoO7exS6rt94dITvZAAI8vTEbbjwwSFZBTeD1pR3oAQADAgADeQADKQQ',
+	'12':'AgACAgIAAxkBAAIlMmMFTF6z4gPl3Xjfmeuan3WVKWbpAAI9vTEbbjwwSNhRvCxTwEGJAQADAgADeQADKQQ',
+	'13':'AgACAgIAAxkBAAIlNGMFTGKlwRsP-n9sxvhHj0_b_YnuAAI-vTEbbjwwSBrfsKObT0qEAQADAgADeQADKQQ'
 }
 
 #--------------------Functions--------------------#
