@@ -827,6 +827,15 @@ async def dua_get(callback: types.CallbackQuery):
 	data = callback.data[4:]
 	await callback.message.edit_text()
 
+async def photo_file_id(message: types.Message):
+    await message.answer(message.photo[2].file_id)
+
+async def document_file_id(message: types.Message):
+    await message.answer(message.document.file_id)
+
+async def audio_file_id(message: types.Message):
+    await message.answer(message.audio.file_id)
+
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(start_command, commands=['start'])
@@ -914,3 +923,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(zikr_polza, text_startswith = 'zikr_polza_')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
 	dp.register_callback_query_handler(dua_get, text_startswith = 'dua_')
+
+	dp.register_message_handler(photo_file_id, content_types=["photo"])
+	dp.register_message_handler(audio_file_id, content_types=["audio"])
+	dp.register_message_handler(document_file_id, content_types=["document"])
