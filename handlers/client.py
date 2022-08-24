@@ -1,4 +1,5 @@
 from asyncio.windows_events import NULL
+from http import client
 from tkinter import INSERT
 from aiogram import Dispatcher, types
 from create_bot import dp
@@ -103,7 +104,7 @@ zikr_id = {
 	'16':'Без категории',
 }
 
-dua = {
+dua_id = {
 	'1':'AgACAgIAAxkBAAIlHGMFTClsgFgTDVxSzxU-HJHrFWgfAAIyvTEbbjwwSGfz_S4tznN-AQADAgADeQADKQQ',
 	'2':'AgACAgIAAxkBAAIlHmMFTDDaXuS-OXFWDLCEeJ8dUpNqAAIzvTEbbjwwSHc_Uj00YEc6AQADAgADeQADKQQ',
 	'3':'AgACAgIAAxkBAAIlIGMFTDSJFphZROk_EdgmFXxDPUPwAAI0vTEbbjwwSIzrQyGDakW8AQADAgADeQADKQQ',
@@ -830,7 +831,13 @@ async def dua_command(message: types.Message):
 
 async def dua_get(callback: types.CallbackQuery):
 	data = callback.data[4:]
-	await callback.message.edit_text()
+	await bot.send_photo(callback.from_user.id, dua_id[data], reply_markup=client_kb.markup_dua_lower)
+	await callback.answer()
+
+async def dua_all(callback: types.CallbackQuery):
+	await callback.answer()
+	await callback.message.delete()
+	await callback.message.answer('<b>Дуа какого пророка (мир Им) прислать?</b>', reply_markup=client_kb.markup_dua)
 
 async def photo_file_id(message: types.Message):
     await message.answer(message.photo[2].file_id)
@@ -927,6 +934,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(zikr_all, text = 'zikr_all')
 	dp.register_callback_query_handler(zikr_polza, text_startswith = 'zikr_polza_')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
+	dp.register_callback_query_handler(dua_all, text = 'dua_all')
 	dp.register_callback_query_handler(dua_get, text_startswith = 'dua_')
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])

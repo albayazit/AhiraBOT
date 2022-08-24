@@ -363,3 +363,6 @@ markup_tracker_vitr.add(InlineKeyboardButton('Нет', callback_data='vitr_no'))
 
 markup_dua = InlineKeyboardMarkup(row_width=2)
 markup_dua.add(InlineKeyboardButton('Адама (мир Ему)', callback_data='dua_1')).add(InlineKeyboardButton('Айюба (мир Ему)', callback_data='dua_2')).insert(InlineKeyboardButton('Мусы (мир Ему) (1)', callback_data='dua_8')).insert(InlineKeyboardButton('Ибрахима (мир Ему) (1)', callback_data='dua_3')).insert(InlineKeyboardButton('Мусы (мир Ему) (2)', callback_data='dua_9')).insert(InlineKeyboardButton('Ибрахима (мир Ему) (2)', callback_data='dua_4')).insert(InlineKeyboardButton('Шуайба (мир Ему)', callback_data='dua_10')).insert(InlineKeyboardButton('Ибрахима (мир Ему) (3)', callback_data='dua_5')).insert(InlineKeyboardButton('Йусуфа (мир Ему)', callback_data='dua_11')).insert(InlineKeyboardButton('Ибрахима (мир Ему) (4)', callback_data='dua_6')).insert(InlineKeyboardButton('Йунуса (мир Ему)', callback_data='dua_12')).insert(InlineKeyboardButton('Ибрахима (мир Ему) (5)', callback_data='dua_7')).insert(InlineKeyboardButton('Лута (мир Ему)', callback_data='dua_13'))
+
+markup_dua_lower = InlineKeyboardMarkup()
+markup_dua_lower.add(InlineKeyboardButton('Список дуа', callback_data='dua_all'))
