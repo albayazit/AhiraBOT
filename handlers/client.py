@@ -826,7 +826,7 @@ async def favorite_cities(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def dua_command(message: types.Message):
-	await message.answer('<b>Дуа какого Пророка (мир Им) прислать?:</b>', reply_markup=client_kb.markup_dua)
+	await message.answer('<b>Дуа какого пророка (мир Им) прислать?</b>', reply_markup=client_kb.markup_dua)
 
 async def dua_get(callback: types.CallbackQuery):
 	data = callback.data[4:]
