@@ -366,3 +366,16 @@ markup_dua.add(InlineKeyboardButton('Адама (мир Ему)', callback_data=
 
 markup_dua_lower = InlineKeyboardMarkup()
 markup_dua_lower.add(InlineKeyboardButton('Список дуа', callback_data='dua_all'))
+
+markup_hadis = InlineKeyboardMarkup()
+markup_hadis.add(InlineKeyboardButton('Избранные хадисы', callback_data='hadis_favorite')).add(InlineKeyboardButton('Случайный хадис', callback_data='hadis_random'))
+
+async def markup_hadis_random(count, user_id):
+	markup = InlineKeyboardMarkup()
+	info = sqlite_bd.cur.execute(f'SELECT EXISTS(SELECT hadis_id FROM hadis WHERE user_id == ? AND hadis_id == ?)', (user_id, count))
+	if info.fetchone()[0] == 0:
+		markup.add(InlineKeyboardButton('В избранное', callback_data='hadis_favorite_add_'+str(count)))
+	else:
+		markup.add(InlineKeyboardButton('Удалить из избранных', callback_data='hadis_favorite_delete_'+str(count)))
+	markup.insert(InlineKeyboardButton('Ещё', callback_data='hadis_random'))
+	return markup
