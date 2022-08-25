@@ -3,7 +3,9 @@ import random
 
 data = pd.read_excel('data/hadis/hadisi.xlsx')
 
-async def get_hadis():
-	count = random.randint(1, 205)
-	hadis = data[data['id'] == count]['text'].to_string(index=False)
+async def get_random_count():
+	return random.randint(1, 205)
+
+async def get_hadis(count):
+	hadis = data['text'][count]
 	return hadis
