@@ -460,9 +460,22 @@ async def audio_propoved_menu(callback: types.CallbackQuery):
 
 
 # Books | 'Книги' (Reply)
-async def books_command(message: types.Message):
-    await message.answer('Книги')
+async def names_command(message: types.Message):
+	global page
+	page = 1
+	await message.answer('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
 
+async def names_command_back(callback: types.CallbackQuery):
+	global page
+	page -= 1
+	await callback.message.edit_text('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
+	await callback.answer()
+
+async def names_command_next(callback: types.CallbackQuery):
+	global page
+	page += 1
+	await callback.message.edit_text('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
+	await callback.answer()
 
 # Calendar | 'Календарь' (Reply)
 async def calendar_command(message: types.Message):
@@ -939,7 +952,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tutor_sura_command, lambda message: message.text == "📃\n Суры и дуа намаза")
 	dp.register_message_handler(tutor_women_command, lambda message: message.text == "🧕\n Женский намаз")					
 	dp.register_message_handler(audio_command, lambda message: message.text == "🎧 Аудио")
-	dp.register_message_handler(books_command, lambda message: message.text == "📚 Книги")
+	dp.register_message_handler(names_command, lambda message: message.text == "❾❾ Имён")
 	dp.register_message_handler(calendar_command, lambda message: message.text == "📅 Календарь")
 	dp.register_message_handler(info_command, lambda message: message.text == "❗ Помощь")
 	dp.register_message_handler(zikr_command, lambda message: message.text == "📿 Зикр")
@@ -1015,6 +1028,8 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(hadis_get_saved, text_startswith = 'hadis_saved_')
 	dp.register_callback_query_handler(hadis_saved_back, text = 'back_hadis')
 	dp.register_callback_query_handler(hadis_saved_next, text = 'next_hadis')
+	dp.register_callback_query_handler(names_command_back, text = 'back_names')
+	dp.register_callback_query_handler(names_command_next, text = 'next_names')
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])

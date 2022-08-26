@@ -1,3 +1,4 @@
+from subprocess import call
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from parcer import parcer_tatarstan, parcer_dagestan, parcer_kazakhstan, parcer_hadis
 from datetime import date, timedelta, datetime
@@ -20,7 +21,7 @@ button_tutor_women = KeyboardButton('🧕\n Женский намаз')
 # audio
 button_audio = KeyboardButton('🎧 Аудио')
 # books
-button_books = KeyboardButton('📚 Книги')
+button_names = KeyboardButton('❾❾ Имён')
 # hadis
 button_hadis = KeyboardButton('📖 Хадисы')
 # dua
@@ -49,6 +50,9 @@ next_dag = InlineKeyboardButton('Далее ⏩', callback_data='next_dag')
 back_hadis = InlineKeyboardButton('⏪ Назад', callback_data='back_hadis')
 next_hadis = InlineKeyboardButton('Далее ⏩', callback_data='next_hadis')
 
+back_names = InlineKeyboardButton('⏪ Назад', callback_data='back_names')
+next_names = InlineKeyboardButton('Далее ⏩', callback_data='next_names')
+
 # Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
 zikr_2 = InlineKeyboardButton('Дуа за родителей', callback_data= 'zikr_2')
@@ -76,7 +80,7 @@ school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Х�
 # main
 markup_main = ReplyKeyboardMarkup()
 markup_main.add(button_time).add(
-    button_tracker, button_audio, button_books, button_hadis, button_dua, button_zikr, button_tutor, button_info, button_calendar
+    button_tracker, button_audio, button_names, button_hadis, button_dua, button_zikr, button_tutor, button_info, button_calendar
 )
 
 # city_add
@@ -403,4 +407,21 @@ async def hadis_favorite(user_id, page):
 	elif last_page == False:
 		markup.add(back_hadis)
 		markup.insert(next_hadis)
+	return markup
+
+async def names_inline(page):
+	markup = InlineKeyboardMarkup(row_width=5)
+	key = 25 * page
+	last_page = False
+	for i in range(key - 25, key):
+		markup.insert(InlineKeyboardButton(i + 1, callback_data='names_'+str(i + 1)))
+		if i == 98:
+			last_page = True
+			markup.add(back_names)
+			return markup
+	if page == 1 and last_page == False:
+		markup.add(next_names)
+	elif last_page == False:
+		markup.add(back_names)
+		markup.insert(next_names)
 	return markup
