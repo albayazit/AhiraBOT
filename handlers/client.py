@@ -895,9 +895,11 @@ async def hadis_saved_back(callback : types.CallbackQuery):
 	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
 	await callback.answer()
 
-
-
-
+async def hadis_get_saved(callback: types.CallbackQuery):
+	data = callback.data[12:]
+	user_id = callback.from_user.id
+	await callback.message.edit_text(await parcer_hadis.get_hadis(int(data)), reply_markup=await client_kb.markup_hadis_random(int(data), user_id))
+	await callback.answer()
 
 
 
@@ -1005,6 +1007,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(hadis_add, text_startswith = 'hadis_favorite_add_')
 	dp.register_callback_query_handler(hadis_delete, text_startswith = 'hadis_favorite_delete_')
 	dp.register_callback_query_handler(hadis_saved, text = 'hadis_favorite')
+	dp.register_callback_query_handler(hadis_get_saved, text_startswith = 'hadis_saved_')
 	dp.register_callback_query_handler(hadis_saved_back, text = 'back_hadis')
 	dp.register_callback_query_handler(hadis_saved_next, text = 'next_hadis')
 
