@@ -1,5 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
-from parcer import parcer_tatarstan, parcer_dagestan, parcer_kazakhstan
+from parcer import parcer_tatarstan, parcer_dagestan, parcer_kazakhstan, parcer_hadis
 from datetime import date, timedelta, datetime
 from database import sqlite_bd
 
@@ -45,6 +45,9 @@ next_kaz = InlineKeyboardButton('Далее ⏩', callback_data='next_kaz')
 
 back_dag = InlineKeyboardButton('⏪ Назад', callback_data='back_dag')
 next_dag = InlineKeyboardButton('Далее ⏩', callback_data='next_dag')
+
+back_hadis = InlineKeyboardButton('⏪ Назад', callback_data='back_hadis')
+next_hadis = InlineKeyboardButton('Далее ⏩', callback_data='next_hadis')
 
 # Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
@@ -368,14 +371,36 @@ markup_dua_lower = InlineKeyboardMarkup()
 markup_dua_lower.add(InlineKeyboardButton('Список дуа', callback_data='dua_all'))
 
 markup_hadis = InlineKeyboardMarkup()
-markup_hadis.add(InlineKeyboardButton('Избранные хадисы', callback_data='hadis_favorite')).add(InlineKeyboardButton('Случайный хадис', callback_data='hadis_random'))
+markup_hadis.add(InlineKeyboardButton('Сохраненные хадисы', callback_data='hadis_favorite')).insert(InlineKeyboardButton('Случайный хадис', callback_data='hadis_random'))
 
 async def markup_hadis_random(count, user_id):
 	markup = InlineKeyboardMarkup()
 	info = sqlite_bd.cur.execute(f'SELECT EXISTS(SELECT hadis_id FROM hadis WHERE user_id == ? AND hadis_id == ?)', (user_id, count))
 	if info.fetchone()[0] == 0:
-		markup.add(InlineKeyboardButton('В избранное', callback_data='hadis_favorite_add_'+str(count)))
+		markup.add(InlineKeyboardButton('Сохранить', callback_data='hadis_favorite_add_'+str(count)))
 	else:
-		markup.add(InlineKeyboardButton('Удалить из избранных', callback_data='hadis_favorite_delete_'+str(count)))
+		markup.add(InlineKeyboardButton('Удалить из сохраненных', callback_data='hadis_favorite_delete_'+str(count)))
 	markup.insert(InlineKeyboardButton('Ещё', callback_data='hadis_random'))
+	return markup
+
+async def hadis_favorite(user_id, page):
+	markup = InlineKeyboardMarkup()
+	last_page = False
+	keys = page * 5
+	for i in range(keys-5, keys):
+		try:
+			key = sqlite_bd.cur.execute('SELECT hadis_id FROM hadis WHERE user_id == ? AND id == ?', (user_id, i + 1)).fetchone()[0]
+			text = await parcer_hadis.get_hadis(int(key))
+			markup.add(InlineKeyboardButton(text, callback_data='hadis_saved_' + key))
+			key_check = sqlite_bd.cur.execute('SELECT hadis_id FROM hadis WHERE user_id == ? AND id == ?', (user_id, i + 2)).fetchone()[0]
+		except:
+			last_page = True
+			if page != 1:
+				markup.add(back_hadis)
+				break
+	if page == 1 and last_page == False:
+		markup.add(next_hadis)
+	elif last_page == False:
+		markup.add(back_hadis)
+		markup.insert(next_hadis)
 	return markup

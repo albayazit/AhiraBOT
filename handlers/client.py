@@ -1,17 +1,17 @@
 from asyncio.windows_events import NULL
-from http import client
+from multiprocessing.connection import Client
 from tkinter import INSERT
 from aiogram import Dispatcher, types
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan
+from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan, parcer_hadis
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from database import sqlite_bd
 from datetime import datetime
-import asyncio
 from create_bot import scheduler, bot
+import asyncio
 
 # FSM
 class FSMaddress(StatesGroup):
@@ -839,6 +839,70 @@ async def dua_all(callback: types.CallbackQuery):
 	await callback.message.delete()
 	await callback.message.answer('<b>Дуа какого пророка (мир Им) прислать?</b>', reply_markup=client_kb.markup_dua)
 
+async def hadis_command(message: types.Message):
+	await message.answer('Выберите раздел:', reply_markup=client_kb.markup_hadis)
+
+async def hadis_random(callback: types.CallbackQuery):
+	count = await parcer_hadis.get_random_count()
+	user_id = callback.from_user.id
+	try:
+		await callback.message.edit_text(await parcer_hadis.get_hadis(count), reply_markup=await client_kb.markup_hadis_random(count, user_id))
+	except:
+		count += 1
+		await callback.message.edit_text(await parcer_hadis.get_hadis(count), reply_markup=await client_kb.markup_hadis_random(count, user_id))
+	await callback.answer()
+
+async def hadis_add(callback: types.CallbackQuery):
+	data = callback.data[19:]
+	user_id = callback.from_user.id
+	saved_id = 1
+	try:
+		for item in sqlite_bd.cur.execute('SELECT id FROM hadis WHERE user_id == ?', (user_id, )).fetchall():
+			saved_id = int(item[0]) + 1
+	except:
+		pass
+	sqlite_bd.cur.execute('INSERT INTO hadis VALUES(?, ?, ?)', (user_id, data, saved_id))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text(await parcer_hadis.get_hadis(int(data)), reply_markup=await client_kb.markup_hadis_random(int(data), user_id))
+	await callback.answer()
+
+async def hadis_delete(callback: types.CallbackQuery):
+	data = callback.data[22:]
+	user_id = callback.from_user.id
+	sqlite_bd.cur.execute('DELETE FROM hadis WHERE user_id == ? AND hadis_id == ?', (user_id, data))
+	sqlite_bd.base.commit()
+	await callback.message.edit_text(await parcer_hadis.get_hadis(int(data)), reply_markup=await client_kb.markup_hadis_random(int(data), user_id))
+	await callback.answer()
+
+async def hadis_saved(callback : types.CallbackQuery):
+	global page
+	page = 1
+	user_id = callback.from_user.id
+	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
+	await callback.answer()
+
+async def hadis_saved_next(callback : types.CallbackQuery):
+	global page
+	page += 1
+	user_id = callback.from_user.id
+	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
+	await callback.answer()
+
+async def hadis_saved_back(callback : types.CallbackQuery):
+	global page
+	page -= 1
+	user_id = callback.from_user.id
+	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
+	await callback.answer()
+
+
+
+
+
+
+
+
+
 async def photo_file_id(message: types.Message):
     await message.answer(message.photo[2].file_id)
 
@@ -858,6 +922,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tracker_reset_yes, text = 'tracker_reset')
 	dp.register_message_handler(tutor_command, lambda message: message.text == "🕌 Обучение")
 	dp.register_message_handler(dua_command, lambda message: message.text == "🤲 Дуа")
+	dp.register_message_handler(hadis_command, lambda message: message.text == "📖 Хадисы")
 	dp.register_message_handler(tutor_namaz_command, lambda message: message.text == "❓\n Что такое намаз")
 	dp.register_message_handler(tutor_time_command, lambda message: message.text == "🕦\n Время намазов")
 	dp.register_message_handler(tutor_cond_command, lambda message: message.text == "❗\n Условия намаза")
@@ -936,6 +1001,13 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
 	dp.register_callback_query_handler(dua_all, text = 'dua_all')
 	dp.register_callback_query_handler(dua_get, text_startswith = 'dua_')
+	dp.register_callback_query_handler(hadis_random, text = 'hadis_random')
+	dp.register_callback_query_handler(hadis_add, text_startswith = 'hadis_favorite_add_')
+	dp.register_callback_query_handler(hadis_delete, text_startswith = 'hadis_favorite_delete_')
+	dp.register_callback_query_handler(hadis_saved, text = 'hadis_favorite')
+	dp.register_callback_query_handler(hadis_saved_back, text = 'back_hadis')
+	dp.register_callback_query_handler(hadis_saved_next, text = 'next_hadis')
+
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	dp.register_message_handler(audio_file_id, content_types=["audio"])
