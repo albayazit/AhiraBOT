@@ -871,6 +871,11 @@ async def hadis_delete(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	sqlite_bd.cur.execute('DELETE FROM hadis WHERE user_id == ? AND hadis_id == ?', (user_id, data))
 	sqlite_bd.base.commit()
+	count = 0
+	for i in sqlite_bd.cur.execute('SELECT hadis_id FROM hadis WHERE user_id == ?', (user_id, )).fetchall():
+		count += 1
+		sqlite_bd.cur.execute('UPDATE hadis SET id == ? WHERE user_id == ? AND hadis_id == ?', (count, user_id, i[0]))
+		sqlite_bd.base.commit()
 	await callback.message.edit_text(await parcer_hadis.get_hadis(int(data)), reply_markup=await client_kb.markup_hadis_random(int(data), user_id))
 	await callback.answer()
 
