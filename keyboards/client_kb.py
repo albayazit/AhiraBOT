@@ -19,11 +19,11 @@ button_tutor_forma = KeyboardButton('🧎\n Форма совершения на
 button_tutor_sura = KeyboardButton('📃\n Суры и дуа намаза')
 button_tutor_women = KeyboardButton('🧕\n Женский намаз')
 # audio
-button_audio = KeyboardButton('🎧 Аудио')
+button_koran = KeyboardButton('📖 Коран')
 # books
 button_names = KeyboardButton('❾❾ Имён')
 # hadis
-button_hadis = KeyboardButton('📖 Хадисы')
+button_hadis = KeyboardButton('📕 Хадисы')
 # dua
 button_dua = KeyboardButton('🤲 Дуа')
 # zikr
@@ -80,7 +80,7 @@ school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Х�
 # main
 markup_main = ReplyKeyboardMarkup()
 markup_main.add(button_time).add(
-    button_tracker, button_audio, button_names, button_hadis, button_dua, button_zikr, button_tutor, button_info, button_calendar
+    button_tracker, button_koran, button_names, button_hadis, button_dua, button_zikr, button_tutor, button_info, button_calendar
 )
 
 # city_add
