@@ -95,9 +95,9 @@ markup_namaz_tutor.add(
     button_tutor_what, button_tutor_time, button_tutor_cond, button_tutor_gusl, button_tutor_taharat, button_tutor_forma, button_tutor_sura, button_tutor_women, button_back
 )
 
-# audio
-markup_audio = InlineKeyboardMarkup()
-markup_audio.add(InlineKeyboardButton('Коран', callback_data='audio_koran')).insert(InlineKeyboardButton('Проповедь', callback_data='audio_propoved'))
+# qoran
+markup_qoran = InlineKeyboardMarkup()
+markup_qoran.add(InlineKeyboardButton('Аят', callback_data='qoran_ayah')).insert(InlineKeyboardButton('Суру (с аудио)', callback_data='qoran_surah'))
 
 # zikr 
 inline_zikr_all = InlineKeyboardMarkup()

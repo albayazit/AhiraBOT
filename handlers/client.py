@@ -551,14 +551,9 @@ async def tutor_women_command(message: types.Message):
 
 
 # Audio | 'Аудио' (Reply)
-async def audio_command(message: types.Message):
-    await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_audio)
+async def qoran_command(message: types.Message):
+    await message.answer('Что Вам прислать? ', reply_markup=client_kb.markup_qoran)
 
-async def audio_koran_menu(callback: types.CallbackQuery):
-	await callback.message.edit_text('Выберите чтеца:')
-
-async def audio_propoved_menu(callback: types.CallbackQuery):
-	await callback.message.edit_text('Выберите проповедника:')
 
 
 # Books | 'Книги' (Reply)
@@ -1078,7 +1073,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tutor_forma_command, lambda message: message.text == "🧎\n Форма совершения намаза")	
 	dp.register_message_handler(tutor_sura_command, lambda message: message.text == "📃\n Суры и дуа намаза")
 	dp.register_message_handler(tutor_women_command, lambda message: message.text == "🧕\n Женский намаз")					
-	dp.register_message_handler(audio_command, lambda message: message.text == "📖 Коран")
+	dp.register_message_handler(qoran_command, lambda message: message.text == "📖 Коран")
 	dp.register_message_handler(names_command, lambda message: message.text == "❾❾ Имён")
 	dp.register_message_handler(calendar_command, lambda message: message.text == "📅 Календарь")
 	dp.register_message_handler(info_command, lambda message: message.text == "❗ Помощь")
