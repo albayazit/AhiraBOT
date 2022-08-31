@@ -583,7 +583,26 @@ async def names_get_photo(callback: types.CallbackQuery):
 	data = callback.data[6:]
 	await callback.answer()
 	await callback.message.delete()
-	await bot.send_photo(callback.from_user.id, names_id[data])
+	await bot.send_photo(callback.from_user.id, names_id[data], reply_markup=await client_kb.names_photo_inline(int(data)))
+
+async def names_all(callback: types.CallbackQuery):
+	global page
+	page = 1
+	await callback.answer()
+	await callback.message.delete()
+	await callback.message.answer('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
+
+async def names_next(callback: types.CallbackQuery):
+	data = callback.data[11:]
+	await callback.answer()
+	await callback.message.delete()
+	await bot.send_photo(callback.from_user.id, names_id[str(int(data) + 1)], reply_markup=await client_kb.names_photo_inline(int(data) + 1))
+
+async def names_back(callback: types.CallbackQuery):
+	data = callback.data[11:]
+	await callback.answer()
+	await callback.message.delete()
+	await bot.send_photo(callback.from_user.id, names_id[str(int(data) - 1)], reply_markup=await client_kb.names_photo_inline(int(data) - 1))
 
 # Calendar | 'Календарь' (Reply)
 async def calendar_command(message: types.Message):
@@ -1139,7 +1158,9 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_command_back, text = 'back_names')
 	dp.register_callback_query_handler(names_command_next, text = 'next_names')
 	dp.register_callback_query_handler(names_get_photo, text_startswith = 'names_')
-
+	dp.register_callback_query_handler(names_all, text = 'all_names')
+	dp.register_callback_query_handler(names_next, text_startswith = 'next_photo_')
+	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	dp.register_message_handler(audio_file_id, content_types=["audio"])

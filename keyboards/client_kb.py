@@ -53,6 +53,8 @@ next_hadis = InlineKeyboardButton('Далее ⏩', callback_data='next_hadis')
 back_names = InlineKeyboardButton('⏪ Назад', callback_data='back_names')
 next_names = InlineKeyboardButton('Далее ⏩', callback_data='next_names')
 
+
+
 # Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
 zikr_2 = InlineKeyboardButton('Дуа за родителей', callback_data= 'zikr_2')
@@ -424,4 +426,14 @@ async def names_inline(page):
 	elif last_page == False:
 		markup.add(back_names)
 		markup.insert(next_names)
+	return markup
+
+async def names_photo_inline(count):
+	markup = InlineKeyboardMarkup()
+	if count == 1:
+		markup.add(InlineKeyboardButton('Все имена', callback_data = 'all_names')).insert(InlineKeyboardButton('Далее ⏩', callback_data='next_photo_'+str(count)))
+	elif count == 99:
+		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_photo_'+str(count))).insert(InlineKeyboardButton('Все имена', callback_data = 'all_names'))
+	else:
+		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_photo_'+str(count))).insert(InlineKeyboardButton('Все имена', callback_data = 'all_names')).insert(InlineKeyboardButton('Далее ⏩', callback_data='next_photo_'+str(count)))
 	return markup
