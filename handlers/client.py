@@ -28,6 +28,10 @@ class FSMtracker(StatesGroup):
 	first_date = State()
 	second_date = State()
 
+class FSMqoran(StatesGroup):
+	ayah = State()
+	surah = State()
+
 # max message length
 MESS_MAX_LENGTH = 4096
 # по умолчанию
@@ -550,11 +554,9 @@ async def tutor_women_command(message: types.Message):
     await message.answer(other.tut_women_message)
 
 
-# Audio | 'Аудио' (Reply)
+# Qoran | 'Коран' (Reply)
 async def qoran_command(message: types.Message):
     await message.answer('Что Вам прислать? ', reply_markup=client_kb.markup_qoran)
-
-
 
 # Books | 'Книги' (Reply)
 async def names_command(message: types.Message):
@@ -1156,6 +1158,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_all, text = 'all_names')
 	dp.register_callback_query_handler(names_next, text_startswith = 'next_photo_')
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
+
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	dp.register_message_handler(audio_file_id, content_types=["audio"])

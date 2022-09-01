@@ -97,7 +97,7 @@ markup_namaz_tutor.add(
 
 # qoran
 markup_qoran = InlineKeyboardMarkup()
-markup_qoran.add(InlineKeyboardButton('Аят', callback_data='qoran_ayah')).insert(InlineKeyboardButton('Суру (с аудио)', callback_data='qoran_surah'))
+markup_qoran.add(InlineKeyboardButton('Последние 10 сур', callback_data = 'qoran_last_10'))
 
 # zikr 
 inline_zikr_all = InlineKeyboardMarkup()
