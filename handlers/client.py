@@ -558,6 +558,15 @@ async def tutor_women_command(message: types.Message):
 async def qoran_command(message: types.Message):
     await message.answer('Что Вам прислать? ', reply_markup=client_kb.markup_qoran)
 
+async def qoran_last_ten(callback: types.CallbackQuery):
+	await callback.message.edit_text('Выберите суру:', reply_markup = client_kb.markup_last_ten)
+	await callback.answer()
+
+async def qoran_audio(callback: types.CallbackQuery):
+	await callback.message.edit_text('Выберите чтеца:', reply_markup= client_kb.markup_qoran_choose)
+	await callback.answer()
+
+
 # Books | 'Книги' (Reply)
 async def names_command(message: types.Message):
 	global page
@@ -1047,6 +1056,7 @@ async def hadis_get_saved(callback: types.CallbackQuery):
 
 
 
+
 async def photo_file_id(message: types.Message):
     await message.answer(message.photo[2].file_id)
 
@@ -1158,6 +1168,9 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_all, text = 'all_names')
 	dp.register_callback_query_handler(names_next, text_startswith = 'next_photo_')
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
+	dp.register_callback_query_handler(qoran_last_ten, text = 'qoran_last_10')
+	dp.register_callback_query_handler(qoran_audio, text = 'qoran_audio')
+
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
