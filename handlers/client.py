@@ -566,6 +566,14 @@ async def qoran_audio(callback: types.CallbackQuery):
 	await callback.message.edit_text('Выберите чтеца:', reply_markup= client_kb.markup_qoran_choose)
 	await callback.answer()
 
+async def qoran_audio_get(callback: types.CallbackQuery):
+	await callback.message.answer('Напишите нужную суру: ')
+	await callback.answer()
+
+async def qoran_last_ten_get(callback: types.CallbackQuery):
+	await callback.message.answer('Сура...')
+	await callback.answer()
+
 
 # Books | 'Книги' (Reply)
 async def names_command(message: types.Message):
