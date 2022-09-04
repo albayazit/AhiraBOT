@@ -252,6 +252,19 @@ last_ten_translate = {
 	'105':'<b>Сура «Аль-Филь» | 105</b>\n\nРазве ты не видел, как поступил твой Господь с хозяевами слона? Разве Он не разрушил их злые умыслы? Он наслал на них стаи птиц. Они закидали их камнями из обожженной глины. И Аллах превратил их в подобие жеваной травы.'
 }
 
+last_ten_audio = {
+	'114':'CQACAgIAAxkBAANyYxT9rW12XinEWF_vpL8xDxNh1WsAAlkiAAJuNqhI23mq9U154BgpBA',
+	'113':'CQACAgIAAxkBAAN0YxT9tHq88VglbUy_cUuIM9cCNhQAAloiAAJuNqhIHkt1hyso8WspBA',
+	'112':'CQACAgIAAxkBAAN2YxT9vW8cm7c8xaOZceQ0h38dYLoAAlsiAAJuNqhIxenECtgZZ7kpBA',
+	'111':'CQACAgIAAxkBAAN4YxT9wufqDLsCn16Xom63zidijqIAAlwiAAJuNqhIglRLAlx39GgpBA',
+	'110':'CQACAgIAAxkBAAN6YxT9xoeap7dEdz-URYgSTgmiVGIAAl0iAAJuNqhIfE_GObVMrCEpBA',
+	'109':'CQACAgIAAxkBAAN8YxT9zYG_UhUDsyvp4alnRcemEgADXiIAAm42qEgKNdoY4qMVGSkE',
+	'108':'CQACAgIAAxkBAAN-YxT90pDCsoZdD1mO3fZ00yQryQIAAmAiAAJuNqhIEwJaikjVlf8pBA',
+	'107':'CQACAgIAAxkBAAOAYxT92BxoQWZLMhJ7nVj7d_gwEaQAAmIiAAJuNqhIFmfNhm33JZkpBA',
+	'106':'CQACAgIAAxkBAAOCYxT93SCHltcUITz6BrqRwfZP52QAAmMiAAJuNqhIMJB7aDvKVJ4pBA',
+	'105':'CQACAgIAAxkBAAOEYxT94kDlGoik9ek2sX1NKwABLkXAAAJkIgACbjaoSMMXY7ywwGfDKQQ'
+}
+
 #--------------------Functions--------------------#
 
 # Main keyboard | /start
@@ -582,30 +595,27 @@ async def tutor_women_command(message: types.Message):
 
 # Qoran | 'Коран' (Reply)
 async def qoran_command(message: types.Message):
-    await message.answer('Что Вам прислать? ', reply_markup=client_kb.markup_qoran)
+    await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_qoran)
 
 async def qoran_last_ten(callback: types.CallbackQuery):
 	await callback.message.edit_text('Выберите суру:', reply_markup = client_kb.markup_last_ten)
-	await callback.answer()
-
-async def qoran_audio(callback: types.CallbackQuery):
-	await callback.message.edit_text('Выберите чтеца:', reply_markup= client_kb.markup_qoran_choose)
-	await callback.answer()
-
-async def qoran_audio_get(callback: types.CallbackQuery):
-	await callback.message.answer('Напишите нужную суру: ')
 	await callback.answer()
 
 async def qoran_last_ten_get(callback: types.CallbackQuery):
 	data = callback.data[11:]
 	await callback.answer()	
 	await callback.message.delete()
-	await bot.send_photo(callback.from_user.id, last_ten_id[data], caption = last_ten_translate[data], reply_markup=client_kb.markup_surah)
+	await bot.send_photo(callback.from_user.id, last_ten_id[data], caption = last_ten_translate[data], reply_markup= await client_kb.markup_surah(data))
 
 async def qoran_last_ten_inline(callback: types.CallbackQuery):
 	await callback.answer()
 	await callback.message.delete()
 	await callback.message.answer('Выберите суру: ', reply_markup = client_kb.markup_last_ten)
+
+async def qoran_audio(callback: types.CallbackQuery):
+	data = callback.data[12:]
+	await bot.send_audio(callback.from_user.id, last_ten_audio[data])
+	await callback.answer()
 
 
 # Books | 'Книги' (Reply)
@@ -1210,9 +1220,9 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_next, text_startswith = 'next_photo_')
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
 	dp.register_callback_query_handler(qoran_last_ten, text = 'qoran_last_10')
-	dp.register_callback_query_handler(qoran_audio, text = 'qoran_audio')
 	dp.register_callback_query_handler(qoran_last_ten_inline, text = 'qoran_last_10_inline')
 	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
+	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	dp.register_message_handler(audio_file_id, content_types=["audio"])

@@ -98,17 +98,16 @@ markup_namaz_tutor.add(
 
 # qoran
 markup_qoran = InlineKeyboardMarkup()
-markup_qoran.add(InlineKeyboardButton('Последние 10 сур', callback_data = 'qoran_last_10')).insert(InlineKeyboardButton('Аудио', callback_data= 'qoran_audio'))
+markup_qoran.add(InlineKeyboardButton('Последние 10 сур', callback_data = 'qoran_last_10'))
 
 markup_last_ten = InlineKeyboardMarkup(row_width=2)
 markup_last_ten.add(InlineKeyboardButton('ан-Нас', callback_data= 'qoran_last_114')).insert(InlineKeyboardButton('аль-Фаляк', callback_data = 'qoran_last_113')).add(InlineKeyboardButton('аль-Ихлас', callback_data = 'qoran_last_112')).insert(InlineKeyboardButton('аль-Масад', callback_data = 'qoran_last_111')).add(InlineKeyboardButton('ан-Наср', callback_data = 'qoran_last_110')).insert(InlineKeyboardButton('аль-Кафирун', callback_data='qoran_last_109')).add(InlineKeyboardButton('аль-Каусар', callback_data='qoran_last_108')).insert(InlineKeyboardButton('аль-Маун', callback_data='qoran_last_107')).add(InlineKeyboardButton('Курайш', callback_data='qoran_last_106')).insert(InlineKeyboardButton('аль-Филь', callback_data='qoran_last_105'))
 
-markup_qoran_choose = InlineKeyboardMarkup()
-markup_qoran_choose.add(InlineKeyboardButton('Мишари Рашид', callback_data =  'qoran_mishari'))
-
-markup_surah = InlineKeyboardMarkup()
-markup_surah.add(InlineKeyboardButton('Весь список', callback_data='qoran_last_10_inline'))
-
+async def markup_surah(data):
+	markup_surah = InlineKeyboardMarkup()
+	markup_surah.add(InlineKeyboardButton('Весь список', callback_data='qoran_last_10_inline')).insert(InlineKeyboardButton('Аудио', callback_data='qoran_audio_'+str(data)))
+	return markup_surah
+	
 # zikr 
 inline_zikr_all = InlineKeyboardMarkup()
 inline_zikr_all.row_width = 2
