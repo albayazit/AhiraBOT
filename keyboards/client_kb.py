@@ -106,6 +106,9 @@ markup_last_ten.add(InlineKeyboardButton('ан-Нас', callback_data= 'qoran_la
 markup_qoran_choose = InlineKeyboardMarkup()
 markup_qoran_choose.add(InlineKeyboardButton('Мишари Рашид', callback_data =  'qoran_mishari'))
 
+markup_surah = InlineKeyboardMarkup()
+markup_surah.add(InlineKeyboardButton('Весь список', callback_data='qoran_last_10_inline'))
+
 # zikr 
 inline_zikr_all = InlineKeyboardMarkup()
 inline_zikr_all.row_width = 2

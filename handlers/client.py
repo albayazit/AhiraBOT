@@ -239,6 +239,19 @@ last_ten_id = {
 	'105':'AgACAgIAAxkBAAMcYxS9X7VyAQoFsUsp_cBc4fP6QXQAAh_BMRtuNqhIxEizmvGay84BAAMCAAN4AAMpBA'
 }
 
+last_ten_translate = {
+	'114':'<b>Сура «Аль-Филь» | 114</b>\n\nСкажи: «Я прибегаю к (защите) Господа людей, Властелина людей, Бога людей, от зла искусителя, отступающего (при упоминании Аллаха), который нашептывает в сердца людей. (Шайтан бывает) из джиннов и людей».',
+	'113':'<b>Сура «Аль-Куpaйш» | 113 </b>\n\nСкажи: «Прибегаю к (защите) Господа рассвета от зла всех Его творений. От зла ночи, когда она наступает. От зла дующих на узлы. И от зла завистника, когда тот завидует».',
+	'112':'<b>Сура «Аль-Ма’ун» | 112</b>\n\nСкажи: «Он — Аллах — Один. Аллах Самодостаточен. Он не родил и не был рожден. И нет никого и ничего подобного Ему».',
+	'111':'<b>Сура «Аль-Каусар» | 111</b>\n\nДа отсохнут руки Абу Ляхаба, и сам он уже пропал. Не помогло ему его богатство и то, что приобрел. Он попадет в Ад, полный огня. Жена его — носильщица дров. А на шее у нее будет веревка из пальмовых волокон.',
+	'110':'<b>Сура «Аль-Кафирун» | 110</b>\n\nКогда придет помощь Аллаха и победа, ты увидишь, как люди обращаются в религию Аллаха толпами. Возвеличивай же хвалой Господа своего и проси у Него прощения. Поистине, Он — Прощающий.',
+	'109':'<b>Сура «Ан-Наср» | 109</b>\n\nСкажи: «О неверующие! Я не поклоняюсь тому, чему вы поклоняетесь. Вы не поклоняетесь Тому, Кому поклоняюсь я. Я не буду поклоняться тому, чему поклоняетесь вы. А вы не станете поклоняться Тому, Кому поклоняюсь я. Вам — ваша религия, а мне — моя!»',
+	'108':'<b>Сура «Аль-Масад» | 108</b>\n\nПоистине, Мы даровали тебе аль-Каусар. Поэтому молись своему Господу и совершай жертвоприношение. Поистине, твой ненавистник сам окажется бездетным.',
+	'107':'<b>Сура «Аль-Ихлас» | 107</b>\n\nВидел ли ты того, кто не верит в воздаяние? Это — тот, кто гонит сироту и не побуждает накормить бедняка. Горе молящимся, которые небрежны к своим намазам, которые совершают (намаз) напоказ и отказывают даже в малом!',
+	'106':'<b>Сура «Аль-Фаляк» | 106</b>\n\nИз-за безопасности курайшитов, безопасности их во время зимних и летних поездок, пусть же они поклоняются Господу этого Дома (Каабы), который накормил их после голода и избавил их от страха.',
+	'105':'<b>Сура «Ан-Нас» | 105</b>\n\nРазве ты не видел, как поступил твой Господь с хозяевами слона? Разве Он не разрушил их злые умыслы? Он наслал на них стаи птиц. Они закидали их камнями из обожженной глины. И Аллах превратил их в подобие жеваной травы.'
+}
+
 #--------------------Functions--------------------#
 
 # Main keyboard | /start
@@ -587,7 +600,12 @@ async def qoran_last_ten_get(callback: types.CallbackQuery):
 	data = callback.data[11:]
 	await callback.answer()	
 	await callback.message.delete()
-	await bot.send_photo(callback.from_user.id, last_ten_id[data])
+	await bot.send_photo(callback.from_user.id, last_ten_id[data], caption = last_ten_translate[data], reply_markup=client_kb.markup_surah)
+
+async def qoran_last_ten_inline(callback: types.CallbackQuery):
+	await callback.answer()
+	await callback.message.delete()
+	await callback.message.answer('Выберите суру: ', reply_markup = client_kb.markup_last_ten)
 
 
 # Books | 'Книги' (Reply)
@@ -1193,8 +1211,8 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
 	dp.register_callback_query_handler(qoran_last_ten, text = 'qoran_last_10')
 	dp.register_callback_query_handler(qoran_audio, text = 'qoran_audio')
+	dp.register_callback_query_handler(qoran_last_ten_inline, text = 'qoran_last_10_inline')
 	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
-
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	dp.register_message_handler(audio_file_id, content_types=["audio"])
