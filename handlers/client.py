@@ -226,6 +226,19 @@ names_id = {
 	'99':'AgACAgIAAxkBAAIoJGMPIIo377D19feUnUKKiuN9rCQWAALfvDEbQjR4SP7-CZ3e2ufFAQADAgADeQADKQQ',
 }
 
+last_ten_id = {
+	'114':'AgACAgIAAxkBAAMKYxS9QDhte9760Jnh-aySU3IIbxIAAg7BMRtuNqhIViBilQyGPuwBAAMCAAN4AAMpBA',
+	'113':'AgACAgIAAxkBAAMMYxS9RKXdOTfMR3rXuztqrpQnGDEAAhPBMRtuNqhIPjOzTDaldlcBAAMCAAN4AAMpBA',
+	'112':'AgACAgIAAxkBAAMOYxS9SHkx0s2McTSuT462Umk8l3gAAhXBMRtuNqhI0_83V33j8tsBAAMCAAN4AAMpBA',
+	'111':'AgACAgIAAxkBAAMQYxS9S7tMa50ilykTtnDYbrLLvRcAAhbBMRtuNqhI0WXBKLMkyUcBAAMCAAN4AAMpBA',
+	'110':'AgACAgIAAxkBAAMSYxS9TmnKSfGgMK8NCWHOtXZDXSAAAhfBMRtuNqhIv1aJ0uYjKhwBAAMCAAN4AAMpBA',
+	'109':'AgACAgIAAxkBAAMUYxS9Ukq5D6dBphP1KPcNfCIHY2oAAhnBMRtuNqhIQEws3HADzXUBAAMCAAN4AAMpBA',
+	'108':'AgACAgIAAxkBAAMWYxS9Vb7pI1-HA194xmzQ4Lqm6bAAAhrBMRtuNqhIR8_Egh4277QBAAMCAAN4AAMpBA',
+	'107':'AgACAgIAAxkBAAMYYxS9WGk_FJbLmMy_GMlszabazqYAAhzBMRtuNqhIQSsKbgxYTLQBAAMCAAN4AAMpBA',
+	'106':'AgACAgIAAxkBAAMaYxS9W3Nb6BgWOQF3Rc7qEMGJ49cAAh3BMRtuNqhITPpOW--qe3UBAAMCAAN4AAMpBA',
+	'105':'AgACAgIAAxkBAAMcYxS9X7VyAQoFsUsp_cBc4fP6QXQAAh_BMRtuNqhIxEizmvGay84BAAMCAAN4AAMpBA'
+}
+
 #--------------------Functions--------------------#
 
 # Main keyboard | /start
@@ -571,8 +584,10 @@ async def qoran_audio_get(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def qoran_last_ten_get(callback: types.CallbackQuery):
-	await callback.message.answer('Сура...')
-	await callback.answer()
+	data = callback.data[11:]
+	await callback.answer()	
+	await callback.message.delete()
+	await bot.send_photo(callback.from_user.id, last_ten_id[data])
 
 
 # Books | 'Книги' (Reply)
@@ -1178,7 +1193,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
 	dp.register_callback_query_handler(qoran_last_ten, text = 'qoran_last_10')
 	dp.register_callback_query_handler(qoran_audio, text = 'qoran_audio')
-
+	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
