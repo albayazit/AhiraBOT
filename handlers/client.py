@@ -1107,8 +1107,8 @@ async def hadis_get_saved(callback: types.CallbackQuery):
 	await callback.message.edit_text(await parcer_hadis.get_hadis(int(data)), reply_markup=await client_kb.markup_hadis_random(int(data), user_id))
 	await callback.answer()
 
-
-
+async def codes_command(message: types.Message):
+	await message.answer('<b>Добавки, которые ВСЕГДА имеют животное происхождение:</b>\n • E 120 Кошениль: красный краситель, получаемый от самок насекомых,\n • E 441 Желатин: добывают из костей и/или шкуры скота и/или свиней,\n • E 542 Фосфат натрия: экстракт из костей животных,\n • E 904 Шеллак: смола, вырабатываемая лаковыми червецами (насекомыми).\n\n<b>Основные добавки, на которые следует обращать внимание:</b>\n •  Глицерин, глицерол (Е422) – харам, если получен из свинины или иного нехаляльного мяса.\n • Эмульгаторы (Е470-483) – харам, если получены из свинины или иного нехаляльного сырья.\n • Фосфат натрия (E542) – харам, если получен из свинины или иного нехаляльного мяса.\n\n <b>Напишите E-добавку:</b>')
 
 
 
@@ -1228,6 +1228,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(qoran_last_ten_inline, text = 'qoran_last_10_inline')
 	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
 	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
+	dp.register_message_handler(codes_command)
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
