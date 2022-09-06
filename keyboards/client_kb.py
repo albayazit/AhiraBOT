@@ -37,6 +37,11 @@ button_info = KeyboardButton('❗ Помощь')
 button_calendar = KeyboardButton('📅 Календарь')
 # back
 button_back = KeyboardButton('⏪ Назад')
+# halal
+button_halal = KeyboardButton('🍔 Халяль гид')
+# e-codes
+button_codes = KeyboardButton('📄 E-добавки')
+
 
 # tatarstan inline
 back_tat = InlineKeyboardButton('⏪ Назад', callback_data='back_tat')
@@ -82,9 +87,7 @@ school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Х�
 
 # main
 markup_main = ReplyKeyboardMarkup()
-markup_main.add(button_time).add(
-    button_tracker, button_koran, button_names, button_hadis, button_dua, button_zikr, button_tutor, button_info, button_calendar
-)
+markup_main.add(button_time, button_halal).add(button_tracker, button_codes, button_koran, button_names, button_hadis, button_zikr, button_tutor, button_info, button_calendar)
 
 # city_add
 inline_namaz_time = InlineKeyboardMarkup()
@@ -113,6 +116,8 @@ inline_zikr_all = InlineKeyboardMarkup()
 inline_zikr_all.row_width = 2
 inline_zikr_all.add(zikr_1, zikr_2, zikr_3, zikr_4, zikr_5, zikr_6, zikr_7, zikr_8, zikr_9, zikr_10, zikr_11, zikr_12, zikr_13, zikr_14, zikr_15, zikr_16)
 
+inline_zikr = InlineKeyboardMarkup()
+inline_zikr.add(InlineKeyboardButton('Дуа пророков', callback_data='dua_prorokov')).insert(InlineKeyboardButton('Зикры', callback_data='zikr_all_get'))
 
 async def markup_zikr_lower(zikr):
 	markup = InlineKeyboardMarkup()
@@ -355,10 +360,8 @@ async def dagestan_month():
 		count += 1
 	return markup
 
-
 markup_tracker_menu = InlineKeyboardMarkup()
 markup_tracker_menu.add(InlineKeyboardButton('Ввести самому', callback_data = 'tracker_myself')).add(InlineKeyboardButton('Рассчитать по датам', callback_data = 'tracker_calculate'))
-
 
 async def markup_tracker(user_id):
 	markup_tracker = InlineKeyboardMarkup(row_width=5)

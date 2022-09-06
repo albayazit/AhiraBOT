@@ -90,21 +90,21 @@ zikr_polzi = {
 }
 
 zikr_id = {
-	'1':'AgACAgIAAxkBAAIj-2MEqww_R8l4yTihKS9V95GzPv0kAAJ4wDEbbjwoSP9h0ZMpyD2bAQADAgADeQADKQQ',
-	'2':'AgACAgIAAxkBAAIj_WMEqxP4-QfrbN0aU5znSZFZlHKhAAJ5wDEbbjwoSNLXeYDXqzGXAQADAgADeQADKQQ',
-	'3':'AgACAgIAAxkBAAIj_2MEqx1v7YWepWaOdjq8b_x5eKGqAAJ6wDEbbjwoSDeCXPTR4APQAQADAgADeQADKQQ',
-	'4':'AgACAgIAAxkBAAIkAWMEqye9RmwmP_x4G5i_XR0hbc3LAAJ7wDEbbjwoSNbM0lZv1qe8AQADAgADeQADKQQ',
-	'5':'AgACAgIAAxkBAAIkA2MEqyyFWVYrigrzR9GkjaJNOtIZAAJ8wDEbbjwoSHuWKaAJkTYdAQADAgADeQADKQQ',
-	'6':'AgACAgIAAxkBAAIkBWMEqzS2JRpSdiaIO7Yn98RUznbQAAJ9wDEbbjwoSPgwgN7uLjQWAQADAgADeQADKQQ',
-	'7':'AgACAgIAAxkBAAIkB2MEqzofTHX2EvshZ2sk8-Ehf1rvAAJ-wDEbbjwoSJDb9PGGvUs3AQADAgADeAADKQQ',
-	'8':'AgACAgIAAxkBAAIkCWMEqz_eLurs9GC9Pxszd_BGwxxIAAJ_wDEbbjwoSF1sp6Wn4OMCAQADAgADeQADKQQ',
-	'9':'AgACAgIAAxkBAAIkC2MEq0QZMppnDWP48U72P86n-t51AAKAwDEbbjwoSCHikcX1VGvrAQADAgADeQADKQQ',
-	'10':'AgACAgIAAxkBAAIkDWMEq0mG7dzy9WkON0gX5nhfZNifAAKBwDEbbjwoSKDKheWQBGIeAQADAgADeQADKQQ',
-	'11':'AgACAgIAAxkBAAIkD2MEq03iR7j_TmYbUiM7DraRblRYAAKCwDEbbjwoSArz1Oa4zOW6AQADAgADeQADKQQ',
-	'12':'AgACAgIAAxkBAAIkEWMEq1FqrpMYczi_f4a1ClBR4OcsAAKDwDEbbjwoSFNW39f-yMXaAQADAgADeQADKQQ',
-	'13':'AgACAgIAAxkBAAIkE2MEq3DkQ1k3gFWEAAG1on9nE78CAgAChMAxG248KEhWOZN02HeNTAEAAwIAA3kAAykE',
-	'14':'AgACAgIAAxkBAAIkFWMEq3irb4oF_CH0CgJ98mzaI6ojAAKFwDEbbjwoSCVKzJIjoxsTAQADAgADeQADKQQ',
-	'15':'AgACAgIAAxkBAAIkF2MEq4ONMSge7gwMoyTfLj8PBTp5AAKGwDEbbjwoSMACx-2DW3wpAQADAgADeQADKQQ',
+	'1':'AgACAgIAAxkBAAIDfmMW8ZQkcsGiG1X36uh7iFavlWeNAAJswTEbEa65SEUtSzFqeWSkAQADAgADeQADKQQ',
+	'2':'AgACAgIAAxkBAAIDgGMW8ZTrXidS7b7QDT4T0tGXklFNAAJtwTEbEa65SJMu-AdRfsRZAQADAgADeQADKQQ',
+	'3':'AgACAgIAAxkBAAIDgmMW8ZqITE8GtzrVtPeQYHwEQqO-AAJuwTEbEa65SF4x_3iCwyxkAQADAgADeQADKQQ',
+	'4':'AgACAgIAAxkBAAIDhGMW8Z5FYaA9sPGDslcefmy5KNKtAAJvwTEbEa65SAlXWoA_0n3mAQADAgADeQADKQQ',
+	'5':'AgACAgIAAxkBAAIDhmMW8aEdzAgiaq1fgDgb41Aq31YUAAJwwTEbEa65SCEWtUI1Mn3qAQADAgADeQADKQQ',
+	'6':'AgACAgIAAxkBAAIDiGMW8afBJ1Np-YM7epV_rIs_v_GbAAJxwTEbEa65SJAMkMAILyRSAQADAgADeQADKQQ',
+	'7':'AgACAgIAAxkBAAIDimMW8an9fMEBqujJkIwgsjOlYDSZAAJywTEbEa65SDzLgYaOCya6AQADAgADeAADKQQ',
+	'8':'AgACAgIAAxkBAAIDjGMW8a1os_bvBdG2Quj6Vp9aVJwjAAJzwTEbEa65SA2zj3wB_eYmAQADAgADeQADKQQ',
+	'9':'AgACAgIAAxkBAAIDjmMW8bDEzFZJayDaaYcXvHVFfHXvAAJ0wTEbEa65SPTCaBwmGItsAQADAgADeQADKQQ',
+	'10':'AgACAgIAAxkBAAIDkGMW8bUAAZLR4nBFLpgQC102iSE3bgACdcExGxGuuUg3vZWNPGCTzwEAAwIAA3kAAykE',
+	'11':'AgACAgIAAxkBAAIDkmMW8bkHyuxI4JfDxVQwEQABYILCSwACdsExGxGuuUgHCRaeWTDyXAEAAwIAA3kAAykE',
+	'12':'AgACAgIAAxkBAAIDlGMW8byMlobwy9du4B2Ig7D5e_CPAAJ3wTEbEa65SD0wV0MRL7z6AQADAgADeQADKQQ',
+	'13':'AgACAgIAAxkBAAIDlmMW8b_EbV1t2Xn58c80URq_V7DzAAJ4wTEbEa65SHlV1jOCt3rXAQADAgADeQADKQQ',
+	'14':'AgACAgIAAxkBAAIDmGMW8cS25ulgUKdzguGisaJdRbTSAAJ5wTEbEa65SAGDYbT3fAerAQADAgADeQADKQQ',
+	'15':'AgACAgIAAxkBAAIDmmMW8crxl5vpxMlkyzFirdLOd1rPAAJ6wTEbEa65SGkXm-S4QXt_AQADAgADeQADKQQ',
 	'16':'Без категории',
 }
 
@@ -673,13 +673,21 @@ async def info_command(message: types.Message):
 
 # Zikr | 'Зикр' (Reply)
 async def zikr_command(message: types.Message):
-	user_id = message.from_user.id
+	await message.answer('Выберите раздел: ', reply_markup = client_kb.inline_zikr)
+
+async def zikr_all_get(callback: types.CallbackQuery):
+	user_id = callback.from_user.id
 	try: 
 		sqlite_bd.cur.execute('SELECT user_id FROM zikr WHERE user_id == ?', (user_id, )).fetchone()[0] == user_id
 	except:
 		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL))
 		sqlite_bd.base.commit()
-	await message.answer('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
+	await callback.message.edit_text('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
+	await callback.answer()
+
+async def dua_get_all(callback: types.CallbackQuery):
+	await callback.message.edit_text('<b>Дуа какого пророка (мир Им) прислать?</b>', reply_markup=client_kb.markup_dua)
+	await callback.answer()
 
 async def send_message(dp: Dispatcher):
 	sqlite_bd.cur.execute('UPDATE zikr SET zikr_1_today == "0", zikr_2_today == "0", zikr_3_today == "0", zikr_4_today == "0", zikr_5_today == "0", zikr_6_today == "0", zikr_7_today == "0", zikr_8_today == "0", zikr_9_today == "0", zikr_10_today == "0", zikr_11_today == "0", zikr_12_today == "0", zikr_13_today == "0", zikr_14_today == "0", zikr_15_today == "0", zikr_16_today == "0"')
@@ -1022,9 +1030,6 @@ async def favorite_cities(callback: types.CallbackQuery):
 	await callback.message.edit_text('<b>Избранные города:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.favorite_cities(user_id))
 	await callback.answer()
 
-async def dua_command(message: types.Message):
-	await message.answer('<b>Дуа какого пророка (мир Им) прислать?</b>', reply_markup=client_kb.markup_dua)
-
 async def dua_get(callback: types.CallbackQuery):
 	data = callback.data[4:]
 	await bot.send_photo(callback.from_user.id, dua_id[data], reply_markup=client_kb.markup_dua_lower)
@@ -1125,7 +1130,6 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tracker_reset_cancel, text = 'tracker_cancel')
 	dp.register_callback_query_handler(tracker_reset_yes, text = 'tracker_reset')
 	dp.register_message_handler(tutor_command, lambda message: message.text == "🕌 Обучение")
-	dp.register_message_handler(dua_command, lambda message: message.text == "🤲 Дуа")
 	dp.register_message_handler(hadis_command, lambda message: message.text == "📕 Хадисы")
 	dp.register_message_handler(tutor_namaz_command, lambda message: message.text == "❓\n Что такое намаз")
 	dp.register_message_handler(tutor_time_command, lambda message: message.text == "🕦\n Время намазов")
@@ -1200,6 +1204,8 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(zikr_reset_yes, text_startswith = 'zikr_reset_yes_')
 	dp.register_callback_query_handler(zikr_reset, text_startswith = 'zikr_reset_')
 	dp.register_callback_query_handler(zikr_plus, text_startswith = 'zikr_plus_')
+	dp.register_callback_query_handler(dua_get_all, text = 'dua_prorokov')
+	dp.register_callback_query_handler(zikr_all_get, text = 'zikr_all_get')
 	dp.register_callback_query_handler(zikr_all, text = 'zikr_all')
 	dp.register_callback_query_handler(zikr_polza, text_startswith = 'zikr_polza_')
 	dp.register_callback_query_handler(zikr_get, text_startswith = 'zikr_')
@@ -1222,6 +1228,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(qoran_last_ten_inline, text = 'qoran_last_10_inline')
 	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
 	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
+
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	dp.register_message_handler(audio_file_id, content_types=["audio"])
