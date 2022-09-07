@@ -1,4 +1,5 @@
 import sqlite3 as sq
+import pandas as pd
 
 def sql_start():
 	global base, cur
@@ -21,4 +22,6 @@ def sql_start():
 	base.execute('CREATE TABLE IF NOT EXISTS hadis(user_id TEXT, hadis_id TEXT, id TEXT)')
 	base.commit()
 	base.execute('CREATE TABLE IF NOT EXISTS halal_codes(code TEXT, description TEXT, permissiveness TEXT)')
+	base.commit()
+	base.execute('CREATE TABLE IF NOT EXISTS halal_food(name TEXT, company TEXT, period TEXT, address TEXT)')
 	base.commit()

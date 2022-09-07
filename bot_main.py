@@ -5,6 +5,7 @@ from handlers import client, other
 from database import sqlite_bd
 from create_bot import scheduler
 from codes_script import scrap_codes
+from food_script import scrap_food
 
 client.register_handlers_client(dp)
 # в самом низу во избежания нарушения логики
@@ -16,6 +17,7 @@ async def on_startup(_):
     sqlite_bd.sql_start()
     client.schedule_jobs()
     await scrap_codes()
+    await scrap_food()
     
 
 # поллинг
