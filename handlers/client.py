@@ -265,9 +265,6 @@ last_ten_audio = {
 }
 
 
-food_page = 1
-
-
 
 #--------------------Functions--------------------#
 
@@ -289,20 +286,19 @@ async def time_command(callback : types.CallbackQuery):
 
 # Tatarstan cities | 'Татарстан' (inline)
 async def tatarstan_command(callback : types.CallbackQuery):
-	global tat_page
 	tat_page = 1
 	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=await client_kb.inline_namaz_time_tat(tat_page))
 	await callback.answer()
 
 async def tatarstan_next(callback : types.CallbackQuery):
-	global tat_page
-	tat_page += 1
+	data = callback.data[9:]
+	tat_page = int(data) + 1
 	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=await client_kb.inline_namaz_time_tat(tat_page))
 	await callback.answer()
 
 async def tatarstan_back(callback : types.CallbackQuery):
-	global tat_page
-	tat_page -= 1
+	data = callback.data[9:]
+	tat_page = int(data) - 1
 	await callback.message.edit_text('Выберите Ваш <b>населенный пункт:</b> ', reply_markup=await client_kb.inline_namaz_time_tat(tat_page))
 	await callback.answer()
 
@@ -624,19 +620,18 @@ async def qoran_audio(callback: types.CallbackQuery):
 
 # Books | 'Книги' (Reply)
 async def names_command(message: types.Message):
-	global page
 	page = 1
 	await message.answer('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
 
 async def names_command_back(callback: types.CallbackQuery):
-	global page
-	page -= 1
+	data = callback.data[11:]
+	page = int(data) - 1
 	await callback.message.edit_text('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
 	await callback.answer()
 
 async def names_command_next(callback: types.CallbackQuery):
-	global page
-	page += 1
+	data = callback.data[11:]
+	page = int(data) + 1
 	await callback.message.edit_text('Выберите нужное имя:ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ', reply_markup= await client_kb.names_inline(page))
 	await callback.answer()
 
@@ -647,7 +642,6 @@ async def names_get_photo(callback: types.CallbackQuery):
 	await bot.send_photo(callback.from_user.id, names_id[data], reply_markup=await client_kb.names_photo_inline(int(data)))
 
 async def names_all(callback: types.CallbackQuery):
-	global page
 	page = 1
 	await callback.answer()
 	await callback.message.delete()
@@ -918,18 +912,17 @@ async def tatarstan_favorite_delete(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def dagestan_menu(callback: types.CallbackQuery):
-	global dag_page
 	dag_page = 1
 	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.dagestan_markup(dag_page))
 	await callback.answer()
 async def dagestan_menu_next(callback: types.CallbackQuery):
-	global dag_page
-	dag_page += 1
+	data = callback.data[9:]
+	dag_page = int(data) + 1
 	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.dagestan_markup(dag_page))
 	await callback.answer()
 async def dagestan_menu_back(callback: types.CallbackQuery):
-	global dag_page
-	dag_page -= 1
+	data = callback.data[9:]
+	dag_page = int(data) - 1
 	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.dagestan_markup(dag_page))
 	await callback.answer()
 
@@ -974,18 +967,17 @@ async def dagestan_favorite_delete(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def kazakhstan_menu(callback: types.CallbackQuery):
-	global kaz_page
 	kaz_page = 1
 	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.kazakhstan_markup(kaz_page))
 	await callback.answer()
 async def kazakhstan_menu_next(callback: types.CallbackQuery):
-	global kaz_page
-	kaz_page += 1
+	data = callback.data[9:]
+	kaz_page = int(data) + 1
 	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.kazakhstan_markup(kaz_page))
 	await callback.answer()
 async def kazakhstan_menu_back(callback: types.CallbackQuery):
-	global kaz_page
-	kaz_page -= 1
+	data = callback.data[9:]
+	kaz_page = int(data) - 1
 	await callback.message.edit_text('<b>Выберите населенный пункт:</b>', reply_markup=await client_kb.kazakhstan_markup(kaz_page))
 	await callback.answer()
 
@@ -1085,22 +1077,21 @@ async def hadis_delete(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def hadis_saved(callback : types.CallbackQuery):
-	global page
 	page = 1
 	user_id = callback.from_user.id
 	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
 	await callback.answer()
 
 async def hadis_saved_next(callback : types.CallbackQuery):
-	global page
-	page += 1
+	data = callback.data[11:]
+	page = int(data) + 1
 	user_id = callback.from_user.id
 	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
 	await callback.answer()
 
 async def hadis_saved_back(callback : types.CallbackQuery):
-	global page
-	page -= 1
+	data = callback.data[11:]
+	page = int(data) - 1
 	user_id = callback.from_user.id
 	await callback.message.edit_text('Выберите хадис:', reply_markup= await client_kb.hadis_favorite(user_id, page))
 	await callback.answer()
@@ -1126,7 +1117,6 @@ async def codes_get_code(message: types.Message, state = FSMContext):
 	await state.finish()
 
 async def food_command(message: types.Message):
-	global food_page
 	food_page = 1
 	await message.answer(await parcer_food.get_message(food_page), reply_markup=await client_kb.food_markup(food_page))
 
@@ -1181,8 +1171,8 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(namaz_day_command, text = parcer_tatarstan.all_cities)
 	dp.register_callback_query_handler(next_day_time_command, text = 'tomorrow_time')
 	dp.register_callback_query_handler(tatarstan_command, text = 'tatarstan')
-	dp.register_callback_query_handler(tatarstan_next, text = 'next_tat')
-	dp.register_callback_query_handler(tatarstan_back, text = 'back_tat')
+	dp.register_callback_query_handler(tatarstan_next, text_startswith = 'next_tat_')
+	dp.register_callback_query_handler(tatarstan_back, text_startswith = 'back_tat_')
 	dp.register_callback_query_handler(month_time_command, text = 'month_time')
 	dp.register_callback_query_handler(address_add, text = 'other_region')
 	dp.register_message_handler(cancel_handler, commands='cancel', state='*')
@@ -1200,16 +1190,16 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(tatarstan_favorite_delete, text='tatarstan_favorite_delete')
 	dp.register_callback_query_handler(dagestan_menu, text = 'dagestan')
 	dp.register_callback_query_handler(kazakhstan_menu, text = 'kazakhstan')
-	dp.register_callback_query_handler(kazakhstan_menu_next, text = 'next_kaz')
-	dp.register_callback_query_handler(kazakhstan_menu_back, text = 'back_kaz')
+	dp.register_callback_query_handler(kazakhstan_menu_next, text_startswith = 'next_kaz_')
+	dp.register_callback_query_handler(kazakhstan_menu_back, text_startswith = 'back_kaz_')
 	dp.register_callback_query_handler(kazakhstan_today_time, text_startswith = 'kaz_city_')
 	dp.register_callback_query_handler(kazakhstan_tomorrow_time, text = 'kaz_tomorrow')
 	dp.register_callback_query_handler(kazakhstan_month, text = 'kaz_month')
 	dp.register_callback_query_handler(kazakhstan_month_time, text_startswith = 'kaz_days_')
 	dp.register_callback_query_handler(kazakhstan_favorite_add, text='kaz_add')
 	dp.register_callback_query_handler(kazakhstan_favorite_delete, text='kaz_delete')
-	dp.register_callback_query_handler(dagestan_menu_next, text = 'next_dag')
-	dp.register_callback_query_handler(dagestan_menu_back, text = 'back_dag')
+	dp.register_callback_query_handler(dagestan_menu_next, text_startswith = 'next_dag_')
+	dp.register_callback_query_handler(dagestan_menu_back, text_startswith = 'back_dag_')
 	dp.register_callback_query_handler(dagestan_today_time, text_startswith = 'dag_city_')
 	dp.register_callback_query_handler(dagestan_tomorrow_time, text = 'dag_tomorrow')
 	dp.register_callback_query_handler(dagestan_month, text = 'dag_month')
@@ -1247,10 +1237,10 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(hadis_delete, text_startswith = 'hadis_favorite_delete_')
 	dp.register_callback_query_handler(hadis_saved, text = 'hadis_favorite')
 	dp.register_callback_query_handler(hadis_get_saved, text_startswith = 'hadis_saved_')
-	dp.register_callback_query_handler(hadis_saved_back, text = 'back_hadis')
-	dp.register_callback_query_handler(hadis_saved_next, text = 'next_hadis')
-	dp.register_callback_query_handler(names_command_back, text = 'back_names')
-	dp.register_callback_query_handler(names_command_next, text = 'next_names')
+	dp.register_callback_query_handler(hadis_saved_back, text_startswith = 'back_hadis_')
+	dp.register_callback_query_handler(hadis_saved_next, text_startswith = 'next_hadis_')
+	dp.register_callback_query_handler(names_command_back, text_startswith = 'back_names_')
+	dp.register_callback_query_handler(names_command_next, text_startswith = 'next_names_')
 	dp.register_callback_query_handler(names_get_photo, text_startswith = 'names_')
 	dp.register_callback_query_handler(names_all, text = 'all_names')
 	dp.register_callback_query_handler(names_next, text_startswith = 'next_photo_')

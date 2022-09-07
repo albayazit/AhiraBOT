@@ -43,21 +43,6 @@ button_halal = KeyboardButton('🍔 Халяль гид')
 button_codes = KeyboardButton('📄 E-добавки')
 
 
-# tatarstan inline
-
-back_kaz = InlineKeyboardButton('⏪ Назад', callback_data='back_kaz')
-next_kaz = InlineKeyboardButton('Далее ⏩', callback_data='next_kaz')
-
-back_dag = InlineKeyboardButton('⏪ Назад', callback_data='back_dag')
-next_dag = InlineKeyboardButton('Далее ⏩', callback_data='next_dag')
-
-back_hadis = InlineKeyboardButton('⏪ Назад', callback_data='back_hadis')
-next_hadis = InlineKeyboardButton('Далее ⏩', callback_data='next_hadis')
-
-back_names = InlineKeyboardButton('⏪ Назад', callback_data='back_names')
-next_names = InlineKeyboardButton('Далее ⏩', callback_data='next_names')
-
-
 
 # Zikr
 zikr_1 = InlineKeyboardButton('Салават', callback_data= 'zikr_1')
@@ -85,7 +70,7 @@ school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Х�
 
 # main
 markup_main = ReplyKeyboardMarkup()
-markup_main.add(button_time, button_halal).add(button_tracker, button_codes, button_koran, button_names, button_hadis, button_zikr, button_tutor, button_info, button_calendar)
+markup_main.add(button_halal, button_time).add(button_tracker, button_codes, button_koran, button_names, button_hadis, button_zikr, button_tutor, button_info, button_calendar)
 
 # city_add
 inline_namaz_time = InlineKeyboardMarkup()
@@ -260,13 +245,13 @@ async def kazakhstan_markup(page):
 		except:
 			if page != 1:
 				last_page = True
-				markup.add(back_kaz)
+				markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_kaz_'+str(page)))
 				break
 	if page == 1 and last_page == False:
-		markup.add(next_kaz)
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data='next_kaz_'+str(page)))
 	elif last_page == False:
-		markup.insert(back_kaz)
-		markup.insert(next_kaz)
+		markup.insert(InlineKeyboardButton('⏪ Назад', callback_data='back_kaz_'+str(page)))
+		markup.insert(InlineKeyboardButton('Далее ⏩', callback_data='next_kaz_'+str(page)))
 	return markup
 
 async def kaz_city(address, period, user_id):
@@ -314,13 +299,13 @@ async def dagestan_markup(page):
 		except:
 			if page != 1:
 				last_page = True
-				markup.add(back_dag)
+				markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_dag_'+str(page)))
 				break
 	if page == 1 and last_page == False:
-		markup.add(next_dag)
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data='next_dag_'+str(page)))
 	elif last_page == False:
-		markup.insert(back_dag)
-		markup.insert(next_dag)
+		markup.insert(InlineKeyboardButton('⏪ Назад', callback_data='back_dag_'+str(page)))
+		markup.insert(InlineKeyboardButton('Далее ⏩', callback_data='next_dag_'+str(page)))
 	return markup
 
 async def dag_city(address, period, user_id):
@@ -412,13 +397,13 @@ async def hadis_favorite(user_id, page):
 		except:
 			last_page = True
 			if page != 1:
-				markup.add(back_hadis)
+				markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_hadis_'+str(page)))
 				break
 	if page == 1 and last_page == False:
-		markup.add(next_hadis)
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data='next_hadis_'+str(page)))
 	elif last_page == False:
-		markup.add(back_hadis)
-		markup.insert(next_hadis)
+		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_hadis_'+str(page)))
+		markup.insert(InlineKeyboardButton('Далее ⏩', callback_data='next_hadis_'+str(page)))
 	return markup
 
 async def names_inline(page):
@@ -429,13 +414,13 @@ async def names_inline(page):
 		markup.insert(InlineKeyboardButton(i + 1, callback_data='names_'+str(i + 1)))
 		if i == 98:
 			last_page = True
-			markup.add(back_names)
+			markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_names_'+str(page)))
 			return markup
 	if page == 1 and last_page == False:
-		markup.add(next_names)
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data='next_names_'+str(page)))
 	elif last_page == False:
-		markup.add(back_names)
-		markup.insert(next_names)
+		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_names_'+str(page)))
+		markup.insert(InlineKeyboardButton('Далее ⏩', callback_data='next_names_'+str(page)))
 	return markup
 
 async def names_photo_inline(count):
