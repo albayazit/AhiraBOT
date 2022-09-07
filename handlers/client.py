@@ -4,7 +4,7 @@ from tkinter import INSERT
 from aiogram import Dispatcher, types
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan, parcer_hadis
+from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan, parcer_hadis, parcer_codes
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -28,9 +28,8 @@ class FSMtracker(StatesGroup):
 	first_date = State()
 	second_date = State()
 
-class FSMqoran(StatesGroup):
-	ayah = State()
-	surah = State()
+class FSMhalal(StatesGroup):
+	code = State()
 
 # max message length
 MESS_MAX_LENGTH = 4096
@@ -955,7 +954,7 @@ async def dagestan_month_time(callback: types.CallbackQuery):
 
 async def dagestan_favorite_add(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
-	global daz_city
+	global dag_city
 	sqlite_bd.cur.execute(f'INSERT INTO favorite_dagestan VALUES (?, ?)', (user_id, dag_city))
 	sqlite_bd.base.commit()
 	await callback.message.edit_text('Добавлено в избранные ✅', reply_markup = client_kb.markup_favorite)
@@ -1108,9 +1107,18 @@ async def hadis_get_saved(callback: types.CallbackQuery):
 	await callback.answer()
 
 async def codes_command(message: types.Message):
-	await message.answer('<b>Добавки, которые ВСЕГДА имеют животное происхождение:</b>\n • E 120 Кошениль: красный краситель, получаемый от самок насекомых,\n • E 441 Желатин: добывают из костей и/или шкуры скота и/или свиней,\n • E 542 Фосфат натрия: экстракт из костей животных,\n • E 904 Шеллак: смола, вырабатываемая лаковыми червецами (насекомыми).\n\n<b>Основные добавки, на которые следует обращать внимание:</b>\n •  Глицерин, глицерол (Е422) – харам, если получен из свинины или иного нехаляльного мяса.\n • Эмульгаторы (Е470-483) – харам, если получены из свинины или иного нехаляльного сырья.\n • Фосфат натрия (E542) – харам, если получен из свинины или иного нехаляльного мяса.\n\n <b>Напишите E-добавку:</b>')
+	await FSMhalal.code.set()
+	await message.answer('<b>Добавки, которые ВСЕГДА имеют животное происхождение:</b>\n • E 120 Кошениль: красный краситель, получаемый от самок насекомых,\n • E 441 Желатин: добывают из костей и/или шкуры скота и/или свиней,\n • E 542 Фосфат натрия: экстракт из костей животных,\n • E 904 Шеллак: смола, вырабатываемая лаковыми червецами (насекомыми).\n\n<b>Основные добавки, на которые следует обращать внимание:</b>\n •  Глицерин, глицерол (Е422) – харам, если получен из свинины или иного нехаляльного мяса.\n • Эмульгаторы (Е470-483) – харам, если получены из свинины или иного нехаляльного сырья.\n • Фосфат натрия (E542) – харам, если получен из свинины или иного нехаляльного мяса.\n\n <b>Напишите E-добавку:</b>', reply_markup=types.ReplyKeyboardRemove())
 
-
+async def codes_get_code(message: types.Message, state = FSMContext):
+	async with state.proxy() as data:
+		data['code'] = message.text
+		code = data['code']
+	try:
+		await message.answer(await parcer_codes.get_code(code), reply_markup=client_kb.markup_main)
+	except:
+		await message.answer('Такого кода не нашлось!', reply_markup=client_kb.markup_main)
+	await state.finish()
 
 async def photo_file_id(message: types.Message):
     await message.answer(message.photo[2].file_id)
@@ -1228,7 +1236,8 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(qoran_last_ten_inline, text = 'qoran_last_10_inline')
 	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
 	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
-	dp.register_message_handler(codes_command)
+	dp.register_message_handler(codes_command, lambda message: message.text == "📄 E-добавки")	
+	dp.register_message_handler(codes_get_code, state = FSMhalal.code)	
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
