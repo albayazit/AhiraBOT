@@ -44,8 +44,6 @@ button_codes = KeyboardButton('📄 E-добавки')
 
 
 # tatarstan inline
-back_tat = InlineKeyboardButton('⏪ Назад', callback_data='back_tat')
-next_tat = InlineKeyboardButton('Далее ⏩', callback_data='next_tat')
 
 back_kaz = InlineKeyboardButton('⏪ Назад', callback_data='back_kaz')
 next_kaz = InlineKeyboardButton('Далее ⏩', callback_data='next_kaz')
@@ -151,13 +149,13 @@ async def inline_namaz_time_tat(page):
 		except:
 			if page != 1:
 				last_page = True
-				markup.add(back_tat)
+				markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_tat_'+str(page)))
 				break
 	if page == 1 and last_page == False:
-		markup.add(next_tat)
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data='next_tat_'+str(page)))
 	elif last_page == False:
-		markup.insert(back_tat)
-		markup.insert(next_tat)
+		markup.insert(InlineKeyboardButton('⏪ Назад', callback_data='back_tat_'+str(page)))
+		markup.insert(InlineKeyboardButton('Далее ⏩', callback_data='next_tat_'+str(page)))
 	return markup
 
 # lower in current city tatarstan
@@ -448,4 +446,14 @@ async def names_photo_inline(count):
 		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_photo_'+str(count))).insert(InlineKeyboardButton('Все имена', callback_data = 'all_names'))
 	else:
 		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_photo_'+str(count))).insert(InlineKeyboardButton('Все имена', callback_data = 'all_names')).insert(InlineKeyboardButton('Далее ⏩', callback_data='next_photo_'+str(count)))
+	return markup
+
+async def food_markup(page):
+	markup = InlineKeyboardMarkup()
+	if page == 1:
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data='next_food_'+str(page)))
+	elif page == 10:
+		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_food_'+str(page)))
+	else:
+		markup.add(InlineKeyboardButton('⏪ Назад', callback_data='back_food_'+str(page))).insert(InlineKeyboardButton('Далее ⏩', callback_data='next_food_'+str(page)))
 	return markup

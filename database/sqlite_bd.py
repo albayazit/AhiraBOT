@@ -23,5 +23,5 @@ def sql_start():
 	base.commit()
 	base.execute('CREATE TABLE IF NOT EXISTS halal_codes(code TEXT, description TEXT, permissiveness TEXT)')
 	base.commit()
-	base.execute('CREATE TABLE IF NOT EXISTS halal_food(name TEXT, company TEXT, period TEXT, address TEXT)')
+	base.execute('CREATE TABLE IF NOT EXISTS halal_food(id TEXT, name TEXT, company TEXT, period TEXT, address TEXT)')
 	base.commit()

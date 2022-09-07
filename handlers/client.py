@@ -4,7 +4,7 @@ from tkinter import INSERT
 from aiogram import Dispatcher, types
 from create_bot import dp
 from keyboards import client_kb
-from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan, parcer_hadis, parcer_codes
+from parcer import parcer_dagestan, parcer_kazakhstan, parcer_other, parcer_tatarstan, parcer_hadis, parcer_codes, parcer_food
 from handlers import other
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -263,6 +263,11 @@ last_ten_audio = {
 	'106':'CQACAgIAAxkBAAOCYxT93SCHltcUITz6BrqRwfZP52QAAmMiAAJuNqhIMJB7aDvKVJ4pBA',
 	'105':'CQACAgIAAxkBAAOEYxT94kDlGoik9ek2sX1NKwABLkXAAAJkIgACbjaoSMMXY7ywwGfDKQQ'
 }
+
+
+food_page = 1
+
+
 
 #--------------------Functions--------------------#
 
@@ -1120,6 +1125,23 @@ async def codes_get_code(message: types.Message, state = FSMContext):
 		await message.answer('Такого кода не нашлось!', reply_markup=client_kb.markup_main)
 	await state.finish()
 
+async def food_command(message: types.Message):
+	global food_page
+	food_page = 1
+	await message.answer(await parcer_food.get_message(food_page), reply_markup=await client_kb.food_markup(food_page))
+
+async def food_next(callback: types.CallbackQuery):
+	data = callback.data[10:]
+	food_page = int(data) + 1
+	await callback.message.edit_text(await parcer_food.get_message(food_page), reply_markup=await client_kb.food_markup(food_page))
+
+async def food_back(callback: types.CallbackQuery):
+	data = callback.data[10:]
+	food_page = int(data) - 1
+	await callback.message.edit_text(await parcer_food.get_message(food_page), reply_markup=await client_kb.food_markup(food_page))
+
+
+
 async def photo_file_id(message: types.Message):
     await message.answer(message.photo[2].file_id)
 
@@ -1154,6 +1176,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(zikr_command, lambda message: message.text == "📿 Зикр")
 	dp.register_message_handler(help_command, commands=['help'])
 	dp.register_message_handler(back_command, lambda message: message.text == "⏪ Назад")
+	dp.register_message_handler(food_command, lambda message: message.text == "🍔 Халяль гид")
 	dp.register_callback_query_handler(time_command, text = 'add_city')
 	dp.register_callback_query_handler(namaz_day_command, text = parcer_tatarstan.all_cities)
 	dp.register_callback_query_handler(next_day_time_command, text = 'tomorrow_time')
@@ -1237,7 +1260,9 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(qoran_last_ten_get, text_startswith = 'qoran_last_')
 	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
 	dp.register_message_handler(codes_command, lambda message: message.text == "📄 E-добавки")	
-	dp.register_message_handler(codes_get_code, state = FSMhalal.code)	
+	dp.register_message_handler(codes_get_code, state = FSMhalal.code)
+	dp.register_callback_query_handler(food_next, text_startswith = 'next_food_')
+	dp.register_callback_query_handler(food_back, text_startswith = 'back_food_')
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])
