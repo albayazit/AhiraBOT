@@ -409,7 +409,7 @@ async def tracker_vitr_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	async with state.proxy() as data:
-		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, data['fajr_need'], NULL, data['zuhr_need'], NULL, data['asr_need'], NULL, data['magrib_need'], NULL, data['isha_need'], NULL,data['vitr_need'], NULL, NULL))
+		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, None, data['fajr_need'], None, data['zuhr_need'], None, data['asr_need'], None, data['magrib_need'], None, data['isha_need'], None, data['vitr_need'], None, None))
 		sqlite_bd.base.commit()
 	await state.finish()
 	await message.answer('Секундочку...', reply_markup = client_kb.markup_main)
@@ -446,7 +446,7 @@ async def tracker_get_second(message: types.Message, state = FSMContext):
 			if first_date == second_date:
 				await state.finish()
 				return await message.answer('Даты не должны совпадать!', reply_markup=client_kb.markup_main)
-			sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, result, NULL, result, NULL, result, NULL, result, NULL, result, NULL, result, second_date, first_date))
+			sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, None, result, None, result, None, result, None, result, None, result, None, result, second_date, first_date))
 			sqlite_bd.base.commit()
 	except:
 		await state.finish()
@@ -675,7 +675,7 @@ async def zikr_all_get(callback: types.CallbackQuery):
 	try: 
 		sqlite_bd.cur.execute('SELECT user_id FROM zikr WHERE user_id == ?', (user_id, )).fetchone()[0] == user_id
 	except:
-		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL))
+		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None))
 		sqlite_bd.base.commit()
 	await callback.message.edit_text('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
 	await callback.answer()
