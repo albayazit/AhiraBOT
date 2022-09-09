@@ -1,5 +1,4 @@
 import sqlite3 as sq
-import pandas as pd
 
 def sql_start():
 	global base, cur

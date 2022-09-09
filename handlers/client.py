@@ -1,6 +1,3 @@
-from asyncio.windows_events import NULL
-from multiprocessing.connection import Client
-from tkinter import INSERT
 from aiogram import Dispatcher, types
 from create_bot import dp
 from keyboards import client_kb
@@ -572,25 +569,25 @@ async def tutor_command(message: types.Message):
   await message.answer('Обучение на основе Ханафитского мазхаба.\nВыберите раздел: ', reply_markup=client_kb.markup_namaz_tutor)
 # buttons in learn | (inline)
 async def tutor_namaz_command(message: types.Message):
-    await message.answer(other.tut_namaz_message)
+    await message.answer(other.tut_namaz_message, reply_markup=client_kb.markup_tutor_back)
 async def tutor_time_command(message: types.Message):
-    await message.answer(other.tut_time_message)
+    await message.answer(other.tut_time_message, reply_markup=client_kb.markup_tutor_back)
 async def tutor_cond_command(message: types.Message):
 	for x in range(0, len(other.tut_cond_message), MESS_MAX_LENGTH - 1400):
 		mess_tut = other.tut_cond_message[x: x + MESS_MAX_LENGTH - 1400] 
-		await message.answer(mess_tut)
+		await message.answer(mess_tut, reply_markup=client_kb.markup_tutor_back)
 async def tutor_gusl_command(message: types.Message):
-    await message.answer(other.tut_gusl_message)
+    await message.answer(other.tut_gusl_message, reply_markup=client_kb.markup_tutor_back)
 async def tutor_taharat_command(message: types.Message):
-    await message.answer(other.tut_taharat_message)
+    await message.answer(other.tut_taharat_message, reply_markup=client_kb.markup_tutor_back)
 async def tutor_forma_command(message: types.Message):
 	for x in range(0, len(other.tut_forma_message), MESS_MAX_LENGTH - 57):
 		mess_form = other.tut_forma_message[x: x + MESS_MAX_LENGTH - 57] 
-		await message.answer(mess_form)
+		await message.answer(mess_form, reply_markup=client_kb.markup_tutor_back)
 async def tutor_sura_command(message: types.Message):
-    await message.answer(other.tut_sura_message)
+    await message.answer(other.tut_sura_message, reply_markup=client_kb.markup_tutor_back)
 async def tutor_women_command(message: types.Message):
-    await message.answer(other.tut_women_message)
+    await message.answer(other.tut_women_message, reply_markup=client_kb.markup_tutor_back)
 
 
 # Qoran | 'Коран' (Reply)
@@ -1130,7 +1127,8 @@ async def food_back(callback: types.CallbackQuery):
 	food_page = int(data) - 1
 	await callback.message.edit_text(await parcer_food.get_message(food_page), reply_markup=await client_kb.food_markup(food_page))
 
-
+async def tutor_menu(message: types.Message):
+	await message.answer('Обучение на основе Ханафитского мазхаба.\nВыберите раздел: ', reply_markup=client_kb.markup_namaz_tutor)
 
 async def photo_file_id(message: types.Message):
     await message.answer(message.photo[2].file_id)
@@ -1164,6 +1162,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(calendar_command, lambda message: message.text == "📅 Календарь")
 	dp.register_message_handler(info_command, lambda message: message.text == "❗ Помощь")
 	dp.register_message_handler(zikr_command, lambda message: message.text == "📿 Зикр")
+	dp.register_message_handler(tutor_menu, lambda message: message.text == "⏪ Меню")
 	dp.register_message_handler(help_command, commands=['help'])
 	dp.register_message_handler(back_command, lambda message: message.text == "⏪ Назад")
 	dp.register_message_handler(food_command, lambda message: message.text == "🍔 Халяль гид")

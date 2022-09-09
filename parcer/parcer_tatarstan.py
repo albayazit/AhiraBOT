@@ -1,7 +1,6 @@
 # парсим время намаза для Татарстана с excel
 from datetime import datetime, timedelta
 import calendar
-from time import strptime
 import pandas as pd
 import datetime
 

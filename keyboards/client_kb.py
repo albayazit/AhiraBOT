@@ -1,5 +1,3 @@
-from dataclasses import replace
-from subprocess import call
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from parcer import parcer_tatarstan, parcer_dagestan, parcer_kazakhstan, parcer_hadis
 from datetime import date, timedelta, datetime
@@ -42,6 +40,8 @@ button_halal = KeyboardButton('🍔 Халяль гид')
 # e-codes
 button_codes = KeyboardButton('📄 E-добавки')
 
+button_all_tutor = KeyboardButton('⏪ Меню')
+
 
 
 # Zikr
@@ -70,7 +70,7 @@ school_2 = InlineKeyboardButton('Шафиитский/Маликитский/Х�
 
 # main
 markup_main = ReplyKeyboardMarkup()
-markup_main.add(button_halal, button_time).add(button_tracker, button_codes, button_koran, button_names, button_hadis, button_zikr, button_tutor, button_info, button_calendar)
+markup_main.add(button_time).add(button_tracker, button_codes, button_koran, button_names, button_hadis, button_zikr, button_tutor, button_info, button_calendar)
 
 # city_add
 inline_namaz_time = InlineKeyboardMarkup()
@@ -81,6 +81,9 @@ markup_namaz_tutor = ReplyKeyboardMarkup()
 markup_namaz_tutor.add(
     button_tutor_what, button_tutor_time, button_tutor_cond, button_tutor_gusl, button_tutor_taharat, button_tutor_forma, button_tutor_sura, button_tutor_women, button_back
 )
+
+markup_tutor_back = ReplyKeyboardMarkup(resize_keyboard=True)
+markup_tutor_back.add(button_all_tutor)
 
 # qoran
 markup_qoran = InlineKeyboardMarkup()
