@@ -394,14 +394,14 @@ async def tracker_isha_get(message: types.Message, state = FSMContext):
 	await FSMtracker.vitr.set()
 	await message.answer('Напишите количество <b>витр</b> намазов (при желании, можно написать 0): ')
 
-async def tracker_vitr_get(message: types.Message, state = FSMContext):
+async def tracker_vitr_get_yourself(message: types.Message, state = FSMContext):
 	user_id = message.from_user.id
 	async with state.proxy() as data:
 		try:
 			num = int(message.text)
-			if num < 1:
+			if num < 0:
 				await state.finish()
-				return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
+				return await message.answer('Некорректный формат. Напишите положительное число', reply_markup = client_kb.markup_tracker_menu)
 			else:
 				pass
 			data['vitr_need'] = message.text
@@ -409,7 +409,7 @@ async def tracker_vitr_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	async with state.proxy() as data:
-		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, None, data['fajr_need'], None, data['zuhr_need'], None, data['asr_need'], None, data['magrib_need'], None, data['isha_need'], None, data['vitr_need'], None, None))
+		sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, 0, data['fajr_need'], 0, data['zuhr_need'], 0, data['asr_need'], 0, data['magrib_need'], 0, data['isha_need'], 0, data['vitr_need'], 0, 0))
 		sqlite_bd.base.commit()
 	await state.finish()
 	await message.answer('Секундочку...', reply_markup = client_kb.markup_main)
@@ -446,7 +446,7 @@ async def tracker_get_second(message: types.Message, state = FSMContext):
 			if first_date == second_date:
 				await state.finish()
 				return await message.answer('Даты не должны совпадать!', reply_markup=client_kb.markup_main)
-			sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, None, result, None, result, None, result, None, result, None, result, None, result, second_date, first_date))
+			sqlite_bd.cur.execute('INSERT INTO tracker VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, 0, result, 0, result, 0, result, 0, result, 0, result, 0, result, second_date, first_date))
 			sqlite_bd.base.commit()
 	except:
 		await state.finish()
@@ -491,25 +491,28 @@ async def tracker_reset_yes(callback: types.CallbackQuery):
 async def tracker_plus(callback: types.CallbackQuery):
 	salat = callback.data[5:]
 	user_id = callback.from_user.id
-	if salat == 'fajr':
-		sqlite_bd.cur.execute('UPDATE tracker SET fajr == (fajr + ?) WHERE user_id == ?', (1, user_id))
-		sqlite_bd.base.commit()
-	elif salat == 'zuhr':
-		sqlite_bd.cur.execute('UPDATE tracker SET zuhr == (zuhr + ?) WHERE user_id == ?', (1, user_id))
-		sqlite_bd.base.commit()
-	elif salat == 'asr':
-		sqlite_bd.cur.execute('UPDATE tracker SET asr == (asr + ?) WHERE user_id == ?', (1, user_id))
-		sqlite_bd.base.commit()
-	elif salat == 'magrib':
-		sqlite_bd.cur.execute('UPDATE tracker SET magrib == (magrib + ?) WHERE user_id == ?', (1, user_id))
-		sqlite_bd.base.commit()
-	elif salat == 'isha':
-		sqlite_bd.cur.execute('UPDATE tracker SET isha == (isha + ?) WHERE user_id == ?', (1, user_id))
-		sqlite_bd.base.commit()
-	else: 
-		sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr + ?) WHERE user_id == ?', (1, user_id))
-		sqlite_bd.base.commit()
-	await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+	try:
+		if salat == 'fajr':
+			sqlite_bd.cur.execute('UPDATE tracker SET fajr == (fajr + ?) WHERE user_id == ?', (1, user_id))
+			sqlite_bd.base.commit()
+		elif salat == 'zuhr':
+			sqlite_bd.cur.execute('UPDATE tracker SET zuhr == (zuhr + ?) WHERE user_id == ?', (1, user_id))
+			sqlite_bd.base.commit()
+		elif salat == 'asr':
+			sqlite_bd.cur.execute('UPDATE tracker SET asr == (asr + ?) WHERE user_id == ?', (1, user_id))
+			sqlite_bd.base.commit()
+		elif salat == 'magrib':
+			sqlite_bd.cur.execute('UPDATE tracker SET magrib == (magrib + ?) WHERE user_id == ?', (1, user_id))
+			sqlite_bd.base.commit()
+		elif salat == 'isha':
+			sqlite_bd.cur.execute('UPDATE tracker SET isha == (isha + ?) WHERE user_id == ?', (1, user_id))
+			sqlite_bd.base.commit()
+		else: 
+			sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr + ?) WHERE user_id == ?', (1, user_id))
+			sqlite_bd.base.commit()
+		await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так!', reply_markup = client_kb.markup_main)
 	await callback.answer()
 	
 async def tracker_minus(callback: types.CallbackQuery):
@@ -675,7 +678,7 @@ async def zikr_all_get(callback: types.CallbackQuery):
 	try: 
 		sqlite_bd.cur.execute('SELECT user_id FROM zikr WHERE user_id == ?', (user_id, )).fetchone()[0] == user_id
 	except:
-		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None))
+		sqlite_bd.cur.execute('INSERT INTO zikr VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', (user_id, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 		sqlite_bd.base.commit()
 	await callback.message.edit_text('Выберите зикр: ', reply_markup=client_kb.inline_zikr_all)
 	await callback.answer()
@@ -1212,7 +1215,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tracker_asr_get, state = FSMtracker.asr)
 	dp.register_message_handler(tracker_magrib_get, state = FSMtracker.magrib)
 	dp.register_message_handler(tracker_isha_get, state = FSMtracker.isha)
-	dp.register_message_handler(tracker_vitr_get, state = FSMtracker.vitr)
+	dp.register_message_handler(tracker_vitr_get_yourself, state = FSMtracker.vitr)
 	dp.register_callback_query_handler(tracker_plus, text_startswith = 'plus_')
 	dp.register_callback_query_handler(tracker_minus, text_startswith = 'minus_')
 	dp.register_callback_query_handler(other_btn_tracker, text_startswith = 'troth_')
