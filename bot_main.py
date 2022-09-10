@@ -1,4 +1,5 @@
 # запуск экземпляра бота
+# переход на вебхуки
 from aiogram import executor
 from create_bot import dp
 from handlers import client, other
