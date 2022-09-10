@@ -1,6 +1,6 @@
 # Ahira BOT
 
-[![Header]https://github.com/albayazit/AhiraBOT/blob/main/data/preview.png](https://t.me/ahirabot)
+[![Header](https://github.com/albayazit/AhiraBOT/blob/main/data/preview.png)](https://t.me/ahirabot)
 
 ## Description:
 Telegram bot for muslims using aiogram. Bot allows many opportunities for believers.
