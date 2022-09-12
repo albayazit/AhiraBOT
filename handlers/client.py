@@ -1133,14 +1133,17 @@ async def food_back(callback: types.CallbackQuery):
 async def tutor_menu(message: types.Message):
 	await message.answer('Обучение на основе Ханафитского мазхаба.\nВыберите раздел: ', reply_markup=client_kb.markup_namaz_tutor)
 
-async def photo_file_id(message: types.Message):
-    await message.answer(message.photo[2].file_id)
 
-async def document_file_id(message: types.Message):
-    await message.answer(message.document.file_id)
+# Get files id
 
-async def audio_file_id(message: types.Message):
-    await message.answer(message.audio.file_id)
+# async def photo_file_id(message: types.Message):
+#     await message.answer(message.photo[2].file_id)
+
+# async def document_file_id(message: types.Message):
+#     await message.answer(message.document.file_id)
+
+# async def audio_file_id(message: types.Message):
+#     await message.answer(message.audio.file_id)
 
 # dispatcher
 def register_handlers_client(dp : Dispatcher):
@@ -1257,6 +1260,6 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(food_back, text_startswith = 'back_food_')
 
 
-	dp.register_message_handler(photo_file_id, content_types=["photo"])
-	dp.register_message_handler(audio_file_id, content_types=["audio"])
-	dp.register_message_handler(document_file_id, content_types=["document"])
+	# dp.register_message_handler(photo_file_id, content_types=["photo"])
+	# dp.register_message_handler(audio_file_id, content_types=["audio"])
+	# dp.register_message_handler(document_file_id, content_types=["document"])
