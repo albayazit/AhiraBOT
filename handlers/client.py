@@ -268,10 +268,11 @@ last_ten_audio = {
 # Main keyboard | /start
 async def start_command(message: types.Message):
 	user_id = message.from_user.id
-	await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
 	try: 
 		sqlite_bd.cur.execute('SELECT user_id FROM users WHERE user_id == ?', (user_id, )).fetchone()[0]
+		await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
 	except:
+		await message.answer('<b>السلام عليكم ورحمة الله وبركاته</b>\n<b>• Время намаза</b> - время намаза для всех городов мира! Для Татарстана, Дагестана и Казахстана с методом расчета от ДУМ этих регионов.\n<b>• Трекер</b> - восстановление пропущенных намазов!\n<b>• E-добавки</b> - проверка E-добавок на дозволенность!\n<b>• Коран</b> - 10 последних сур Корана с переводом, тафсиром и аудио!\n<b>• 99 имён</b> - список имён Всевышнего со смысловым переводом!\n<b>• Хадисы</b> - достоверные хадисы из сборников Муслима, Бухари и Тирмизи!\n<b>• Зикр</b> - дуа пророков и 14 важных зикров на каждый день!\n<b>• Обучение</b> - обучение намазу для начинающих на основе ханафитского мазхаба!\n<b>• Календарь</b> - все знаменательные даты по хиджре!\n\n<b>Выберите раздел:</b>', reply_markup=client_kb.markup_main)
 		sqlite_bd.cur.execute('INSERT INTO users VALUES (?, ?, ?)', (user_id, message.from_user.username, datetime.today()))
 		sqlite_bd.base.commit()
 
@@ -763,7 +764,7 @@ async def zikr_polza(callback: types.CallbackQuery):
 
 # Unknown messages
 async def help_command(message: types.Message):
-	await message.answer('Выберите раздел: ', reply_markup=client_kb.markup_main)
+	await message.answer('<b>• Время намаза</b> - время намаза для всех городов мира! Для Татарстана, Дагестана и Казахстана с методом расчета от ДУМ этих регионов.\n<b>• Трекер</b> - восстановление пропущенных намазов!\n<b>• E-добавки</b> - проверка E-добавок на дозволенность!\n<b>• Коран</b> - 10 последних сур Корана с переводом, тафсиром и аудио!\n<b>• 99 имён</b> - список имён Всевышнего со смысловым переводом!\n<b>• Хадисы</b> - достоверные хадисы из сборников Муслима, Бухари и Тирмизи!\n<b>• Зикр</b> - дуа пророков и 14 важных зикров на каждый день!\n<b>• Обучение</b> - обучение намазу для начинающих на основе ханафитского мазхаба!\n<b>• Календарь</b> - все знаменательные даты по хиджре!\n\n<b>Выберите раздел:</b>', reply_markup=client_kb.markup_main)
 
 
 # back button
