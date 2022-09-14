@@ -278,7 +278,7 @@ async def favorite_command(message: types.Message):
 
 # Add new city | 'Добавить город' (inline)
 async def time_command(callback : types.CallbackQuery):
-	await callback.message.edit_text('Время намаза для других регионов сделана на основе наиболее предпочтительного метода вычитывания времени для данного города. Такие расчеты не всегда могут быть точными, убедительная просьба самостоятельно проверять наступление намаза по признакам при выборе "Другой регион".\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
+	await callback.message.edit_text('Метод расчета для Татарстана, Дагестана и Казахстана - ДУМ\'ы этих регионов.\nМетод расчета для "Других регионов" - WML Всемирная Лига мусульман.\n\n<b>Выберите регион:</b> ', reply_markup=client_kb.inline_namaz_time)
 	await callback.answer()
 
 # Tatarstan cities | 'Татарстан' (inline)
@@ -793,7 +793,7 @@ async def address_add(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	await FSMaddress.address.set()
 	await callback.message.delete()
-	await callback.message.answer('Напишите название города', reply_markup=types.ReplyKeyboardRemove())
+	await callback.message.answer('<b>ВНИМАНИЕ!</b> Метод расчета для "Других регионов" - WML Всемирная Лига мусульман. Расчеты могут быть <b>неточными</b>! В первую очередь, ориентируйтесь на расчеты ДУМ\'а Вашего города и на собственные наблюдения!\n\n<b>Напишите название города:</b>', reply_markup=types.ReplyKeyboardRemove())
 	await callback.answer()
 
 async def cancel_handler(message: types.Message, state: FSMContext):

@@ -1,5 +1,5 @@
-import requests
 from database import sqlite_bd
+import requests
 from datetime import datetime
 
 # methods
@@ -45,7 +45,7 @@ async def get_day_time(state):
 	async with state.proxy() as data:
 		result = tuple(data.values())
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
-	querystring = {"address":result[0],"school":result[1]}
+	querystring = {"address":result[0],"school":result[1], "method":'1'}
 	headers = {
 		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
@@ -76,22 +76,24 @@ async def get_day_time(state):
 
 # get time for day in favorite_cities
 async def get_day_time_from_menu(user_id, address):
-	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
-	querystring = {"address":address,"school":school[0]}
+	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()[0]
+	querystring = {"address":address,"school":schools[school], "method":'1'}
 	headers = {
 		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
+
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	times = response['data']['timings']
 	date = response['data']['date']
 	meta = response['data']['meta']['method']['id']
+	
 
 	daytime_message = (
 				f'🌍 Город: <b>{address}</b>\n\n'
 				f'📅 Дата: <b>{date["gregorian"]["date"].replace("-", ".")} | {date["hijri"]["date"].replace("-", ".")}</b>\n\n'
-				f'🔭 Метод расчета: <b> {methods[str(meta)]} | {schools[school[0]]}</b>\n\n'
+				f'🔭 Метод расчета: <b> {methods[str(meta)]} | {schools[school]}</b>\n\n'
 
 				f'<b>Фаджр - {times["Fajr"]}</b>\n'
 				f'<b>Зухр - {times["Dhuhr"]}</b>\n'
@@ -112,7 +114,7 @@ async def get_calendar_time(address, day, school):
 
 	url = "https://aladhan.p.rapidapi.com/calendarByAddress"
 
-	querystring = {"address":address,"year":year,"month":month, "school":school}
+	querystring = {"address":address,"year":year,"month":month, "school":school, "method":'1'}
 
 	headers = {
 		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
@@ -158,9 +160,9 @@ async def get_for_next_month(address, school):
 	}
 	url = "https://aladhan.p.rapidapi.com/calendarByAddress"
 	if month == '12':
-		querystring = {"address":address,"year":year + 1,"month":'1', "school":school}
+		querystring = {"address":address,"year":year + 1,"month":'1', "school":school, "method":'1'}
 		response = requests.request("GET", url, headers=headers, params=querystring).json()
 	else:
-		querystring = {"address":address,"year":year,"month":month + 1, "school":school}
+		querystring = {"address":address,"year":year,"month":month + 1, "school":school, "method":'1'}
 		response = requests.request("GET", url, headers=headers, params=querystring).json()
 	return response
