@@ -267,8 +267,13 @@ last_ten_audio = {
 
 # Main keyboard | /start
 async def start_command(message: types.Message):
+	user_id = message.from_user.id
 	await message.answer('السلام عليكم ورحمة الله وبركاته', reply_markup=client_kb.markup_main)
-
+	try: 
+		sqlite_bd.cur.execute('SELECT user_id FROM users WHERE user_id == ?', (user_id, )).fetchone()[0]
+	except:
+		sqlite_bd.cur.execute('INSERT INTO users VALUES (?, ?, ?)', (user_id, message.from_user.username, datetime.today()))
+		sqlite_bd.base.commit()
 
 # Favorite cities | 'Время намаза' (reply)
 async def favorite_command(message: types.Message):
