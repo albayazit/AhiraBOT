@@ -304,14 +304,14 @@ async def tracker_command(message: types.Message):
 	user_id = message.from_user.id
 	info = sqlite_bd.cur.execute(f'SELECT EXISTS(SELECT * FROM tracker WHERE user_id == ?)', (user_id, ))
 	if info.fetchone()[0] == 0:
-		await message.answer('<b>Это функция предназначена для восстановления пропущенных намазов! Выберите способ:</b>', reply_markup=client_kb.markup_tracker_menu)
+		await message.answer('<b>Эта функция предназначена для восстановления пропущенных намазов! Выберите способ расчета:</b>', reply_markup=client_kb.markup_tracker_menu)
 	else:
 		await message.answer('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
 
 async def tracker_myself(callback: types.CallbackQuery):
 	await FSMtracker.fajr.set()
 	await callback.message.delete()
-	await callback.message.answer('Напишите количество <b>фаджр</b> намазов:', reply_markup = types.ReplyKeyboardRemove())
+	await callback.message.answer('Напишите количество <b>фаджр</b> намазов, которые необходимо восстановить:', reply_markup = types.ReplyKeyboardRemove())
 	await callback.answer()
 
 async def tracker_fajr_get(message: types.Message, state = FSMContext):
@@ -328,7 +328,7 @@ async def tracker_fajr_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.zuhr.set()
-	await message.answer('Напишите количество <b>зухр</b> намазов: ')
+	await message.answer('Напишите количество <b>зухр</b> намазов, которые необходимо восстановить:')
 
 async def tracker_zuhr_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
@@ -344,7 +344,7 @@ async def tracker_zuhr_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.asr.set()
-	await message.answer('Напишите количество <b>аср</b> намазов: ')
+	await message.answer('Напишите количество <b>аср</b> намазов, которые необходимо восстановить:')
 
 async def tracker_asr_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
@@ -360,7 +360,7 @@ async def tracker_asr_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.magrib.set()
-	await message.answer('Напишите количество <b>магриб</b> намазов: ')
+	await message.answer('Напишите количество <b>магриб</b> намазов, которые необходимо восстановить:')
 
 async def tracker_magrib_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
@@ -376,7 +376,7 @@ async def tracker_magrib_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.isha.set()
-	await message.answer('Напишите количество <b>иша</b> намазов: ')
+	await message.answer('Напишите количество <b>иша</b> намазов, которые необходимо восстановить:')
 
 async def tracker_isha_get(message: types.Message, state = FSMContext):
 	async with state.proxy() as data:
@@ -392,7 +392,7 @@ async def tracker_isha_get(message: types.Message, state = FSMContext):
 			await state.finish()
 			return await message.answer('Некорректный формат. Напишите число больше 0', reply_markup = client_kb.markup_tracker_menu)
 	await FSMtracker.vitr.set()
-	await message.answer('Напишите количество <b>витр</b> намазов (при желании, можно написать 0): ')
+	await message.answer('Напишите количество <b>витр</b> намазов, которые необходимо восстановить (можно написать 0): ')
 
 async def tracker_vitr_get_yourself(message: types.Message, state = FSMContext):
 	user_id = message.from_user.id
