@@ -748,7 +748,7 @@ async def qoran_audio(callback: types.CallbackQuery):
 
 async def qoran_translate(callback: types.CallbackQuery):
 	data = callback.data[16:]
-	await callback.answer(surah_translate[data])
+	await callback.message.answer(surah_translate[data])
 	await callback.answer()
 
 # Books | 'Книги' (Reply)
