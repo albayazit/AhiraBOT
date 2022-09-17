@@ -233,7 +233,7 @@ surah_photo = {
 	'107':'AgACAgIAAxkBAAMYYxS9WGk_FJbLmMy_GMlszabazqYAAhzBMRtuNqhIQSsKbgxYTLQBAAMCAAN4AAMpBA',
 	'106':'AgACAgIAAxkBAAMaYxS9W3Nb6BgWOQF3Rc7qEMGJ49cAAh3BMRtuNqhITPpOW--qe3UBAAMCAAN4AAMpBA',
 	'105':'AgACAgIAAxkBAAMcYxS9X7VyAQoFsUsp_cBc4fP6QXQAAh_BMRtuNqhIxEizmvGay84BAAMCAAN4AAMpBA',
-	'104':'AgACAgIAAxkBAAINH2Ml43nCmLIdxO2zg--c7VK2OLN3AAINwjEbT7IxSf5F3zT-dnJuAQADAgADeAADKQQ',
+	'104':'AgACAgIAAxkBAAINH2Ml43nCmLIdxO2zg--c7VK2OLN3AAINwjEbT7IxSf5F3zT-dnJuAQADAgADeAADKQQ', 
 	'103':'AgACAgIAAxkBAAINIWMl435itAsanqXc3gP2y1xCVqd3AALowTEbT7IxSYHp0EJfmRRDAQADAgADeAADKQQ',
 	'102':'AgACAgIAAxkBAAINI2Ml44ZAPeCkscCRQ4f-bSC-vqfEAAITwjEbT7IxSZRhCkMWwjkrAQADAgADeAADKQQ',
 	'101':'AgACAgIAAxkBAAINJWMl44nYo4W00cup97cYarDTO3cyAAIUwjEbT7IxSTAIvNbVmMnWAQADAgADeAADKQQ',
@@ -380,46 +380,6 @@ surah_audio = {
 	'80':'CQACAgIAAxkBAAIMhGMkxdkbofOwKjPjsKXlnRYd6UfNAAI2IgACOk8pSU6Qc4V3_jHoKQQ',
 	'79':'CQACAgIAAxkBAAIMgmMkxbv9zrg5NMY-I4fC9et_DPEgAAIxIgACOk8pSc6LcMNP-vONKQQ',
 	'78':'CQACAgIAAxkBAAIMgGMkxY2bc0sNHxLdEuSbufO3zT7lAAItIgACOk8pScYlNw67ukcpKQQ'
-}
-
-surah_tafsir = {
-	'114':'https://azan.ru/tafsir/an-nas',
-	'113':'https://azan.ru/tafsir/al-falyak',
-	'112':'https://azan.ru/tafsir/al-ihlas',
-	'111':'https://azan.ru/tafsir/al-masad',
-	'110':'https://azan.ru/tafsir/an-nasr',
-	'109':'https://azan.ru/tafsir/al-kafirun',
-	'108':'https://azan.ru/tafsir/al-kausar',
-	'107':'https://azan.ru/tafsir/al-maun',
-	'106':'https://azan.ru/tafsir/al-kupaysh',
-	'105':'https://azan.ru/tafsir/al-fil',
-	'104':'https://azan.ru/tafsir/al-humaza',
-	'103':'https://azan.ru/tafsir/al-asr',
-	'102':'https://azan.ru/tafsir/at-takasur',
-	'101':'https://azan.ru/tafsir/al-karia',
-	'100':'https://azan.ru/tafsir/al-adiyat',
-	'99':'https://azan.ru/tafsir/az-zalzalya',
-	'98':'https://azan.ru/tafsir/al-bayina',
-	'97':'https://azan.ru/tafsir/al-kadr',
-	'96':'https://azan.ru/tafsir/al-alyak',
-	'95':'https://azan.ru/tafsir/at-tin',
-	'94':'https://azan.ru/tafsir/ash-sharh',
-	'93':'https://azan.ru/tafsir/ad-duha',
-	'92':'https://azan.ru/tafsir/al-leyl',
-	'91':'https://azan.ru/tafsir/ash-shams',
-	'90':'https://azan.ru/tafsir/al-balyad',
-	'89':'https://azan.ru/tafsir/al-fadzhr',
-	'88':'https://azan.ru/tafsir/al-gashiya',
-	'87':'https://azan.ru/tafsir/al-alya',
-	'86':'https://azan.ru/tafsir/at-torik',
-	'85':'https://azan.ru/tafsir/al-burudzh',
-	'84':'https://azan.ru/tafsir/al-inshikak',
-	'83':'https://azan.ru/tafsir/al-mutaffifun',
-	'82':'https://azan.ru/tafsir/al-infitar',
-	'81':'https://azan.ru/tafsir/at-takvir',
-	'80':'https://azan.ru/tafsir/abasa',
-	'79':'https://azan.ru/tafsir/naziat',
-	'78':'https://azan.ru/tafsir/an-naba'
 }
 
 
@@ -762,25 +722,34 @@ async def tutor_women_command(message: types.Message):
 
 # Qoran | 'Коран' (Reply)
 async def qoran_command(message: types.Message):
-    await message.answer('Выберите суру: ', reply_markup=client_kb.markup_qoran)
+	page = 1
+	await message.answer('Выберите суру: ', reply_markup=await client_kb.markup_qoran(page))
 
+async def qoran_next(callback: types.CallbackQuery):
+	page = callback.data[11:]
+	await callback.message.edit_text('Выберите суру: ', reply_markup=await client_kb.markup_qoran(int(page)+1))
+	await callback.answer()
+
+async def qoran_back(callback: types.CallbackQuery):
+	page = callback.data[11:]
+	await callback.message.edit_text('Выберите суру: ', reply_markup=await client_kb.markup_qoran(int(page)-1))
+	await callback.answer()
 
 async def qoran_surah_get(callback: types.CallbackQuery):
-	data = callback.data[11:]
+	data = callback.data[6:]
 	await callback.answer()	
 	await callback.message.delete()
 	await bot.send_photo(callback.from_user.id, surah_photo[data], caption = surah_caption[data], reply_markup= await client_kb.markup_surah(data))
-
-async def qoran_inline(callback: types.CallbackQuery):
-	await callback.answer()
-	await callback.message.delete()
-	await callback.message.answer('Выберите суру: ', reply_markup = client_kb.markup_qoran)
 
 async def qoran_audio(callback: types.CallbackQuery):
 	data = callback.data[12:]
 	await bot.send_audio(callback.from_user.id, surah_audio[data])
 	await callback.answer()
 
+async def qoran_translate(callback: types.CallbackQuery):
+	data = callback.data[16:]
+	await callback.answer(surah_translate[data])
+	await callback.answer()
 
 # Books | 'Книги' (Reply)
 async def names_command(message: types.Message):
@@ -1325,7 +1294,9 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_message_handler(tutor_forma_command, lambda message: message.text == "🧎\n Форма совершения намаза")	
 	dp.register_message_handler(tutor_sura_command, lambda message: message.text == "📃\n Суры и дуа намаза")
 	dp.register_message_handler(tutor_women_command, lambda message: message.text == "🧕\n Женский намаз")					
-	dp.register_message_handler(qoran_command, lambda message: message.text == "📖 Коран")
+	dp.register_message_handler(qoran_command, lambda message: message.text == "📖 30-й джуз")
+	dp.register_callback_query_handler(qoran_next, text_startswith = 'qoran_next_')
+	dp.register_callback_query_handler(qoran_back, text_startswith = 'qoran_back_')
 	dp.register_message_handler(names_command, lambda message: message.text == "❾❾ Имён")
 	dp.register_message_handler(calendar_command, lambda message: message.text == "📅 Календарь")
 	dp.register_message_handler(info_command, lambda message: message.text == "❗ Помощь")
@@ -1412,13 +1383,13 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_all, text = 'all_names')
 	dp.register_callback_query_handler(names_next, text_startswith = 'next_photo_')
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
-	dp.register_callback_query_handler(qoran_inline, text = 'qoran_last_10_inline')
-	dp.register_callback_query_handler(qoran_surah_get, text_startswith = 'qoran_last_')
+	dp.register_callback_query_handler(qoran_translate, text_startswith = 'surah_translate_')
+	dp.register_callback_query_handler(qoran_surah_get, text_startswith = 'surah_')
 	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
 	dp.register_message_handler(codes_command, lambda message: message.text == "📄 E-добавки")	
 	dp.register_message_handler(codes_get_code, state = FSMhalal.code)
-	dp.register_callback_query_handler(food_next, text_startswith = 'next_food_')
-	dp.register_callback_query_handler(food_back, text_startswith = 'back_food_')
+	# dp.register_callback_query_handler(food_next, text_startswith = 'next_food_')
+	# dp.register_callback_query_handler(food_back, text_startswith = 'back_food_')
 
 
 	dp.register_message_handler(photo_file_id, content_types=["photo"])

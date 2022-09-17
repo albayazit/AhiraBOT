@@ -18,7 +18,7 @@ button_tutor_forma = KeyboardButton('🧎\n Форма совершения на
 button_tutor_sura = KeyboardButton('📃\n Суры и дуа намаза')
 button_tutor_women = KeyboardButton('🧕\n Женский намаз')
 # audio
-button_koran = KeyboardButton('📖 Коран')
+button_koran = KeyboardButton('📖 30-й джуз')
 # books
 button_names = KeyboardButton('❾❾ Имён')
 # hadis
@@ -104,6 +104,86 @@ qoran_112 = InlineKeyboardButton('«Аль-Ихлас»', callback_data='qoran_1
 qoran_113 = InlineKeyboardButton('«Аль-Фаляк»', callback_data='qoran_113')
 qoran_114 = InlineKeyboardButton('«Ан-Нас»', callback_data='qoran_114')
 
+surah_tafsir = {
+	'114':'https://azan.ru/tafsir/an-nas',
+	'113':'https://azan.ru/tafsir/al-falyak',
+	'112':'https://azan.ru/tafsir/al-ihlas',
+	'111':'https://azan.ru/tafsir/al-masad',
+	'110':'https://azan.ru/tafsir/an-nasr',
+	'109':'https://azan.ru/tafsir/al-kafirun',
+	'108':'https://azan.ru/tafsir/al-kausar',
+	'107':'https://azan.ru/tafsir/al-maun',
+	'106':'https://azan.ru/tafsir/al-kupaysh',
+	'105':'https://azan.ru/tafsir/al-fil',
+	'104':'https://azan.ru/tafsir/al-humaza',
+	'103':'https://azan.ru/tafsir/al-asr',
+	'102':'https://azan.ru/tafsir/at-takasur',
+	'101':'https://azan.ru/tafsir/al-karia',
+	'100':'https://azan.ru/tafsir/al-adiyat',
+	'99':'https://azan.ru/tafsir/az-zalzalya',
+	'98':'https://azan.ru/tafsir/al-bayina',
+	'97':'https://azan.ru/tafsir/al-kadr',
+	'96':'https://azan.ru/tafsir/al-alyak',
+	'95':'https://azan.ru/tafsir/at-tin',
+	'94':'https://azan.ru/tafsir/ash-sharh',
+	'93':'https://azan.ru/tafsir/ad-duha',
+	'92':'https://azan.ru/tafsir/al-leyl',
+	'91':'https://azan.ru/tafsir/ash-shams',
+	'90':'https://azan.ru/tafsir/al-balyad',
+	'89':'https://azan.ru/tafsir/al-fadzhr',
+	'88':'https://azan.ru/tafsir/al-gashiya',
+	'87':'https://azan.ru/tafsir/al-alya',
+	'86':'https://azan.ru/tafsir/at-torik',
+	'85':'https://azan.ru/tafsir/al-burudzh',
+	'84':'https://azan.ru/tafsir/al-inshikak',
+	'83':'https://azan.ru/tafsir/al-mutaffifun',
+	'82':'https://azan.ru/tafsir/al-infitar',
+	'81':'https://azan.ru/tafsir/at-takvir',
+	'80':'https://azan.ru/tafsir/abasa',
+	'79':'https://azan.ru/tafsir/naziat',
+	'78':'https://azan.ru/tafsir/an-naba'
+}
+
+surah = {
+	'114':'114 | Сура «Ан-Нас»',
+	'113':'113 | Сура «Аль-Фаляк»',
+	'112':'112 | Сура «Аль-Ихлас»',
+	'111':'111 | Сура «Аль-Масад»',
+	'110':'110 | Сура «Ан-Наср»',
+	'109':'109 | Сура «Аль-Кафирун»',
+	'108':'108 | Сура «Аль-Каусар»',
+	'107':'107 | Сура «Аль-Ма’ун»',
+	'106':'106 | Сура «Аль-Куpaйш»',
+	'105':'105 | Сура «Аль-Филь»',
+	'104':'104 | Сура «Аль-Хумаза»',
+	'103':'103 | Сура «Аль-ʼАср»',
+	'102':'102 | Сура «Ат-Такасур»',
+	'101':'101 | Сура «Аль-Кариʼа»',
+	'100':'100 | Сура «Аль-ʼадият»',
+	'99':'99 | Сура «Аль-Зальзаля»',
+	'98':'98 | Сура «Аль-Байина»',
+	'97':'97 | Сура «Аль-Кадр»',
+	'96':'96 | Сура «Аль-ʼаляк»',
+	'95':'95 | Сура «Ат-Тин»',
+	'94':'94 | Сура «Аш-Шарх»',
+	'93':'93 | Сура «Ад-Духа»',
+	'92':'92 | Сура «Аль-Лейль»',
+	'91':'91 | Сура «Аш-Шамс»',
+	'90':'90 | Сура «Аль-Баляд»',
+	'89':'89 | Сура «Аль-Фаджр»',
+	'88':'88 | Сура «Аль-Гашия»',
+	'87':'87 | Сура «Аль-Аʼля»',
+	'86':'86 | Сура «Ат-Торик»',
+	'85':'85 | Сура «Аль-Бурудж»',
+	'84':'84 | Сура «Аль-Иншикак»',
+	'83':'83 | Сура «Аль-Мутаффифун»',
+	'82':'82 | Сура «Аль-Инфитар»',
+	'81':'81 | Сура «Ат-Таквир»',
+	'80':'80 | Сура «’Абаса»',
+	'79':'79 | Сура «Назиʼат»',
+	'78':'78 | Сура «Ан-Наба»'
+}
+
 #--------------------Markups--------------------#
 
 # main
@@ -124,12 +204,29 @@ markup_tutor_back = ReplyKeyboardMarkup(resize_keyboard=True)
 markup_tutor_back.add(button_all_tutor)
 
 # qoran
-markup_qoran = InlineKeyboardMarkup()
-markup_qoran.add(InlineKeyboardButton('ан-Нас', callback_data= 'qoran_last_114')).insert(InlineKeyboardButton('аль-Фаляк', callback_data = 'qoran_last_113')).add(InlineKeyboardButton('аль-Ихлас', callback_data = 'qoran_last_112')).insert(InlineKeyboardButton('аль-Масад', callback_data = 'qoran_last_111')).add(InlineKeyboardButton('ан-Наср', callback_data = 'qoran_last_110')).insert(InlineKeyboardButton('аль-Кафирун', callback_data='qoran_last_109')).add(InlineKeyboardButton('аль-Каусар', callback_data='qoran_last_108')).insert(InlineKeyboardButton('аль-Маун', callback_data='qoran_last_107')).add(InlineKeyboardButton('Курайш', callback_data='qoran_last_106')).insert(InlineKeyboardButton('аль-Филь', callback_data='qoran_last_105'))
+async def markup_qoran(page):
+	markup = InlineKeyboardMarkup(row_width=2)
+	key = int(page) * 10
+	if page == 1:
+		for item in reversed(range(101, 115)):
+			markup.insert(InlineKeyboardButton(surah[str(item)], callback_data='surah_'+str(item)))
+	elif page == 2:
+		for item in reversed(range(87, 101)):
+			markup.insert(InlineKeyboardButton(surah[str(item)], callback_data='surah_'+str(item)))
+	elif page == 3:
+		for item in reversed(range(78, 87)):
+			markup.insert(InlineKeyboardButton(surah[str(item)], callback_data='surah_'+str(item)))
+		markup.add(InlineKeyboardButton('⏪ Назад',  callback_data = 'qoran_back_'+str(page)))
+		return markup
+	if page == 1:
+		markup.add(InlineKeyboardButton('Далее ⏩', callback_data = 'qoran_next_'+str(page)))
+	else:
+		markup.add(InlineKeyboardButton('⏪ Назад',  callback_data = 'qoran_back_'+str(page))).insert(InlineKeyboardButton('Далее ⏩', callback_data = 'qoran_next_'+str(page)))
+	return markup
 
 async def markup_surah(data):
 	markup_surah = InlineKeyboardMarkup()
-	markup_surah.insert(InlineKeyboardButton('Аудио', callback_data='qoran_audio_'+str(data))).insert(InlineKeyboardButton('Тафсир', callback_data = 'surah_tafsir_'+str(data))).insert(InlineKeyboardButton('Перевод', callback_data='surah_translate_'+str(data)))
+	markup_surah.insert(InlineKeyboardButton('Тафсир', url = surah_tafsir[str(data)])).insert(InlineKeyboardButton('Аудио', callback_data='qoran_audio_'+str(data))).insert(InlineKeyboardButton('Перевод', callback_data='surah_translate_'+str(data)))
 	return markup_surah
 	
 # zikr 
