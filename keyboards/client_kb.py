@@ -129,7 +129,7 @@ markup_qoran.add(InlineKeyboardButton('ан-Нас', callback_data= 'qoran_last_
 
 async def markup_surah(data):
 	markup_surah = InlineKeyboardMarkup()
-	markup_surah.add(InlineKeyboardButton('Весь список', callback_data='qoran_last_10_inline')).insert(InlineKeyboardButton('Аудио', callback_data='qoran_audio_'+str(data)))
+	markup_surah.insert(InlineKeyboardButton('Аудио', callback_data='qoran_audio_'+str(data))).insert(InlineKeyboardButton('Тафсир', callback_data = 'surah_tafsir_'+str(data))).insert(InlineKeyboardButton('Перевод', callback_data='surah_translate_'+str(data)))
 	return markup_surah
 	
 # zikr 
