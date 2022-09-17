@@ -483,6 +483,7 @@ markup_tracker_menu.add(InlineKeyboardButton('Ввести самому', callba
 
 async def markup_tracker(user_id):
 	markup_tracker = InlineKeyboardMarkup(row_width=5)
+	markup_tracker.add(InlineKeyboardButton('Намаз', callback_data='troth_salat')).insert(InlineKeyboardButton('Всего', callback_data='troth_current')).insert(InlineKeyboardButton('Нужно', callback_data='troth_need')).insert(InlineKeyboardButton('Минус', callback_data= 'calc_minus')).insert(InlineKeyboardButton('Плюс', callback_data='calc_add'))
 	markup_tracker.add(InlineKeyboardButton('Фаджр', callback_data='troth_salat')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT fajr FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_current')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT fajr_need FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_need')).insert(InlineKeyboardButton('-', callback_data= 'minus_fajr')).insert(InlineKeyboardButton('+', callback_data='plus_fajr'))
 	markup_tracker.add(InlineKeyboardButton('Зухр', callback_data='troth_salat')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT zuhr FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_current')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT zuhr_need FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_need')).insert(InlineKeyboardButton('-', callback_data='minus_zuhr')).insert(InlineKeyboardButton('+', callback_data='plus_zuhr'))
 	markup_tracker.add(InlineKeyboardButton('Аср', callback_data='troth_salat')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT asr FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_current')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT asr_need FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_need')).insert(InlineKeyboardButton('-', callback_data='minus_asr')).insert(InlineKeyboardButton('+', callback_data='plus_asr'))
@@ -491,7 +492,7 @@ async def markup_tracker(user_id):
 	if sqlite_bd.cur.execute(f'SELECT vitr_need FROM tracker WHERE user_id == {user_id}').fetchone()[0] == '0':
 		pass
 	else:
-		markup_tracker.add(InlineKeyboardButton('Витр', callback_data='tracker_salat')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT vitr FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='10')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT vitr_need FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='tracker_need')).insert(InlineKeyboardButton('-', callback_data='minus_vitr')).insert(InlineKeyboardButton('+', callback_data='plus_vitr'))
+		markup_tracker.add(InlineKeyboardButton('Витр', callback_data='tracker_salat')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT vitr FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='troth_current')).insert(InlineKeyboardButton(sqlite_bd.cur.execute(f'SELECT vitr_need FROM tracker WHERE user_id == {user_id}').fetchone()[0], callback_data='tracker_need')).insert(InlineKeyboardButton('-', callback_data='minus_vitr')).insert(InlineKeyboardButton('+', callback_data='plus_vitr'))
 	return markup_tracker
 
 markup_tracker_reset = InlineKeyboardMarkup()

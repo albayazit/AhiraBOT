@@ -593,7 +593,7 @@ async def tracker_vitr_get(callback: types.CallbackQuery):
 	await callback.message.answer('Рассчитываю...', reply_markup = client_kb.markup_main)
 	reply = await client_kb.markup_tracker(user_id)
 	await asyncio.sleep(1)
-	await callback.message.answer('Восстановление намазов:', reply_markup = reply)
+	await callback.message.answer('<b>Восстановление намазов:</b>', reply_markup = reply)
 	
 
 async def tracker_reset(message: types.Message):
@@ -637,7 +637,7 @@ async def tracker_plus(callback: types.CallbackQuery):
 		else: 
 			sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr + ?) WHERE user_id == ?', (1, user_id))
 			sqlite_bd.base.commit()
-		await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+		await callback.message.edit_text('<b>Восстановление намазов:</b>', reply_markup = await client_kb.markup_tracker(user_id))
 	except:
 		await callback.message.answer('Ой, что-то пошло не так!', reply_markup = client_kb.markup_main)
 	await callback.answer()
@@ -681,7 +681,7 @@ async def tracker_minus(callback: types.CallbackQuery):
 			return await callback.message.answer('Значение не может быть ниже 0!')
 		sqlite_bd.cur.execute('UPDATE tracker SET vitr == (vitr - ?) WHERE user_id == ?', (1, user_id))
 		sqlite_bd.base.commit()
-	await callback.message.edit_text('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+	await callback.message.edit_text('<b>Восстановление намазов:</b>', reply_markup = await client_kb.markup_tracker(user_id))
 	await callback.answer()
 
 async def other_btn_tracker(callback: types.CallbackQuery):
@@ -1265,6 +1265,14 @@ async def food_back(callback: types.CallbackQuery):
 
 async def tutor_menu(message: types.Message):
 	await message.answer('Обучение на основе Ханафитского мазхаба |  | <i>Источник: <a href = "https://dumrt.ru/ru/help-info/training-prayer/">ДУМ РТ</a></i>\nВыберите раздел: ', reply_markup=client_kb.markup_namaz_tutor, disable_web_page_preview=True)
+
+async def calc_get(callback: types.CallbackQuery):
+	data = callback.data[5:]
+	if data == 'minus':
+		await callback.message.answer('Отнять 1 от выполненных намазов')
+	else:
+		await callback.message.answer('Прибавить 1 к выполненным намазам')
+	await callback.answer()
 
 # async def photo_file_id(message: types.Message):
 #     await message.answer(message.photo[2].file_id)
