@@ -17,4 +17,4 @@ Telegram bot for muslims using aiogram. Bot allows many opportunities for believ
 https://t.me/ahirabot
 
 ## Released:
-10.09.2022
+10.09.2022 | 18.09.2022 (In prod with getUpdates)
