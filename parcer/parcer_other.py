@@ -1,6 +1,7 @@
 from database import sqlite_bd
 import requests
 from datetime import datetime
+from config import API
 
 # methods
 methods = {
@@ -34,7 +35,7 @@ async def city_check(address):
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
 	querystring = {"address":str(address)}
 	headers = {
-		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Key": API,
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -47,7 +48,7 @@ async def get_day_time(state):
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
 	querystring = {"address":result[0],"school":result[1], "method":'1'}
 	headers = {
-		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Key": API,
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 	try:
@@ -80,7 +81,7 @@ async def get_day_time_from_menu(user_id, address):
 	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()[0]
 	querystring = {"address":address,"school":schools[school], "method":'1'}
 	headers = {
-		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Key": API,
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 
@@ -117,7 +118,7 @@ async def get_calendar_time(address, day, school):
 	querystring = {"address":address,"year":year,"month":month, "school":school, "method":'1'}
 
 	headers = {
-		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Key": API,
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 
@@ -155,7 +156,7 @@ async def get_for_next_month(address, school):
 	month = datetime.now().month
 	year = datetime.now().year
 	headers = {
-		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Key": API,
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 	url = "https://aladhan.p.rapidapi.com/calendarByAddress"

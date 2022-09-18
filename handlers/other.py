@@ -3,6 +3,7 @@ from create_bot import dp
 import requests
 from datetime import datetime
 from keyboards import client_kb
+from config import API
 
 async def unknown_command(message: types.Message):
 	await message.answer('Я вас не понимаю. Выберите раздел:', reply_markup=client_kb.markup_main)
@@ -25,7 +26,7 @@ async def get_hidjra():
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
 	querystring = {"address":'Казань'}
 	headers = {
-		"X-RapidAPI-Key": "fa3e8dc2dbmshd8f35322ed30bb0p1179d0jsn655fe6d43bde",
+		"X-RapidAPI-Key": API,
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
