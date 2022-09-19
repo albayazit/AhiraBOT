@@ -1,6 +1,6 @@
 import requests
-from datetime import datetime, date
 import datetime as dt
+from datetime import date, datetime
 
 links = {
 	'Махачкала':'mahashkala.json',
@@ -36,10 +36,14 @@ cities = list(links.keys())
 year = datetime.today().year
 day = datetime.today().strftime('%j')
 today = datetime.today().day
+headers = {
+	'cookie':'beget=begetok',
+	'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.42'
+	}
 
 async def get_day_time(address):
 	url = f"https://muftiyatrd.ru/json/namaz/{links[address]}"
-	response = requests.request("GET", url).json()
+	response = requests.request("GET", url, headers=headers).json()
 	data = response[int(day)-1]
 	daytime_message = (
 		f'🌍 Город: <b>{address}</b>\n\n'
@@ -58,7 +62,7 @@ async def get_day_time(address):
 
 async def get_tomorrow_time(address):
 	url = f"https://muftiyatrd.ru/json/namaz/{links[address]}"
-	response = requests.request("GET", url).json()
+	response = requests.request("GET", url, headers=headers).json()
 	try:
 		data = response[int(day)]
 	except:
@@ -82,7 +86,7 @@ async def get_month_time(address, period):
 	current = int(day) - int(today)
 	current_day = current + int(period) - 1
 	url = f"https://muftiyatrd.ru/json/namaz/{links[address]}"
-	response = requests.request("GET", url).json()
+	response = requests.request("GET", url, headers=headers).json()
 	data = response[current_day]
 	today_full = datetime.today()
 	current = today_full - dt.timedelta(days=today) + dt.timedelta(days=int(period))
