@@ -433,7 +433,7 @@ async def tracker_command(message: types.Message):
 	if info.fetchone()[0] == 0:
 		await message.answer('<b>Эта функция предназначена для восстановления пропущенных намазов! Выберите способ расчета:</b>', reply_markup=client_kb.markup_tracker_menu)
 	else:
-		await message.answer('Восстановление намазов:', reply_markup = await client_kb.markup_tracker(user_id))
+		await message.answer('<b>Восстановление намазов:</b>', reply_markup = await client_kb.markup_tracker(user_id))
 
 async def tracker_myself(callback: types.CallbackQuery):
 	await FSMtracker.fajr.set()

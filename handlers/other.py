@@ -26,19 +26,24 @@ async def get_hidjra():
 	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
 	querystring = {"address":'Казань'}
 	headers = {
-		"X-RapidAPI-Key": API,
+		"X-RapidAPI-Key": '635bdd5403mshc106957e0797cc1p11b950jsn90d01e8f294f',
 		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	date = response['data']['date']['hijri']['date'].replace('-', '.')
+	nextday = int(date[:-8]) + 1
+	day = date[:-8]
+	day2 = date[2:]
+	result = str(day) + '(' + str(nextday) + ')' + str(day2)
 	month = response['data']['date']['hijri']['month']['ar']
 
 
-	return date + ' | ' + month
+	return result + ' | ' + month
 
 async def calendar_message():
 	message = (
-	f'Сегодня: {await get_hidjra()} | {datetime.today().strftime("%d.%m.%Y")}\n\n'
+	f'<b>Дата:</b> {datetime.today().strftime("%d.%m.%Y")}\n'
+	f'<b>Дата по хиджре:</b> {await get_hidjra()}\n\n'
 	)
 	return str(message)
 
