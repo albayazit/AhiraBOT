@@ -139,11 +139,11 @@ cities_data = {
 	'Ойыл ауданы': '49.260612/54.575097'
 	}
 cities = list(cities_data.keys())
-year = datetime.today().year
-day = datetime.today().strftime('%j')
-today = datetime.today().day
 
 async def get_day_time(address):
+	year = datetime.today().year
+	day = datetime.today().strftime('%j')
+	today = datetime.today().day
 	url = f"https://api.muftyat.kz/prayer-times/{year}/{cities_data[address]}?format=json"
 	response = requests.request("GET", url).json()
 	data = response['result'][int(day)-1]
@@ -165,6 +165,9 @@ async def get_day_time(address):
 	return daytime_message
 
 async def get_tomorrow_time(address):
+	year = datetime.today().year
+	day = datetime.today().strftime('%j')
+	today = datetime.today().day
 	url = f"https://api.muftyat.kz/prayer-times/{year}/{cities_data[address]}?format=json"
 	next_year = int(year) + 1
 	response = requests.request("GET", url).json()
@@ -192,6 +195,9 @@ async def get_tomorrow_time(address):
 	return daytime_message
 
 async def get_month_time(address, period):
+	year = datetime.today().year
+	day = datetime.today().strftime('%j')
+	today = datetime.today().day
 	current = int(day) - int(today)
 	current_day = current + int(period) - 1
 	url = f"https://api.muftyat.kz/prayer-times/{year}/{cities_data[address]}?format=json"	

@@ -5,14 +5,14 @@ import pandas as pd
 import datetime
 
 tat_table = pd.read_excel('data/namaz/namaz_time_tatarstan.xlsx')
-cl = calendar.Calendar()
 all_cities = tat_table['city'].unique()
 tat_table['day'] = tat_table['day'].dt.strftime('%Y.%m.%d')
-today = datetime.date.today()
-nextday = today + datetime.timedelta(days=1)
 
 # get time from excel
 async def get_time(current_city, period):
+    today = datetime.date.today()
+    nextday = today + datetime.timedelta(days=1)
+    cl = calendar.Calendar()
     if period == 'today':
         times_for_day = tat_table[(tat_table['city'] == current_city) & (tat_table['day'] == today.strftime('%Y.%m.%d'))]
         isha_time = datetime.datetime.strptime(today.strftime('%d.%m.%Y') + ' ' + times_for_day["isha"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
