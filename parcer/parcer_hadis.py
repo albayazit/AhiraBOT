@@ -7,5 +7,8 @@ async def get_random_count():
 	return random.randint(1, 205)
 
 async def get_hadis(count):
-	hadis = data['text'][count]
+	try:
+		hadis = data['text'][count]
+	except:
+		hadis = data['text'][1]
 	return hadis
