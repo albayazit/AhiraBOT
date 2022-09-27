@@ -904,7 +904,10 @@ async def namaz_day_command(callback : types.CallbackQuery):
 	user_id = callback.from_user.id
 	global current_city
 	current_city = callback.data
-	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city, 'today'), reply_markup = await client_kb.inline_city('today', current_city, user_id))
+	try:
+		await callback.message.edit_text(await parcer_tatarstan.get_time(current_city, 'today'), reply_markup = await client_kb.inline_city('today', current_city, user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 
@@ -912,12 +915,18 @@ async def namaz_day_command(callback : types.CallbackQuery):
 async def next_day_time_command(callback : types.CallbackQuery):
 	user_id = callback.from_user.id
 	global current_city
-	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city, 'tomorrow'), reply_markup = await client_kb.inline_city('tomorrow', current_city, user_id))
+	try:
+		await callback.message.edit_text(await parcer_tatarstan.get_time(current_city, 'tomorrow'), reply_markup = await client_kb.inline_city('tomorrow', current_city, user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 # all days in month for tatarstan
 async def month_time_command(callback : types.CallbackQuery):
-	await callback.message.edit_text(f'Город: <b>{current_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.inline_month())
+	try:
+		await callback.message.edit_text(f'Город: <b>{current_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ', reply_markup=await client_kb.inline_month())
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 #--------------------Get new other city--------------------#
 # first message
@@ -964,7 +973,10 @@ async def school_get(callback: types.CallbackQuery, state=FSMContext):
 	await callback.answer()
 	msg = await callback.message.edit_text('Секундочку...')
 	await asyncio.sleep(1)
-	await msg.edit_text(time, reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	try:
+		await msg.edit_text(time, reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await state.finish()
 # time from menu for other regions
 
@@ -1001,8 +1013,11 @@ async def tomorrow_time_other(callback: types.CallbackQuery):
 	try:
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
-		on_db = False
-	await callback.message.edit_text(await parcer_other.get_calendar_time(address, datetime.now().day + 1, school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
+		pass
+	try:
+		await callback.message.edit_text(await parcer_other.get_calendar_time(address, datetime.now().day + 1, school), reply_markup=await client_kb.other_inline(user_id, address, 'tomorrow'))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def today_time_other(callback: types.CallbackQuery):
@@ -1010,8 +1025,11 @@ async def today_time_other(callback: types.CallbackQuery):
 	try:
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
-		on_db = False
-	await callback.message.edit_text(await parcer_other.get_calendar_time(address, datetime.now().day, school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+		pass
+	try:
+		await callback.message.edit_text(await parcer_other.get_calendar_time(address, datetime.now().day, school), reply_markup=await client_kb.other_inline(user_id, address, 'today'))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def month_time_other(callback: types.CallbackQuery):
@@ -1019,14 +1037,20 @@ async def month_time_other(callback: types.CallbackQuery):
 	try:
 		school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address))
 	except:
-		on_db = False
+		pass
 	day = callback.data[11:]
-	await callback.message.edit_text(await parcer_other.get_calendar_time(address, day, school), reply_markup=await client_kb.other_inline(user_id, address, 'month'))
+	try:
+		await callback.message.edit_text(await parcer_other.get_calendar_time(address, day, school), reply_markup=await client_kb.other_inline(user_id, address, 'month'))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def tatarstan_month(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
-	await callback.message.edit_text(await parcer_tatarstan.get_time(current_city,callback.data[15:]), reply_markup=await client_kb.inline_city('tomorrow', current_city, user_id))
+	try:
+		await callback.message.edit_text(await parcer_tatarstan.get_time(current_city,callback.data[15:]), reply_markup=await client_kb.inline_city('tomorrow', current_city, user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)	
 	await callback.answer()
 	await callback.answer()
 
@@ -1063,24 +1087,36 @@ async def dagestan_today_time(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global dag_city
 	dag_city = callback.data[9:]
-	await callback.message.edit_text(await parcer_dagestan.get_day_time(dag_city), reply_markup= await client_kb.dag_city(dag_city, 'today',user_id))
+	try:
+		await callback.message.edit_text(await parcer_dagestan.get_day_time(dag_city), reply_markup= await client_kb.dag_city(dag_city, 'today',user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def dagestan_tomorrow_time(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global dag_city
-	await callback.message.edit_text(await parcer_dagestan.get_tomorrow_time(dag_city), reply_markup= await client_kb.dag_city(dag_city, 'tomorrow',user_id))
+	try:
+		await callback.message.edit_text(await parcer_dagestan.get_tomorrow_time(dag_city), reply_markup= await client_kb.dag_city(dag_city, 'tomorrow',user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)	
 	await callback.answer()
 
 async def dagestan_month(callback: types.CallbackQuery):
 	global dag_city
-	await callback.message.edit_text(f'Город: <b>{dag_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.dagestan_month())
+	try:
+		await callback.message.edit_text(f'Город: <b>{dag_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.dagestan_month())
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)	
 	await callback.answer()
 
 async def dagestan_month_time(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global dag_city
-	await callback.message.edit_text(await parcer_dagestan.get_month_time(dag_city, callback.data[9:]), reply_markup= await client_kb.dag_city(dag_city, 'month', user_id))
+	try:
+		await callback.message.edit_text(await parcer_dagestan.get_month_time(dag_city, callback.data[9:]), reply_markup= await client_kb.dag_city(dag_city, 'month', user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def dagestan_favorite_add(callback: types.CallbackQuery):
@@ -1118,24 +1154,36 @@ async def kazakhstan_today_time(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global kaz_city
 	kaz_city = callback.data[9:]
-	await callback.message.edit_text(await parcer_kazakhstan.get_day_time(kaz_city), reply_markup=await client_kb.kaz_city(kaz_city, 'today', user_id))
+	try:
+		await callback.message.edit_text(await parcer_kazakhstan.get_day_time(kaz_city), reply_markup=await client_kb.kaz_city(kaz_city, 'today', user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)	
 	await callback.answer()
 
 async def kazakhstan_tomorrow_time(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global kaz_city
-	await callback.message.edit_text(await parcer_kazakhstan.get_tomorrow_time(kaz_city), reply_markup=await client_kb.kaz_city(kaz_city, 'tomorrow', user_id))
+	try:
+		await callback.message.edit_text(await parcer_kazakhstan.get_tomorrow_time(kaz_city), reply_markup=await client_kb.kaz_city(kaz_city, 'tomorrow', user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)	
 	await callback.answer()
 
 async def kazakhstan_month(callback: types.CallbackQuery):
 	global kaz_city
-	await callback.message.edit_text(f'Город: <b>{kaz_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.kazakhstan_month())
+	try:
+		await callback.message.edit_text(f'Город: <b>{kaz_city}</b>\nМесяц: <b>{months[str(datetime.now().month)]}</b>\n<b>Выберите день:</b>ᅠ ᅠ ᅠ ᅠ ᅠ ᅠ ',reply_markup=await client_kb.kazakhstan_month())
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)
 	await callback.answer()
 
 async def kazakhstan_month_time(callback: types.CallbackQuery):
 	user_id = callback.from_user.id
 	global kaz_city
-	await callback.message.edit_text(await parcer_kazakhstan.get_month_time(kaz_city, callback.data[9:]), reply_markup= await client_kb.kaz_city(kaz_city, 'month', user_id))
+	try:
+		await callback.message.edit_text(await parcer_kazakhstan.get_month_time(kaz_city, callback.data[9:]), reply_markup= await client_kb.kaz_city(kaz_city, 'month', user_id))
+	except:
+		await callback.message.answer('Ой, что-то пошло не так...', reply_markup=client_kb.markup_main)	
 	await callback.answer()
 
 async def kazakhstan_favorite_add(callback: types.CallbackQuery):
@@ -1179,7 +1227,7 @@ async def hadis_random(callback: types.CallbackQuery):
 		await callback.message.edit_text(await parcer_hadis.get_hadis(count), reply_markup=await client_kb.markup_hadis_random(count, user_id))
 	except:
 		count += 1
-		await callback.message.edit_text(await parcer_hadis.get_hadis(count), reply_markup=await client_kb.markup_hadis_random(count, user_id))
+		await callback.message.edit_text(await parcer_hadis.get_hadis(count), reply_markup=await client_kb.markup_hadis_random(count, user_id))	
 	await callback.answer()
 
 async def hadis_add(callback: types.CallbackQuery):
