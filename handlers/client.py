@@ -1322,6 +1322,11 @@ async def calc_get(callback: types.CallbackQuery):
 		await callback.message.answer('Прибавить 1 к выполненным намазам')
 	await callback.answer()
 
+async def qoran_audio_all(callback: types.CallbackQuery):
+	for i in surah_audio:
+		await bot.send_audio(callback.from_user.id, surah_audio[i])
+	await callback.answer()
+
 # async def photo_file_id(message: types.Message):
 #     await message.answer(message.photo[2].file_id)
 
@@ -1440,6 +1445,7 @@ def register_handlers_client(dp : Dispatcher):
 	dp.register_callback_query_handler(names_back, text_startswith = 'back_photo_')
 	dp.register_callback_query_handler(qoran_translate, text_startswith = 'surah_translate_')
 	dp.register_callback_query_handler(qoran_surah_get, text_startswith = 'surah_')
+	dp.register_callback_query_handler(qoran_audio_all, text = 'qoran_audio_all')
 	dp.register_callback_query_handler(qoran_audio, text_startswith = 'qoran_audio_')
 	dp.register_message_handler(codes_command, lambda message: message.text == "📄 E-добавки")	
 	dp.register_message_handler(codes_get_code, state = FSMhalal.code)

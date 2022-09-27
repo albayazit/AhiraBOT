@@ -206,7 +206,6 @@ markup_tutor_back.add(button_all_tutor)
 # qoran
 async def markup_qoran(page):
 	markup = InlineKeyboardMarkup(row_width=2)
-	key = int(page) * 10
 	if page == 1:
 		for item in reversed(range(101, 115)):
 			markup.insert(InlineKeyboardButton(surah[str(item)], callback_data='surah_'+str(item)))
@@ -216,6 +215,7 @@ async def markup_qoran(page):
 	elif page == 3:
 		for item in reversed(range(78, 87)):
 			markup.insert(InlineKeyboardButton(surah[str(item)], callback_data='surah_'+str(item)))
+		markup.insert(InlineKeyboardButton('Все аудио', callback_data='qoran_audio_all'))
 		markup.add(InlineKeyboardButton('⏪ Назад',  callback_data = 'qoran_back_'+str(page)))
 		return markup
 	if page == 1:
