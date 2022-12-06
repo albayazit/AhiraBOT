@@ -300,7 +300,10 @@ async def inline_city(period, current_city, user_id):
 async def inline_month():
 	m = datetime.now().month
 	y = datetime.now().year
-	days = (date(y, m+1, 1) - date(y, m, 1)).days
+	if m != 12:
+		days = (date(y, m+1, 1) - date(y, m, 1)).days
+	else:
+		days = 31
 	d1 = date(y, m, 1)
 	d2 = date(y, m, days)
 	d3 = d2 - d1
