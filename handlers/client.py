@@ -794,7 +794,7 @@ async def names_back(callback: types.CallbackQuery):
 
 # Calendar | 'Календарь' (Reply)
 async def calendar_command(message: types.Message):
-	await bot.send_photo(message.from_user.id, 'AgACAgIAAxkBAAO5YxUMTT-29JFFRuQ4wJ5XZUNTPFkAAszBMRtuNqhIpDS0NMCB_zIBAAMCAAN4AAMpBA', caption= await other.calendar_message())
+	await bot.send_photo(message.from_user.id, 'AgACAgIAAxkBAAIeOGPITPVNY_stxlNXL0Ru_klhxh5bAAIixjEbkUBASp21PSjyJuMaAQADAgADeAADLQQ', caption= await other.calendar_message())
 
 
 # Info | 'Помощь' (Reply)
@@ -1327,8 +1327,8 @@ async def qoran_audio_all(callback: types.CallbackQuery):
 		await bot.send_audio(callback.from_user.id, surah_audio[i])
 	await callback.answer()
 
-# async def photo_file_id(message: types.Message):
-#     await message.answer(message.photo[2].file_id)
+async def photo_file_id(message: types.Message):
+    await message.answer(message.photo[2].file_id)
 
 # async def document_file_id(message: types.Message):
 #     await message.answer(message.document.file_id)
@@ -1452,6 +1452,6 @@ def register_handlers_client(dp : Dispatcher):
 
 	# dp.register_callback_query_handler(food_next, text_startswith = 'next_food_')
 	# dp.register_callback_query_handler(food_back, text_startswith = 'back_food_')
-	# dp.register_message_handler(photo_file_id, content_types=["photo"])
+	dp.register_message_handler(photo_file_id, content_types=["photo"])
 	# dp.register_message_handler(audio_file_id, content_types=["audio"])
 	# dp.register_message_handler(document_file_id, content_types=["document"])
