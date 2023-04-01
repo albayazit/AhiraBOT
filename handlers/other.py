@@ -14,20 +14,20 @@ def register_handlers_other(dp : Dispatcher):
 
 #---текстовые сообщения---#
 info_message = (
-    'Это бот-помощник для мусульман. Узнавайте время намаза, слушайте Коран, читайте книги и еще множество функции доступных для пользователей. На данный момент бот работает без какой-либо монетизации, что в скором времени может прекратиться, так как для работоспособности бота требуется арендовать сервера.\n\n'
+    'Это бот-помощник для мусульман. Узнавайте время намаза, слушайте Коран, читайте книги и еще множество функции доступных для пользователей. На данный момент бот работает без какой-либо монетизации, что в скором времени может прекратиться, так как для работоспособности бота требуется аренда сервера.\n\n'
     '<b>Источники:</b>\n'
 		'<b>ДУМ Республики Татарстан</b>: https://dumrt.ru/ru/\n'
 		'<b>Азан.ру</b>: https://azan.ru/\n'
 		'<b>Исламдаг.ру</b>: https://islamdag.ru/\n\n'
-		'Связь с администратором: https://t.me/bayazitkhasanov'
+		'Связь с администратором: https://t.me/bayazitkhasan'
 )
 
 async def get_hidjra():
-	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
+	url = "http://api.aladhan.com/timingsByAddress"
 	querystring = {"address":'Казань'}
 	headers = {
 		"X-RapidAPI-Key": '635bdd5403mshc106957e0797cc1p11b950jsn90d01e8f294f',
-		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	date = response['data']['date']['hijri']['date'].replace('-', '.')

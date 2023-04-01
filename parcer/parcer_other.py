@@ -32,11 +32,11 @@ schools_from_json = {
 
 # check city in bd
 async def city_check(address):
-	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
+	url = "http://api.aladhan.com/timingsByAddress"
 	querystring = {"address":str(address)}
 	headers = {
 		"X-RapidAPI-Key": API,
-		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	return response['data']['timings']
@@ -45,11 +45,11 @@ async def city_check(address):
 async def get_day_time(state):
 	async with state.proxy() as data:
 		result = tuple(data.values())
-	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
+	url = "http://api.aladhan.com/timingsByAddress"
 	querystring = {"address":result[0],"school":result[1], "method":'1'}
 	headers = {
 		"X-RapidAPI-Key": API,
-		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 	try:
 		response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -77,12 +77,12 @@ async def get_day_time(state):
 
 # get time for day in favorite_cities
 async def get_day_time_from_menu(user_id, address):
-	url = "https://aladhan.p.rapidapi.com/timingsByAddress"
+	url = "http://api.aladhan.com/timingsByAddress"
 	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()[0]
 	querystring = {"address":address,"school":schools[school], "method":'1'}
 	headers = {
 		"X-RapidAPI-Key": API,
-		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -113,13 +113,13 @@ async def get_calendar_time(address, day, school):
 	month = datetime.now().month
 	year = datetime.now().year
 
-	url = "https://aladhan.p.rapidapi.com/calendarByAddress"
+	url = "http://api.aladhan.com/calendarByAddress"
 
 	querystring = {"address":address,"year":year,"month":month, "school":school, "method":'1'}
 
 	headers = {
 		"X-RapidAPI-Key": API,
-		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -157,9 +157,9 @@ async def get_for_next_month(address, school):
 	year = datetime.now().year
 	headers = {
 		"X-RapidAPI-Key": API,
-		"X-RapidAPI-Host": "aladhan.p.rapidapi.com"
+		"X-RapidAPI-Host": "api.aladhan.com"
 	}
-	url = "https://aladhan.p.rapidapi.com/calendarByAddress"
+	url = "http://api.aladhan.com/calendarByAddress"
 	if month == '12':
 		querystring = {"address":address,"year":year + 1,"month":'1', "school":school, "method":'1'}
 		response = requests.request("GET", url, headers=headers, params=querystring).json()

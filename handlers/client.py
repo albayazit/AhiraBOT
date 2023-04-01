@@ -1452,6 +1452,6 @@ def register_handlers_client(dp : Dispatcher):
 
 	# dp.register_callback_query_handler(food_next, text_startswith = 'next_food_')
 	# dp.register_callback_query_handler(food_back, text_startswith = 'back_food_')
-	dp.register_message_handler(photo_file_id, content_types=["photo"])
+	# dp.register_message_handler(photo_file_id, content_types=["photo"])
 	# dp.register_message_handler(audio_file_id, content_types=["audio"])
 	# dp.register_message_handler(document_file_id, content_types=["document"])
