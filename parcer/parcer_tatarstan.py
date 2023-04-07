@@ -15,9 +15,9 @@ async def get_time(current_city, period):
     cl = calendar.Calendar()
     if period == 'today':
         times_for_day = tat_table[(tat_table['city'] == current_city) & (tat_table['day'] == today.strftime('%Y.%m.%d'))]
-        isha_time = datetime.datetime.strptime(today.strftime('%d.%m.%Y') + ' ' + times_for_day["isha"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
+        magrib_time = datetime.datetime.strptime(today.strftime('%d.%m.%Y') + ' ' + times_for_day["magrib"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
         fajr_time = datetime.datetime.strptime(nextday.strftime('%d.%m.%Y') + ' ' + times_for_day["fajr"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
-        seconds_in_tahad = fajr_time - timedelta(seconds=(isha_time - fajr_time).total_seconds()/-3)
+        seconds_in_tahad = fajr_time - timedelta(seconds=(magrib_time - fajr_time).total_seconds()/-3)
         tahadjud_time = datetime.datetime.strftime(seconds_in_tahad, '%H:%M')
 
         daytime_message = (
@@ -37,9 +37,9 @@ async def get_time(current_city, period):
         )
     elif period == 'tomorrow':
         times_for_day = tat_table[(tat_table['city'] == current_city) & (tat_table['day'] == nextday.strftime('%Y.%m.%d'))]
-        isha_time = datetime.datetime.strptime(today.strftime('%d.%m.%Y') + ' ' + times_for_day["isha"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
+        magrib_time = datetime.datetime.strptime(today.strftime('%d.%m.%Y') + ' ' + times_for_day["magrib"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
         fajr_time = datetime.datetime.strptime(nextday.strftime('%d.%m.%Y') + ' ' + times_for_day["fajr"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
-        seconds_in_tahad = fajr_time - timedelta(seconds=(isha_time - fajr_time).total_seconds()/-3)
+        seconds_in_tahad = fajr_time - timedelta(seconds=(magrib_time - fajr_time).total_seconds()/-3)
         tahadjud_time = datetime.datetime.strftime(seconds_in_tahad, '%H:%M')
 
         daytime_message = (
@@ -60,9 +60,9 @@ async def get_time(current_city, period):
     else:
         period_datetime = datetime.datetime.strptime(period, '%Y.%m.%d')
         times_for_day = tat_table[(tat_table['city'] == current_city) & (tat_table['day'] == period_datetime.strftime('%Y.%m.%d'))]
-        isha_time = datetime.datetime.strptime(period_datetime.strftime('%d.%m.%Y') + ' ' + times_for_day["isha"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
+        magrib_time = datetime.datetime.strptime(period_datetime.strftime('%d.%m.%Y') + ' ' + times_for_day["magrib"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
         fajr_time = datetime.datetime.strptime((period_datetime + datetime.timedelta(days=1)).strftime('%d.%m.%Y') + ' ' + times_for_day["fajr"].to_string()[-8:], '%d.%m.%Y %H:%M:%S')
-        seconds_in_tahad = fajr_time - timedelta(seconds=(isha_time - fajr_time).total_seconds()/-3)
+        seconds_in_tahad = fajr_time - timedelta(seconds=(magrib_time - fajr_time).total_seconds()/-3)
         tahadjud_time = datetime.datetime.strftime(seconds_in_tahad, '%H:%M')
 
         daytime_message = (

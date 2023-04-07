@@ -23,5 +23,4 @@ async def on_startup(_):
 # поллинг
 if __name__ == '__main__':
     scheduler.start()
-    executor.start_polling(dp,skip_updates=True, on_startup=on_startup)
-
+    executor.start_polling(dp,skip_updates=True, on_startup = on_startup)
