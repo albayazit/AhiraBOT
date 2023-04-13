@@ -13,6 +13,10 @@ Telegram bot for muslims using aiogram. Bot allows many opportunities for believ
 • Audio files incliding the Quran
 • Authentic books and much more...
 
+## Preview:
+
+[![Preview](https://github.com/albayazit/AhiraBOT/blob/main/data/previewMenu.png)](https://t.me/ahirabot)
+
 ## Link:
 https://t.me/ahirabot
 
