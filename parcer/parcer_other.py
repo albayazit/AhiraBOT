@@ -1,7 +1,7 @@
 from database import sqlite_bd
 import requests
 from datetime import datetime
-from config import API
+import os
 
 # methods
 methods = {
@@ -35,7 +35,7 @@ async def city_check(address):
 	url = "http://api.aladhan.com/timingsByAddress"
 	querystring = {"address":str(address)}
 	headers = {
-		"X-RapidAPI-Key": API,
+		"X-RapidAPI-Key": os.getenv("API"),
 		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
@@ -81,7 +81,7 @@ async def get_day_time_from_menu(user_id, address):
 	school = sqlite_bd.cur.execute('SELECT school FROM favorite_other WHERE user_id == ? AND address = ?', (user_id, address)).fetchone()[0]
 	querystring = {"address":address,"school":schools[school], "method":'1'}
 	headers = {
-		"X-RapidAPI-Key": API,
+		"X-RapidAPI-Key": os.getenv("API"),
 		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 
@@ -118,7 +118,7 @@ async def get_calendar_time(address, day, school):
 	querystring = {"address":address,"year":year,"month":month, "school":school, "method":'1'}
 
 	headers = {
-		"X-RapidAPI-Key": API,
+		"X-RapidAPI-Key": os.getenv("API"),
 		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 
@@ -156,7 +156,7 @@ async def get_for_next_month(address, school):
 	month = datetime.now().month
 	year = datetime.now().year
 	headers = {
-		"X-RapidAPI-Key": API,
+		"X-RapidAPI-Key": os.getenv("API"),
 		"X-RapidAPI-Host": "api.aladhan.com"
 	}
 	url = "http://api.aladhan.com/calendarByAddress"

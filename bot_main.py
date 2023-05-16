@@ -6,6 +6,7 @@ from database import sqlite_bd
 from create_bot import scheduler
 from codes_script import scrap_codes
 from food_script import scrap_food
+from background import keep_alive
 
 client.register_handlers_client(dp)
 # в самом низу во избежания нарушения логики
@@ -22,5 +23,6 @@ async def on_startup(_):
 
 # поллинг
 if __name__ == '__main__':
+    keep_alive()
     scheduler.start()
     executor.start_polling(dp,skip_updates=True, on_startup = on_startup)

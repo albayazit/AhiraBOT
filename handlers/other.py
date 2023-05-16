@@ -3,7 +3,6 @@ from create_bot import dp
 import requests
 from datetime import datetime
 from keyboards import client_kb
-from config import API
 
 async def unknown_command(message: types.Message):
 	await message.answer('Я вас не понимаю. Выберите раздел:', reply_markup=client_kb.markup_main)
